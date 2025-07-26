@@ -19,4 +19,7 @@ main = do
     putStrLn "Alocador de Turmas e Salas"
     putStrLn $ "Id da turma " ++ getclassroomId classroom
     putStrLn $ "Matéria da turma: " ++ getclassSubject class1
+    putStrLn $ "Requisitos da turma: " ++ show (requirements class1)
+    putStrLn $ "Recursos da sala: " ++ show (resources classroom)   
+    putStrLn $ "Alocação possível: " ++ show (allocateClass class1 classroom)
 --    let class2 = Class { classId = 2, subject = "Chemistry", course = "Science", professor = "Dr. Jones", schedule = "Tue 14-16", size = 35, requirements = [Acessibility] }

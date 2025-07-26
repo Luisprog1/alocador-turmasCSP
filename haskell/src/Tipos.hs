@@ -1,9 +1,6 @@
 module Tipos where
 
-import GHC.Generics (Generic)
-import Data.Aeson (ToJSON, FromJSON)
-
-data Resource = Projector | Laboratory | Acessibility | Other String
+data Resource = Projector | Laboratory | Acessibility | Other String deriving(Show, Eq)
 
 data Class = Class {  
 classId :: Int,
@@ -13,14 +10,14 @@ professor :: String,
 schedule :: String,
 size :: Int,
 requirements :: [Resource]
-}
+} deriving (Show, Eq)
 
 data Classroom = Classroom { 
 classroomId :: Int,
 capacity :: Int,
 block :: String,
 resources :: [Resource]
-}
+} deriving (Show, Eq)
 
 data Allocation = Allocation { 
 allocationId :: Int, 
