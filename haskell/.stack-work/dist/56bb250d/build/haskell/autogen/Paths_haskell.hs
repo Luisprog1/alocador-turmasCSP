@@ -47,7 +47,7 @@ getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir, getSysconfDir :: 
 
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 bindir     = "C:\\Users\\luisa\\GitHub\\plp\\alocador-professorCSP\\haskell\\.stack-work\\install\\ada2984e\\bin"
-libdir     = "C:\\Users\\luisa\\GitHub\\plp\\alocador-professorCSP\\haskell\\.stack-work\\install\\ada2984e\\lib\\x86_64-windows-ghc-9.10.2-cea6\\haskell-0.1.0.0-EVavfqotMbe6PzSYCTWpDB-haskell"
+libdir     = "C:\\Users\\luisa\\GitHub\\plp\\alocador-professorCSP\\haskell\\.stack-work\\install\\ada2984e\\lib\\x86_64-windows-ghc-9.10.2-cea6\\haskell-0.1.0.0-1GcrBqlFzf45T4BOmDX2md-haskell"
 dynlibdir  = "C:\\Users\\luisa\\GitHub\\plp\\alocador-professorCSP\\haskell\\.stack-work\\install\\ada2984e\\lib\\x86_64-windows-ghc-9.10.2-cea6"
 datadir    = "C:\\Users\\luisa\\GitHub\\plp\\alocador-professorCSP\\haskell\\.stack-work\\install\\ada2984e\\share\\x86_64-windows-ghc-9.10.2-cea6\\haskell-0.1.0.0"
 libexecdir = "C:\\Users\\luisa\\GitHub\\plp\\alocador-professorCSP\\haskell\\.stack-work\\install\\ada2984e\\libexec\\x86_64-windows-ghc-9.10.2-cea6\\haskell-0.1.0.0"

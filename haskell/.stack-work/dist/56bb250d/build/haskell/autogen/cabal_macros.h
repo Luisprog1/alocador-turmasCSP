@@ -20,6 +20,16 @@
   (major1) == 4 && (major2) <  20 || \
   (major1) == 4 && (major2) == 20 && (minor) <= 1)
 #endif /* MIN_VERSION_base */
+/* package split-0.2.5 */
+#ifndef VERSION_split
+#define VERSION_split "0.2.5"
+#endif /* VERSION_split */
+#ifndef MIN_VERSION_split
+#define MIN_VERSION_split(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  2 || \
+  (major1) == 0 && (major2) == 2 && (minor) <= 5)
+#endif /* MIN_VERSION_split */
 
 /* tool gcc-14.0.6 */
 #ifndef TOOL_VERSION_gcc
@@ -93,7 +103,7 @@
 #endif /* MIN_TOOL_VERSION_runghc */
 
 #ifndef CURRENT_COMPONENT_ID
-#define CURRENT_COMPONENT_ID "haskell-0.1.0.0-EVavfqotMbe6PzSYCTWpDB-haskell"
+#define CURRENT_COMPONENT_ID "haskell-0.1.0.0-1GcrBqlFzf45T4BOmDX2md-haskell"
 #endif /* CURRENT_COMPONENT_ID */
 #ifndef CURRENT_PACKAGE_VERSION
 #define CURRENT_PACKAGE_VERSION "0.1.0.0"
