@@ -1,4 +1,4 @@
-module Repository.ClassRepository () where
+module Repository.ClassRepository  where
 
 import Tipos
 import Text.Read (readMaybe)
