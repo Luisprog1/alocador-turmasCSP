@@ -16,7 +16,7 @@ roomSchedule = Map.fromList
     , (Wednesday,  [5, 6])
     ]}
 
-class1 = Class { classId = 1, subject = "Physics", course ="Engineering", professor = "Dr. Smith", schedule = [(Monday, 1), (Monday, 5)], quantity = 25, requirements = [Projector, Laboratory]}
+class1 = Class { classId = 1, subject = "Physics", course ="Engineering", professor = "Dr. Smith", schedule = [(Monday, 6), (Monday, 5)], quantity = 25, requirements = [Projector, Laboratory]}
 
 getclassroomId :: Classroom -> String
 getclassroomId (Classroom {block = bloco}) = bloco

@@ -1,5 +1,6 @@
 module Tipos where
 import qualified Data.Map as Map
+import Data.List (sort, nub)
 
 data Resource = Projector | Laboratory | Acessibility | Other String deriving(Show, Eq, Read)
 
@@ -40,18 +41,13 @@ scheduleContains scheduleMap day hour =
         Nothing -> False
 
 -- | Retorna True se um tipo ScheduleMap contém 1 ou mais par ordenado (dia da semana: horário).
-allScheduleContains :: ScheduleMap -> Class -> Bool
-allScheduleContains scheduleMap clss = 
-    any (\(day, hour) -> scheduleContains scheduleMap day hour) (schedule clss)
-
-verifyOccupation :: Classroom  -> Class -> Bool
-verifyOccupation classroom clss = 
-    allScheduleContains (roomSchedule classroom) clss
-
+isAnyOccupation :: Classroom -> Class -> Bool
+isAnyOccupation classroom clss = 
+    any (\(day, hour) -> scheduleContains (roomSchedule classroom) day hour) (schedule clss)
 
 addOccupation :: Class -> Classroom -> Classroom
 addOccupation clss classroom 
-    | verifyOccupation classroom clss = classroom
+    | isAnyOccupation classroom clss = classroom
     | otherwise =
          let
             -- Esta é uma função auxiliar interna que faz o trabalho recursivo de adicionar os slots.
@@ -63,7 +59,7 @@ addOccupation clss classroom
                     -- Pega os horários atuais para este 'day' no 'currentSchedule'
                     currHoursForDay = Map.findWithDefault [] day currentSchedule
                     -- Adiciona o novo 'hour' à lista 
-                    updatedHoursForDay = currHoursForDay ++ [hour]
+                    updatedHoursForDay = sort . nub $ currHoursForDay ++ [hour]
                     -- Insere a lista atualizada de volta no 'currentSchedule'
                     scheduleAfterThisSlot = Map.insert day updatedHoursForDay currentSchedule
                 in
