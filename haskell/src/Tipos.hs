@@ -11,7 +11,9 @@ classId :: Int,
 subject :: String,
 course :: String,
 professor :: String,
-schedule :: String,
+schedule :: [(Weekend, Int)],
+-- schedule (segunda, 1)
+-- scheduleSala [(segunda: 1, 2), (terça: 3)]
 quantity :: Int,
 requirements :: [Resource]
 } deriving (Show, Eq, Read)
@@ -30,24 +32,44 @@ allocClassId :: Int,
 allocClassroomId :: Int
 }
 
+-- | Retorna True se um tipo ScheduleMap contém um horário em um dia da semana.
 scheduleContains :: ScheduleMap -> Weekend -> Int -> Bool
 scheduleContains scheduleMap day hour = 
     case Map.lookup day scheduleMap of
         Just hours -> hour `elem` hours
         Nothing -> False
 
-verifyOccupation :: Classroom  -> Weekend -> Int -> Bool
-verifyOccupation classroom day hour = scheduleContains (roomSchedule classroom) day hour
+-- | Retorna True se um tipo ScheduleMap contém 1 ou mais par ordenado (dia da semana: horário).
+allScheduleContains :: ScheduleMap -> Class -> Bool
+allScheduleContains scheduleMap clss = 
+    all(\(day, hour) -> scheduleContains scheduleMap day hour) (schedule clss)
+
+verifyOccupation :: Classroom  -> Class -> Bool
+verifyOccupation classroom clss = 
+    allScheduleContains (roomSchedule classroom) schedule clss
 
 
-addOccupation :: Weekend -> Int -> Classroom -> Classroom
-addOccupation day hour classroom 
-    | hour < 1 || hour > 6 = classroom
-    | verifyOccupation classroom day hour = classroom
+addOccupation :: Class -> Classroom -> Classroom
+addOccupation clss classroom 
+    | verifyOccupation classroom clss = classroom
     | otherwise =
-        let 
-            currHours = Map.findWithDefault [] day (roomSchedule classroom)
-            updatedHours = currHours ++ [hour]
-            updatedSchedule = Map.insert day updatedHours (roomSchedule classroom)
-        in 
-            classroom { roomSchedule = updatedSchedule }
+         let
+            -- Esta é uma função auxiliar interna que faz o trabalho recursivo de adicionar os slots.
+            -- Ela itera sobre a lista de (Weekend, Int) da Class.
+            addSlotsToSchedule :: [(Weekend, Int)] -> ScheduleMap -> ScheduleMap
+            addSlotsToSchedule [] currentSchedule = currentSchedule -- Base case: lista de slots vazia
+            addSlotsToSchedule ((day, hour):restOfSchedule) currentSchedule =
+                let
+                    -- Pega os horários atuais para este 'day' no 'currentSchedule'
+                    currHoursForDay = Map.findWithDefault [] day currentSchedule
+                    -- Adiciona o novo 'hour' à lista e garante que é única e ordenada
+                    updatedHoursForDay = sort . nub $ currHoursForDay ++ [hour]
+                    -- Insere a lista atualizada de volta no 'currentSchedule'
+                    scheduleAfterThisSlot = Map.insert day updatedHoursForDay currentSchedule
+                in
+                    -- Chama recursivamente para o restante da lista de horários da turma,
+                    -- passando o ScheduleMap já atualizado.
+                    addSlotsToSchedule restOfSchedule scheduleAfterThisSlot
+        in
+            -- Chama a função auxiliar com os horários da turma e o ScheduleMap inicial da sala
+            classroom { roomSchedule = addSlotsToSchedule (schedule clss) (roomSchedule classroom) }
