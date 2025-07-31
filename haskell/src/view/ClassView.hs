@@ -1,7 +1,7 @@
 module View.ClassView () where
 
 import Tipos    
-import Repository.ClassRepository
+import Repository.ClassRepository (saveClass)
 import System.IO (hFlush, stdout)
 import Data.Char (toLower)
 import Data.List.Split (splitOn)
@@ -32,7 +32,7 @@ createClass = do
     hFlush stdout
     line <- getLine
     let recursos = map parseResource (splitOn " ," line)
-    let clss = Class {classId = 0 ,subject = disciplina, course = curso, professor = professor, schedule = horario, quantity = read qtdAlunos :: Int, requirements = recursos}
+    let clss = Class {classId = 0 ,subject = disciplina, course = curso, professor = professor, schedule = [(Monday, 5)], quantity = read qtdAlunos :: Int, requirements = recursos}
     saveClass clss
     putStrLn "Turma cadastrada com sucesso!"
 
