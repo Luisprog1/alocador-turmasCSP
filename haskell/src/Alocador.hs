@@ -1,4 +1,4 @@
-module Alocador where
+module Alocador (allocateClass) where
 
 import Tipos
 

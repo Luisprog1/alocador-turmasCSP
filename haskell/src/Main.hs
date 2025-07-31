@@ -1,10 +1,10 @@
 module Main (main) where
 
-import Tipos
-import Alocador
+import Tipos ( Classroom(..), Class(..), Resource(Laboratory, Projector) )
+import Alocador ( allocateClass )
 import View.ClassView
-import Repository.ClassRepository
-import Control.Monad (mapM_)
+import Repository.ClassRepository ( getClass )
+import Control.Monad ()
 
 classroom :: Classroom
 class1 :: Class

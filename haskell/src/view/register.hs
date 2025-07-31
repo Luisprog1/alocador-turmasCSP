@@ -1,4 +1,4 @@
-module View.Register where
+module View.Register () where
 import Repository.UserRepository
 import System.IO (hFlush, stdout)
  

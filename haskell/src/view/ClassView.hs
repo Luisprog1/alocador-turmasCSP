@@ -1,4 +1,4 @@
-module View.ClassView where
+module View.ClassView () where
 
 import Tipos    
 import Repository.ClassRepository
