@@ -1,2 +1,3 @@
 .vscode
-/haskell/.stack-work
+haskell/.stack-work
+haskell/.vscode
