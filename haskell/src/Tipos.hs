@@ -1,6 +1,6 @@
 module Tipos where
 
-data Resource = Projector | Laboratory | Acessibility | Other String deriving(Show, Eq)
+data Resource = Projector | Laboratory | Acessibility | Other String deriving(Show, Eq, Read)
 
 data Class = Class {  
 classId :: Int,
@@ -10,14 +10,14 @@ professor :: String,
 schedule :: String,
 size :: Int,
 requirements :: [Resource]
-} deriving (Show, Eq)
+} deriving (Show, Eq, Read)
 
 data Classroom = Classroom { 
 classroomId :: Int,
 capacity :: Int,
 block :: String,
 resources :: [Resource]
-} deriving (Show, Eq)
+} deriving (Show, Eq, Read)
 
 data Allocation = Allocation { 
 allocationId :: Int, 

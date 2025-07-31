@@ -2,6 +2,9 @@ module Main (main) where
 
 import Tipos
 import Alocador
+import View.ClassView
+import Repository.ClassRepository
+import Control.Monad (mapM_)
 
 classroom :: Classroom
 class1 :: Class
@@ -22,4 +25,7 @@ main = do
     putStrLn $ "Requisitos da turma: " ++ show (requirements class1)
     putStrLn $ "Recursos da sala: " ++ show (resources classroom)   
     putStrLn $ "Alocação possível: " ++ show (allocateClass class1 classroom)
+    clss <- getClass
+    mapM_ print clss
+
 --    let class2 = Class { classId = 2, subject = "Chemistry", course = "Science", professor = "Dr. Jones", schedule = "Tue 14-16", size = 35, requirements = [Acessibility] }
