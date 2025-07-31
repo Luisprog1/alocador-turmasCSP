@@ -1,4 +1,4 @@
-module Repository.UserRepository () where
+module Repository.UserRepository (saveUser, register_User, login_User) where
 
 saveUser :: Int -> String -> IO ()
 saveUser matricula pass = do

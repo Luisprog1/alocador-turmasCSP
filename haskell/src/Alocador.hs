@@ -7,7 +7,7 @@ checkResources requisitos recursos = all (\x -> elem x requisitos) recursos
 
 allocateClass :: Class -> Classroom -> Bool
 allocateClass clss classroom 
-    | checkResources (requirements clss) (resources classroom) && ((size clss) <= (capacity classroom)) = True
+    | checkResources (requirements clss) (resources classroom) && ((quantity clss) <= (capacity classroom)) = True
     | otherwise = False 
 
 createAllocation :: Class -> Classroom -> Allocation

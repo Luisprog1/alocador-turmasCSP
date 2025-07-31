@@ -1,5 +1,5 @@
 module View.Register () where
-import Repository.UserRepository
+import Repository.UserRepository (register_User, login_User)
 import System.IO (hFlush, stdout)
  
 register_screen :: IO ()
