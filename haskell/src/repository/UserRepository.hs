@@ -1,5 +1,6 @@
 module Repository.UserRepository where
 
+
 saveUser :: Int -> String -> IO ()
 saveUser matricula pass = do
     writeFile "src/data/user.txt" (show matricula ++ " " ++ pass)
