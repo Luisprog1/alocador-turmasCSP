@@ -2,9 +2,10 @@ module Main (main) where
 
 import Tipos ( Classroom(..), Class(..), Resource(Laboratory, Projector), Weekend(..), addOccupation )
 import Alocador ( allocateClass )
-import View.ClassView
-import Repository.ClassRepository ( getClass )
+import View.ClassView 
+import Repository.ClassRepository
 import Control.Monad ()
+import View.ProfessorView
 import Data.Map as Map
 
 classroom :: Classroom
@@ -35,6 +36,8 @@ main = do
     putStrLn $ "Horarios da sala: " ++ show (roomSchedule newClassr)    
     putStrLn $ "Alocação possível: " ++ show (allocateClass class1 classroom)
     clss <- getClass
-    mapM_ print clss
-
+    putStrLn "Carregando turmas..."
+    clss' <- welcome_screen clss
+    saveAllClasses clss'
+    putStrLn "Salvando turmas..."
 --    let class2 = Class { classId = 2, subject = "Chemistry", course = "Science", professor = "Dr. Jones", schedule = "Tue 14-16", size = 35, requirements = [Acessibility] }
