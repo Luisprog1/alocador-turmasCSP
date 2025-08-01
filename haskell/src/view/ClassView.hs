@@ -1,7 +1,7 @@
 module View.ClassView where
 
 import Tipos    
-import Repository.ClassRepository (saveClass)
+import Repository.ClassRepository 
 import System.IO (hFlush, stdout)
 import Data.List.Split (splitOn)
 
