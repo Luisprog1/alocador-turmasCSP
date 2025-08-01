@@ -1,4 +1,2 @@
-Class {classId = 0, subject = "Calculo", course = "Ci\234ncia da Computa\231\227o", professor = "Lu\237s", schedule = "2M34", size = 40, requirements = [Projector]}
-Class {classId = 0, subject = "Banco de Dados", course = "Ci\234ncia da Computa\231\227o", professor = "Eduardo", schedule = "2M12", size = 43, requirements = [Laboratory]}
-Class {classId = 0, subject = ".", course = ".", professor = ".", schedule = ".", size = 1, requirements = [Acessibility]}
-Class {classId = 0, subject = ".", course = ".", professor = ".", schedule = ".", size = 1, requirements = [Acessibility,Projector,Laboratory]}
+Class {classId = 0, subject = "Calculo", course = "Ci\234ncia da Computa\231\227o", professor = "Luis", schedule = "2M34", size = 40, requirements = [Projector]}
+Class {classId = 1, subject = "Banco de Dados", course = "Ci\234ncia da Computa\231\227o", professor = "Eduardo", schedule = "2M12", size = 43, requirements = [Projector,Laboratory]}
