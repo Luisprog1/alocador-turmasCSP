@@ -1,6 +1,7 @@
 module Main (main) where
 
-import Tipos ( Classroom(..), Class(..), Resource(Laboratory, Projector), Weekend(..), addOccupation )
+import Tipos
+import Schedule
 import Alocador ( allocateClass )
 import View.ClassView 
 import Repository.ClassRepository

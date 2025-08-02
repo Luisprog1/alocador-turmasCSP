@@ -1,6 +1,7 @@
 module Alocador (allocateClass) where
 
 import Tipos
+import Schedule
 
 checkResources :: Eq a => [a] -> [a] -> Bool
 checkResources requisitos recursos = all (\x -> elem x requisitos) recursos
