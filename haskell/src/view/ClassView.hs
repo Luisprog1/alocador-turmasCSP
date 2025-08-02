@@ -12,6 +12,7 @@ createClass clssData = do
     putStrLn "=================================="
     putStrLn "       Cadastro de Sala de Aula"
     putStrLn "=================================="
+    id <- return (genereteID clssData)
     putStrLn "Insira os dados da turma:"
     putStr "Disciplina: "
     hFlush stdout
@@ -32,8 +33,8 @@ createClass clssData = do
     hFlush stdout
     line <- getLine
     let recursos = map parseResource (splitOn ", " line)
-    let clss = Class {classId = 0 ,subject = disciplina, course = curso, professor = professor, schedule = [(Monday, 5)], quantity = read qtdAlunos :: Int, requirements = recursos}
+    let clss = Class {classId = id ,subject = disciplina, course = curso, professor = professor, schedule = [(Monday, 5)], quantity = read qtdAlunos :: Int, requirements = recursos}
     let updateClss = saveClass clssData clss
-    putStrLn "Turma cadastrada com sucesso!"
+    putStrLn ("Turma de id: " ++ show id ++ " cadastrada com sucesso!")
     -- Retorna a lista de turmas atualizada
     return updateClss

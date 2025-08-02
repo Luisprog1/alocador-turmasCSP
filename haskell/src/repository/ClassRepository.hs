@@ -36,3 +36,7 @@ parseResource str = case map toLower str of
   "laboratory"    -> Laboratory
   "acessibility"  -> Acessibility
   _ -> Other str
+
+-- Gera um ID único para uma nova turma. Ele pega o maior ID existente e adiciona 1.
+genereteID :: [Class] -> Int
+genereteID classes = if null classes then 1 else maximum (map classId classes) + 1
