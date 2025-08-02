@@ -1,7 +1,7 @@
 module Main (main) where
 
 import Tipos
-import Schedule
+import Utils.Schedule
 import Alocador ( allocateClass )
 import View.ClassView 
 import Repository.ClassRepository

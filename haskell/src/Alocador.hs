@@ -1,7 +1,7 @@
-module Alocador (allocateClass) where
-
+module Alocador where
+import Utils.Schedule 
 import Tipos
-import Schedule
+
 
 checkResources :: Eq a => [a] -> [a] -> Bool
 checkResources requisitos recursos = all (\x -> elem x requisitos) recursos
