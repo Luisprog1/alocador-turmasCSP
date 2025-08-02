@@ -36,3 +36,6 @@ parseResource str = case map toLower str of
   "laboratory"    -> Laboratory
   "acessibility"  -> Acessibility
   _ -> Other str
+
+genereteID :: [Class] -> Int
+genereteID classes = if null classes then 1 else maximum (map classId classes) + 1

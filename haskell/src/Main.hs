@@ -36,10 +36,11 @@ main = do
     putStrLn $ "Horarios da sala: " ++ show (roomSchedule newClassr)    
     putStrLn $ "Alocação possível: " ++ show (allocateClass class1 classroom)
     clss <- getClass
+    clss' <- createClass clss
     putStrLn "Carregando turmas..."
     -- A função welcome_screen recebe a lista de turmas e retorna a lista atualizada com as alterações feitas pelo usuário.
     -- Como não é possivel alterar a propria clss, é preciso criar uma nova variável clss' para receber o retorno da função (a lista atualizada).
-    clss' <- welcome_screen clss
+    clss'' <- welcome_screen clss'
     -- Ao final da execução sempre rodar a função saveAllClasses para salvar no arquivo as turmas atualizadas ou adicionadas. O mesmo deverá ser feito para as salas e as alocações quando prontas.
-    saveAllClasses clss'
+    saveAllClasses clss''
     putStrLn "Salvando turmas..."
