@@ -15,23 +15,21 @@ isAnyOccupation :: Classroom -> Class -> Bool
 isAnyOccupation classroom clss = 
     any (\(day, hour) -> scheduleContains (roomSchedule classroom) day hour) (schedule clss)
 
-
-addSlotsToSchedule :: [(Weekend, Int)] -> ScheduleMap -> ScheduleMap
-addSlotsToSchedule [] currentSchedule = currentSchedule -- Base case: lista de slots vazia
-addSlotsToSchedule ((day, hour):restOfSchedule) currentSchedule =
-    let
-        currHoursForDay = Map.findWithDefault [] day currentSchedule
-        updatedHoursForDay = sort . nub $ currHoursForDay ++ [hour]
-        scheduleAfterThisSlot = Map.insert day updatedHoursForDay currentSchedule
-    in
-        addSlotsToSchedule restOfSchedule scheduleAfterThisSlot
-
-
-addOccupationOnClassroom :: Class -> Classroom -> Classroom
-addOccupationOnClassroom clss classroom 
+addOccupation :: Class -> Classroom -> Classroom
+addOccupation clss classroom 
     | isAnyOccupation classroom clss = classroom
     | otherwise =
-        
+         let
+            addSlotsToSchedule :: [(Weekend, Int)] -> ScheduleMap -> ScheduleMap
+            addSlotsToSchedule [] currentSchedule = currentSchedule -- Base case: lista de slots vazia
+            addSlotsToSchedule ((day, hour):restOfSchedule) currentSchedule =
+                let
+                    currHoursForDay = Map.findWithDefault [] day currentSchedule
+                    updatedHoursForDay = sort . nub $ currHoursForDay ++ [hour]
+                    scheduleAfterThisSlot = Map.insert day updatedHoursForDay currentSchedule
+                in
+                    addSlotsToSchedule restOfSchedule scheduleAfterThisSlot
+        in
             classroom { roomSchedule = addSlotsToSchedule (schedule clss) (roomSchedule classroom) }
 
 -- | Passa a escolha da entrada para um dia do tipo Weekend.
