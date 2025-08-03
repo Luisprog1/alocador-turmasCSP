@@ -18,5 +18,5 @@ createAllocation clss classroom =
     Allocation { 
         allocationId = 1, 
         allocClassId = (classId clss),
-        allocClassroomId = (classroomId classroom) 
+        allocClassroomCode = (classroomCode classroom) 
     }

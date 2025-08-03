@@ -14,7 +14,7 @@ requirements :: [Resource]
 } deriving (Show, Eq, Read)
 
 data Classroom = Classroom { 
-classroomId :: Int,
+classroomCode :: String,
 capacity :: Int,
 block :: String,
 resources :: [Resource],
@@ -24,7 +24,7 @@ roomSchedule :: ScheduleMap
 data Allocation = Allocation { 
 allocationId :: Int, 
 allocClassId :: Int,
-allocClassroomId :: Int
+allocClassroomCode :: String
 }
 
 data Weekend = Monday | Tuesday | Wednesday | Thursday | Friday deriving (Show, Eq, Read, Ord)
