@@ -1,8 +1,10 @@
 module Repository.UserRepository where
+
 import View.ProfessorView (welcome_screen)
 import Repository.ClassRepository
 
--- Lê todos os usuários: tipo (0/1), matrícula e senha
+-- Lê todos os usuários do arquivo no formato (tipo, matrícula, senha)
+-- tipo: 0 = Administrador, 1 = Professor
 getUsers :: IO [(Int, Int, String)]
 getUsers = do
     contents <- readFile "src/data/user.txt"
@@ -13,19 +15,18 @@ getUsers = do
         in (read tipoStr, read matStr, senha)
       ) linhas
 
--- Salva todos os usuários no arquivo
+-- Sobrescreve o arquivo com a lista de usuários
 saveAllUsers :: [(Int, Int, String)] -> IO ()
 saveAllUsers users =
     writeFile "src/data/user.txt" $
         unlines (map (\(tipo, idU, senha) -> show tipo ++ " " ++ show idU ++ " " ++ senha) users)
 
--- Registra novo usuário, impedindo mais de um admin
+-- Registra novo usuário; impede mais de um administrador no sistema
 registerUser :: Int -> Int -> String -> String -> IO ()
 registerUser tipo matricula senha senhaConf =
     if senha == senhaConf
         then do
             users <- getUsers
-            -- Verifica se já existe um admin
             if tipo == 0 && any (\(t,_,_) -> t == 0) users
                 then putStrLn "Já existe um administrador cadastrado!"
                 else do
@@ -35,7 +36,7 @@ registerUser tipo matricula senha senhaConf =
         else
             putStrLn "Senhas não conferem!"
 
--- Login: retorna tipo de usuário ou erro
+-- Faz login: chama tela do professor ou do administrador conforme o tipo
 loginUser :: Int -> String -> IO ()
 loginUser matricula senha = do
     users <- getUsers
@@ -48,6 +49,8 @@ loginUser matricula senha = do
                     putStrLn "Carregando turmas..."
                     clss' <- welcome_screen clss
                     saveAllClasses clss'
-                    return ()
-                else putStrLn "TELA DE ADMINISTRADOR"
+                else do
+                    putStrLn "Carregando tela do administrador..."
+                    -- Aqui chamaria a tela do administrador
+                    putStrLn "TELA DE ADMINISTRADOR"
         _ -> putStrLn "Matrícula ou senha incorretos!"
