@@ -1,6 +1,6 @@
-module View.Register where
+module View.RegisterView where
 
-import Repository.UserRepository (register_User, login_User)
+import Repository.UserRepository (registerUser, loginUser)
 import System.IO (hFlush, stdout, hSetEcho, hSetBuffering, BufferMode(NoBuffering, LineBuffering), stdin)
 
 -- Função para ler senha ocultando os caracteres (mostra '*')
@@ -36,6 +36,11 @@ register_screen = do
     putStrLn "=================================="
     putStrLn "       Cadastro de Usuário"
     putStrLn "=================================="
+    putStrLn "Selecione o tipo de usuário:"
+    putStrLn "1 - Professor"
+    putStrLn "0 - Administrador"
+    tipoStr <- getLine
+    let tipo = read tipoStr :: Int
     putStrLn "Por favor, insira seus dados:"
     putStr "Matrícula: "
     hFlush stdout
@@ -44,7 +49,8 @@ register_screen = do
     senha <- lerSenha
     putStr "Confirmação de Senha: "
     senhaConf <- lerSenha
-    register_User (read matricula) senha senhaConf
+    registerUser tipo (read matricula) senha senhaConf
+
 
 -- Tela de login
 login_screen :: IO ()
@@ -59,4 +65,4 @@ login_screen = do
     matricula <- getLine
     putStr "Senha: "
     senha <- lerSenha
-    login_User (read matricula) senha
+    loginUser (read matricula) senha
