@@ -33,6 +33,8 @@ registerUser tipo matricula senha senhaConf =
                     let newUsers = users ++ [(tipo, matricula, senha)]
                     saveAllUsers newUsers
                     putStrLn "Usuário registrado com sucesso!"
+                    -- Após registrar, já efetua login automático
+                    loginUser matricula senha
         else
             putStrLn "Senhas não conferem!"
 

@@ -7,7 +7,8 @@ import Repository.ClassRepository
 import Control.Monad ()
 import View.ProfessorView
 import Data.Map as Map
-import View.RegisterView (register_screen, login_screen) 
+import View.RegisterView (register_screen, login_screen)
+import View.UI (drawHeader)
 
 classroom :: Classroom
 class1 :: Class
@@ -45,6 +46,7 @@ main = do
     -- -- Ao final da execução sempre rodar a função saveAllClasses para salvar no arquivo as turmas atualizadas ou adicionadas. O mesmo deverá ser feito para as salas e as alocações quando prontas.
     -- saveAllClasses clss''
     -- putStrLn "Salvando turmas..."
+    drawHeader "BEM-VINDO AO SISTEMA"
     putStrLn "1 - Register"
     putStrLn "2 - Login"
     option <- getLine
