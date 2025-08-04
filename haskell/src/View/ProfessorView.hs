@@ -9,11 +9,11 @@ import Repository.ClassRepository
 import View.UI (drawHeader)
 
 -- | A função recebe a lista de turmas e, caso haja alterações, retorna a lista atualizada.
-welcome_screen :: [Class] -> IO [Class]
-welcome_screen clss = do
+welcome_screen :: [Class] -> Int -> IO [Class]
+welcome_screen clss idProfessor = do
     drawHeader "PROFESSOR"
     putStrLn "Por favor, escolha uma opção:"
-    putStrLn "1. Vizualizar Alocações de um Professor"
+    putStrLn "1. Visualizar Alocações de um Professor"
     putStrLn "2. Alterar requisitos da turma"
     putStrLn "3. Sair e salvar"
     putStr "Opção: "
@@ -22,30 +22,27 @@ welcome_screen clss = do
     -- | Para qualquer caso, a função recebe a lista que será manipulada e retorna ou um IO (se não houver alterações) ou um IO [Class] (se houver alterações).
     case opcao of
         "1" -> do
-            view_allocations clss
+            view_allocations clss idProfessor
             putStrLn "Pressione Enter para continuar..."
             _ <- getLine
-            welcome_screen clss 
+            welcome_screen clss idProfessor
         "2" -> do
             clss' <- change_requirements clss
-            welcome_screen clss'
+            welcome_screen clss' idProfessor
         "3" -> return clss
         _   -> do
             putStrLn "Opção inválida. Tente novamente."
-            welcome_screen clss
+            welcome_screen clss idProfessor
 
 -- | Vê as turmas de um professor.
-view_allocations :: [Class] -> IO ()
-view_allocations clss = do
-    putStrLn "Informe o nome do professor:"
-    hFlush stdout
-    nomeProfessor <- getLine
-    putStrLn "Vizualizando suas Alocações..."
-    let turmas = filter (\c -> map toLower (professor c) == map toLower nomeProfessor) clss
+view_allocations :: [Class] -> Int -> IO ()
+view_allocations clss id = do
+    putStrLn "Visualizando suas Alocações..."
+    let turmas = filter (\c -> id == professorId c) clss
     if null turmas
-        then putStrLn $ "Nenhuma turma encontrada para o professor " ++ nomeProfessor ++ "."
+        then putStrLn $ "Nenhuma turma encontrada para o professor de matrícula " ++ show id ++ "."
         else do
-            putStrLn $ "Turmas do professor " ++ nomeProfessor ++ ":"
+            putStrLn $ "Turmas do professor " ++ show id ++ ":"
             mapM_ print turmas -- | Aqui você deve implementar a lógica para buscar as alocações do professor
 
 -- | Função para alterar os requisitos de uma turma. Ela recebe a lista de turmas e retorna a lista atualizada com os requisitos alterados.
