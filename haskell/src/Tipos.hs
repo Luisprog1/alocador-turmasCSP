@@ -25,7 +25,7 @@ data Allocation = Allocation {
 allocationId :: Int, 
 allocClassId :: Int,
 allocClassroomCode :: String
-}
+}deriving (Show, Eq, Read)
 
 data Weekend = Monday | Tuesday | Wednesday | Thursday | Friday deriving (Show, Eq, Read, Ord)
 type ScheduleMap = Map.Map Weekend [Int]

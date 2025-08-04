@@ -4,7 +4,8 @@ import Tipos
 import Utils.Schedule
 import Utils.Alocate
 import View.ClassView 
-import Repository.ClassRepository
+import Repository.ClassRepository -- getClass
+import Repository.ClassroomRepository-- getClassrooms
 import View.ClassroomView
 import Repository.ClassroomRepository
 import Control.Monad ()
@@ -30,6 +31,8 @@ getclassroomCode (Classroom {classroomCode = code}) = code
 getclassSubject :: Class -> String
 getclassSubject (Class {subject = materia}) = materia
 
+type AllocationSolution = Maybe [Allocation]
+
 main :: IO ()
 main = do
     -- | let newClassr = addOccupation class1 classroom
@@ -49,11 +52,21 @@ main = do
     -- | -- | Ao final da execução sempre rodar a função saveAllClasses para salvar no arquivo as turmas atualizadas ou adicionadas. O mesmo deverá ser feito para as salas e as alocações quando prontas.
     -- | saveAllClasses clss''
     -- | putStrLn "Salvando turmas..."
-    drawHeader "BEM-VINDO AO SISTEMA"
-    putStrLn "1 - Register"
-    putStrLn "2 - Login"
-    option <- getLine
-    case option of
-        "1" -> register_screen
-        "2" -> login_screen
-        _   -> putStrLn "Invalid option"
+    --drawHeader "BEM-VINDO AO SISTEMA"
+    --putStrLn "1 - Register"
+    --putStrLn "2 - Login"
+    --option <- getLine
+    --case option of
+        --"1" -> register_screen
+        --"2" -> login_screen
+        --_   -> putStrLn "Invalid option"
+    clss <- getClass
+    classrooms <- getClassroom
+    mapM print clss
+    mapM print classrooms
+    let maybeAllocations = backtrackAllocate clss classrooms
+    case maybeAllocations of
+        Just allocations -> do
+            mapM_ print allocations
+        Nothing -> do
+            putStrLn "Nenhuma Solução Encontrada"
