@@ -1,16 +1,19 @@
 module Main (main) where
 
-import Tipos ( Classroom(..), Class(..), Resource(Laboratory, Projector), Weekend(..), addOccupation )
+import Tipos
+import Utils.Schedule
 import Alocador ( allocateClass )
 import View.ClassView 
 import Repository.ClassRepository
+import View.ClassroomView
+import Repository.ClassroomRepository
 import Control.Monad ()
 import View.ProfessorView
 import Data.Map as Map
 
 classroom :: Classroom
 class1 :: Class
-classroom = Classroom { classroomId = 1, capacity = 30, block = "Block A", resources = [Projector, Laboratory],
+classroom = Classroom { classroomCode = "CD105", capacity = 30, block = "Block C", resources = [Projector, Laboratory],
 roomSchedule = Map.fromList
     [ (Monday, [1, 2, 3, 4])
     , (Tuesday,   [1, 2, 3, 4])
@@ -19,8 +22,8 @@ roomSchedule = Map.fromList
 
 class1 = Class { classId = 1, subject = "Physics", course ="Engineering", professor = "Dr. Smith", schedule = [(Monday, 6), (Monday, 5)], quantity = 25, requirements = [Projector, Laboratory]}
 
-getclassroomId :: Classroom -> String
-getclassroomId (Classroom {block = bloco}) = bloco
+getclassroomCode :: Classroom -> String
+getclassroomCode (Classroom {classroomCode = code}) = code
 
 getclassSubject :: Class -> String
 getclassSubject (Class {subject = materia}) = materia
@@ -29,12 +32,16 @@ main :: IO ()
 main = do
     let newClassr = addOccupation class1 classroom
     putStrLn "Alocador de Turmas e Salas"
-    putStrLn $ "Id da turma " ++ getclassroomId classroom
+    putStrLn $ "Nome da sala: " ++ getclassroomCode classroom
     putStrLn $ "Matéria da turma: " ++ getclassSubject class1
     putStrLn $ "Requisitos da turma: " ++ show (requirements class1)
     putStrLn $ "Recursos da sala: " ++ show (resources classroom)  
     putStrLn $ "Horarios da sala: " ++ show (roomSchedule newClassr)    
     putStrLn $ "Alocação possível: " ++ show (allocateClass class1 classroom)
+    classrooms <- getClassroom
+    updateClassrooms <- createClassRoom classrooms
+    saveAllClassrooms updateClassrooms
+    putStrLn "Salas atualizadas"
     clss <- getClass
     clss' <- createClass clss
     putStrLn "Carregando turmas..."
