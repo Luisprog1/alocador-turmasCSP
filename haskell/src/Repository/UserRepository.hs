@@ -2,6 +2,7 @@ module Repository.UserRepository where
 
 import View.ProfessorView (welcome_screen)
 import Repository.ClassRepository
+import View.AdminView (adminMenu)
 
 -- | Lê todos os usuários do arquivo no formato (tipo, matrícula, senha)
 -- | tipo: 0 = Administrador, 1 = Professor
@@ -44,15 +45,15 @@ loginUser matricula senha = do
     users <- getUsers
     let encontrado = filter (\(_, mat, pass) -> mat == matricula && pass == senha) users
     case encontrado of
-        [(tipo, _, _)] ->
+        [(tipo, _, _)] -> do
+            clss <- getClass
             if tipo == 1
                 then do
-                    clss <- getClass
                     putStrLn "Carregando turmas..."
                     clss' <- welcome_screen clss
                     saveAllClasses clss'
                 else do
                     putStrLn "Carregando tela do administrador..."
-                    -- | Aqui chamaria a tela do administrador
-                    putStrLn "TELA DE ADMINISTRADOR"
+                    clss' <- adminMenu clss
+                    saveAllClasses clss'
         _ -> putStrLn "Matrícula ou senha incorretos!"
