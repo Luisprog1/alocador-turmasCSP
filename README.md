@@ -1,4 +1,4 @@
-# Alocador de Professores
+# Alocador de Turmas
 
 ![Status](https://img.shields.io/badge/status-em%20desenvolvimento-blue) ![License](https://img.shields.io/badge/license-MIT-green)
 
@@ -17,10 +17,8 @@
 
 ## Descrição
 
-O **Alocador de Professores** é um sistema para **alocação automatizada de turmas em salas**.  
+O **Alocador de Turmas** é um sistema para **alocação automatizada de turmas em salas**.  
 Cada turma é representada por um professor, e o sistema garante que **restrições de horário, capacidade e requisitos** sejam respeitadas, oferecendo **ajustes manuais** e visualizações organizadas para administradores e professores.
-
-> *Nota*: O nome “Alocador de Professores” se refere ao fato de cada turma ser identificada pelo professor responsável.
 
 ---
 
