@@ -52,21 +52,25 @@ main = do
     -- | -- | Ao final da execução sempre rodar a função saveAllClasses para salvar no arquivo as turmas atualizadas ou adicionadas. O mesmo deverá ser feito para as salas e as alocações quando prontas.
     -- | saveAllClasses clss''
     -- | putStrLn "Salvando turmas..."
-    --drawHeader "BEM-VINDO AO SISTEMA"
-    --putStrLn "1 - Register"
-    --putStrLn "2 - Login"
-    --option <- getLine
-    --case option of
-        --"1" -> register_screen
-        --"2" -> login_screen
-        --_   -> putStrLn "Invalid option"
-    clss <- getClass
-    classrooms <- getClassroom
-    mapM print clss
-    mapM print classrooms
-    let maybeAllocations = backtrackAllocate clss classrooms
-    case maybeAllocations of
-        Just allocations -> do
-            mapM_ print allocations
-        Nothing -> do
-            putStrLn "Nenhuma Solução Encontrada"
+    drawHeader "BEM-VINDO AO SISTEMA"
+    putStrLn "1 - Register"
+    putStrLn "2 - Login"
+    option <- getLine
+    case option of
+        "1" -> register_screen
+        "2" -> login_screen
+        _   -> putStrLn "Invalid option"
+    --clss <- getClass
+    --classrooms <- getClassroom
+    --mapM print clss
+    --mapM print classrooms
+    --let emptyRooms = resetClassrooms classrooms
+    --let (allocationResult, finalId, newClassrooms) = backtrackAllocate 1 clss emptyRooms
+    --saveAllClassrooms newClassrooms
+    --case allocationResult of
+        --Right allocations -> do
+            --mapM_ print allocations
+                --saveAllAllocations allocations -- Salva as alocações em um arquivo COMENTÁRIO
+                --putStrLn $ "\nPróximo ID de alocação disponível: " ++ show finalId COMENTÁRIO
+        --Left conflictCls -> do
+            --putStrLn $ "Conflito encontrado com a turma: " ++ show (classId conflictCls)
