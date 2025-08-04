@@ -1,9 +1,12 @@
 module Main (main) where
 
-import Tipos ( Classroom(..), Class(..), Resource(Laboratory, Projector), Weekend(..), addOccupation )
+import Tipos
+import Utils.Schedule
 import Alocador ( allocateClass )
 import View.ClassView 
 import Repository.ClassRepository
+import View.ClassroomView
+import Repository.ClassroomRepository
 import Control.Monad ()
 import View.ProfessorView
 import Data.Map as Map
@@ -12,7 +15,7 @@ import View.UI (drawHeader)
 
 classroom :: Classroom
 class1 :: Class
-classroom = Classroom { classroomId = 1, capacity = 30, block = "Block A", resources = [Projector, Laboratory],
+classroom = Classroom { classroomCode = "CD105", capacity = 30, block = "Block C", resources = [Projector, Laboratory],
 roomSchedule = Map.fromList
     [ (Monday, [1, 2, 3, 4])
     , (Tuesday,   [1, 2, 3, 4])
@@ -21,8 +24,8 @@ roomSchedule = Map.fromList
 
 class1 = Class { classId = 1, subject = "Physics", course ="Engineering", professor = "Dr. Smith", schedule = [(Monday, 6), (Monday, 5)], quantity = 25, requirements = [Projector, Laboratory]}
 
-getclassroomId :: Classroom -> String
-getclassroomId (Classroom {block = bloco}) = bloco
+getclassroomCode :: Classroom -> String
+getclassroomCode (Classroom {classroomCode = code}) = code
 
 getclassSubject :: Class -> String
 getclassSubject (Class {subject = materia}) = materia

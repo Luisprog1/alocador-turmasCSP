@@ -1,6 +1,7 @@
-module Alocador (allocateClass) where
-
+module Alocador where
+import Utils.Schedule 
 import Tipos
+
 
 checkResources :: Eq a => [a] -> [a] -> Bool
 checkResources requisitos recursos = all (\x -> elem x requisitos) recursos
@@ -17,5 +18,5 @@ createAllocation clss classroom =
     Allocation { 
         allocationId = 1, 
         allocClassId = (classId clss),
-        allocClassroomId = (classroomId classroom) 
+        allocClassroomCode = (classroomCode classroom) 
     }

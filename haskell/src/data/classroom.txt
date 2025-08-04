@@ -1,0 +1,1 @@
+Classroom {classroomCode = "caa302", capacity = 90, block = "caa", resources = [Projector], roomSchedule = fromList []}

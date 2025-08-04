@@ -22,6 +22,8 @@ executable haskell
                        View.UI
                        Alocador 
                        Tipos
+                       Utils.Schedule
+                       
   default-language:    Haskell2010
   build-depends:       base >= 4.7 && < 5, split,
                        containers <= 0.7,

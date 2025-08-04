@@ -10,7 +10,7 @@ createClass :: [Class] -> IO [Class]
 createClass clssData = do
     putStr "\ESC[2J"
     putStrLn "=================================="
-    putStrLn "       Cadastro de Sala de Aula"
+    putStrLn "       Cadastro de Turmas"
     putStrLn "=================================="
     id <- return (genereteID clssData)
     putStrLn "Insira os dados da turma:"
