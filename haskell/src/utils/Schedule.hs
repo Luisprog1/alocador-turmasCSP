@@ -3,14 +3,14 @@ import qualified Data.Map as Map
 import Data.List (sort, nub)
 import Tipos 
 
--- | Retorna True se um tipo ScheduleMap contém um horário em um dia da semana.
+-- | | Retorna True se um tipo ScheduleMap contém um horário em um dia da semana.
 scheduleContains :: ScheduleMap -> Weekend -> Int -> Bool
 scheduleContains scheduleMap day hour = 
     case Map.lookup day scheduleMap of
         Just hours -> hour `elem` hours
         Nothing -> False
 
--- | Retorna True se um tipo ScheduleMap contem 1 ou mais par ordenado (dia da semana, horario).
+-- | | Retorna True se um tipo ScheduleMap contem 1 ou mais par ordenado (dia da semana, horario).
 isAnyOccupation :: Classroom -> Class -> Bool
 isAnyOccupation classroom clss = 
     any (\(day, hour) -> scheduleContains (roomSchedule classroom) day hour) (schedule clss)
@@ -21,7 +21,7 @@ addOccupation clss classroom
     | otherwise =
          let
             addSlotsToSchedule :: [(Weekend, Int)] -> ScheduleMap -> ScheduleMap
-            addSlotsToSchedule [] currentSchedule = currentSchedule -- Base case: lista de slots vazia
+            addSlotsToSchedule [] currentSchedule = currentSchedule -- | Base case: lista de slots vazia
             addSlotsToSchedule ((day, hour):restOfSchedule) currentSchedule =
                 let
                     currHoursForDay = Map.findWithDefault [] day currentSchedule
@@ -32,8 +32,8 @@ addOccupation clss classroom
         in
             classroom { roomSchedule = addSlotsToSchedule (schedule clss) (roomSchedule classroom) }
 
--- | Passa a escolha da entrada para um dia do tipo Weekend.
--- | Dica: coloquei números porque pode ser um menu de opcoes. 
+-- | | Passa a escolha da entrada para um dia do tipo Weekend.
+-- | | Dica: coloquei números porque pode ser um menu de opcoes. 
 parseSchedule :: String -> Weekend
 parseSchedule str = case str of
   "1" -> Monday
@@ -43,8 +43,8 @@ parseSchedule str = case str of
   "5" -> Friday
   _   -> error "Invalid day string"
 
--- | com base na entrada convertida do dia  e o horario da aula, cria uma tupla. !!
--- | Sugestão: adicionar essas horas na turma com a funcao addSlotToClass
+-- | | com base na entrada convertida do dia  e o horario da aula, cria uma tupla. !!
+-- | | Sugestão: adicionar essas horas na turma com a funcao addSlotToClass
 createHour :: Weekend -> Int -> (Weekend, Int)
 createHour day hour = (day, hour)
 

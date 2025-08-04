@@ -3,8 +3,8 @@ module Repository.UserRepository where
 import View.ProfessorView (welcome_screen)
 import Repository.ClassRepository
 
--- Lê todos os usuários do arquivo no formato (tipo, matrícula, senha)
--- tipo: 0 = Administrador, 1 = Professor
+-- | Lê todos os usuários do arquivo no formato (tipo, matrícula, senha)
+-- | tipo: 0 = Administrador, 1 = Professor
 getUsers :: IO [(Int, Int, String)]
 getUsers = do
     contents <- readFile "src/data/user.txt"
@@ -15,13 +15,13 @@ getUsers = do
         in (read tipoStr, read matStr, senha)
       ) linhas
 
--- Sobrescreve o arquivo com a lista de usuários
+-- | Sobrescreve o arquivo com a lista de usuários
 saveAllUsers :: [(Int, Int, String)] -> IO ()
 saveAllUsers users =
     writeFile "src/data/user.txt" $
         unlines (map (\(tipo, idU, senha) -> show tipo ++ " " ++ show idU ++ " " ++ senha) users)
 
--- Registra novo usuário; impede mais de um administrador no sistema
+-- | Registra novo usuário; impede mais de um administrador no sistema
 registerUser :: Int -> Int -> String -> String -> IO ()
 registerUser tipo matricula senha senhaConf =
     if senha == senhaConf
@@ -33,12 +33,12 @@ registerUser tipo matricula senha senhaConf =
                     let newUsers = users ++ [(tipo, matricula, senha)]
                     saveAllUsers newUsers
                     putStrLn "Usuário registrado com sucesso!"
-                    -- Após registrar, já efetua login automático
+                    -- | Após registrar, já efetua login automático
                     loginUser matricula senha
         else
             putStrLn "Senhas não conferem!"
 
--- Faz login: chama tela do professor ou do administrador conforme o tipo
+-- | Faz login: chama tela do professor ou do administrador conforme o tipo
 loginUser :: Int -> String -> IO ()
 loginUser matricula senha = do
     users <- getUsers
@@ -53,6 +53,6 @@ loginUser matricula senha = do
                     saveAllClasses clss'
                 else do
                     putStrLn "Carregando tela do administrador..."
-                    -- Aqui chamaria a tela do administrador
+                    -- | Aqui chamaria a tela do administrador
                     putStrLn "TELA DE ADMINISTRADOR"
         _ -> putStrLn "Matrícula ou senha incorretos!"

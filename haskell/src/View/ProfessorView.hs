@@ -8,7 +8,7 @@ import Data.List.Split (splitOn)
 import Repository.ClassRepository
 import View.UI (drawHeader)
 
--- A função recebe a lista de turmas e, caso haja alterações, retorna a lista atualizada.
+-- | A função recebe a lista de turmas e, caso haja alterações, retorna a lista atualizada.
 welcome_screen :: [Class] -> IO [Class]
 welcome_screen clss = do
     drawHeader "PROFESSOR"
@@ -19,7 +19,7 @@ welcome_screen clss = do
     putStr "Opção: "
     hFlush stdout
     opcao <- getLine
-    -- Para qualquer caso, a função recebe a lista que será manipulada e retorna ou um IO (se não houver alterações) ou um IO [Class] (se houver alterações).
+    -- | Para qualquer caso, a função recebe a lista que será manipulada e retorna ou um IO (se não houver alterações) ou um IO [Class] (se houver alterações).
     case opcao of
         "1" -> do
             view_allocations clss
@@ -34,7 +34,7 @@ welcome_screen clss = do
             putStrLn "Opção inválida. Tente novamente."
             welcome_screen clss
 
--- Vê as turmas de um professor.
+-- | Vê as turmas de um professor.
 view_allocations :: [Class] -> IO ()
 view_allocations clss = do
     putStrLn "Informe o nome do professor:"
@@ -46,9 +46,9 @@ view_allocations clss = do
         then putStrLn $ "Nenhuma turma encontrada para o professor " ++ nomeProfessor ++ "."
         else do
             putStrLn $ "Turmas do professor " ++ nomeProfessor ++ ":"
-            mapM_ print turmas -- Aqui você deve implementar a lógica para buscar as alocações do professor
+            mapM_ print turmas -- | Aqui você deve implementar a lógica para buscar as alocações do professor
 
--- Função para alterar os requisitos de uma turma. Ela recebe a lista de turmas e retorna a lista atualizada com os requisitos alterados.
+-- | Função para alterar os requisitos de uma turma. Ela recebe a lista de turmas e retorna a lista atualizada com os requisitos alterados.
 change_requirements :: [Class] -> IO [Class]
 change_requirements clss = do
     putStrLn "Informe o ID da turma que deseja alterar os requisitos:"

@@ -11,17 +11,17 @@ logo =
     "  ██║  ██║███████╗╚██████╔╝╚██████╔ ██║  ██║███████╝╚██████╔╝ ██║  ██║ \n" ++
     "  ╚═╝  ╚═╝╚══════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═════╝  ╚═════╝  ╚═╝  ╚═╝ "
 
--- Função para desenhar cabeçalho com logo e título
+-- | Função para desenhar cabeçalho com logo e título
 drawHeader :: String -> IO ()
 drawHeader title = do
     clearScreen
     setCursorPosition 0 0
-    -- Logo em amarelo
+    -- | Logo em amarelo
     setSGR [SetColor Foreground Vivid Yellow]
     putStrLn logo
     setSGR [Reset]
     putStrLn ""
-    -- Título da tela em ciano
+    -- | Título da tela em ciano
     setSGR [SetColor Foreground Vivid Cyan]
     putStrLn ("===============  " ++ title ++ "  ===============")
     setSGR [Reset]

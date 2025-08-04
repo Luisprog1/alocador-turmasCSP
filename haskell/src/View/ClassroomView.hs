@@ -8,7 +8,7 @@ import qualified Data.Map as Map
 import System.IO (hFlush, stdout)
 import Data.List.Split (splitOn)
 
--- Função para criar uma nova sala. Ele recebe a lista de salas manipulada durante a execução e retorna a lista atualizada com a nova sala.
+-- | Função para criar uma nova sala. Ele recebe a lista de salas manipulada durante a execução e retorna a lista atualizada com a nova sala.
 createClassRoom :: [Classroom] -> IO [Classroom] 
 createClassRoom clsroomData = do
     putStr "\ESC[2J"

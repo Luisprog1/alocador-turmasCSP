@@ -6,7 +6,7 @@ import Data.Maybe (mapMaybe)
 import System.IO (writeFile)
 import Data.List (intercalate, find)
 
--- Adiciona uma sala à lista de salas durante a execução do programa
+-- | Adiciona uma sala à lista de salas durante a execução do programa
 saveClassroom :: [Classroom] -> Classroom -> [Classroom]
 saveClassroom clssData newClassroom = clssData ++ [newClassroom]
     
@@ -19,10 +19,10 @@ getClassroomByCode :: [Classroom] -> String -> Maybe Classroom
 getClassroomByCode salas codigo =
     find (\sala -> classroomCode sala == codigo) salas
 
--- Lê as salas de um arquivo. Converte as salas do arquivo para que as salas possam ser manipuladas durante a execução do programa.
+-- | Lê as salas de um arquivo. Converte as salas do arquivo para que as salas possam ser manipuladas durante a execução do programa.
 getClassroom :: IO [Classroom]
 getClassroom = do
     contents <- readFile "src/data/classroom.txt"
     let linesOfText = lines contents
         salas = mapMaybe readMaybe linesOfText
-    length salas `seq` return salas -- necessario por causa do lazy evaluation, força a leitura
+    length salas `seq` return salas -- | necessario por causa do lazy evaluation, força a leitura

@@ -7,7 +7,7 @@ import System.IO (writeFile)
 import Data.List (intercalate)
 import Data.Char (toLower)
 
--- Adiciona uma turma à lista de turmas durante a execução do programa
+-- | Adiciona uma turma à lista de turmas durante a execução do programa
 saveClass :: [Class] -> Class -> [Class]
 saveClass clssData newClass = clssData ++ [newClass]
     
@@ -21,7 +21,7 @@ saveAllClasses :: [Class] -> IO ()
 saveAllClasses classes = do
     writeFile "src/data/class.txt" (intercalate "\n" (map show classes))
 
--- Lê as turmas de um arquivo. Converte as turmas do arquivo para que as turmas possam ser manipuladas durante a execução do programa.
+-- | Lê as turmas de um arquivo. Converte as turmas do arquivo para que as turmas possam ser manipuladas durante a execução do programa.
 getClass :: IO [Class]
 getClass = do
     contents <- readFile "src/data/class.txt"
@@ -29,8 +29,8 @@ getClass = do
         turmas = mapMaybe readMaybe linesOfText
     length turmas `seq` return turmas
 
--- Função auxiliar para converter uma string em um recurso. Funciona para a entrada do usuário quando ele digita os recursos (String) e precisa ser convertida para o tipo Resource.
--- Funciona para Salas e Turmas.
+-- | Função auxiliar para converter uma string em um recurso. Funciona para a entrada do usuário quando ele digita os recursos (String) e precisa ser convertida para o tipo Resource.
+-- | Funciona para Salas e Turmas.
 parseResource :: String -> Resource
 parseResource str = case map toLower str of
   "projector"     -> Projector
@@ -38,6 +38,6 @@ parseResource str = case map toLower str of
   "acessibility"  -> Acessibility
   _ -> Other str
 
--- Gera um ID único para uma nova turma. Ele pega o maior ID existente e adiciona 1.
+-- | Gera um ID único para uma nova turma. Ele pega o maior ID existente e adiciona 1.
 genereteID :: [Class] -> Int
 genereteID classes = if null classes then 1 else maximum (map classId classes) + 1

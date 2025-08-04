@@ -5,7 +5,7 @@ import Repository.ClassRepository
 import System.IO (hFlush, stdout)
 import Data.List.Split (splitOn)
 
--- Função para criar uma nova turma. Ele recebe a lista de turmas manipulada durante a execução e retorna a lista atualizada com a nova turma.
+-- | Função para criar uma nova turma. Ele recebe a lista de turmas manipulada durante a execução e retorna a lista atualizada com a nova turma.
 createClass :: [Class] -> IO [Class] 
 createClass clssData = do
     putStr "\ESC[2J"
@@ -36,5 +36,5 @@ createClass clssData = do
     let clss = Class {classId = id ,subject = disciplina, course = curso, professor = professor, schedule = [(Monday, 5)], quantity = read qtdAlunos :: Int, requirements = recursos}
     let updateClss = saveClass clssData clss
     putStrLn ("Turma de id: " ++ show id ++ " cadastrada com sucesso!")
-    -- Retorna a lista de turmas atualizada
+    -- | Retorna a lista de turmas atualizada
     return updateClss
