@@ -17,7 +17,9 @@ executable haskell
   other-modules:       Repository.ClassRepository
                        Repository.UserRepository
                        View.ClassView
-                       View.Register
+                       View.RegisterView
+                       View.ProfessorView
+                       View.UI
                        Alocador 
                        Tipos
                        Utils.Schedule
@@ -26,7 +28,8 @@ executable haskell
   build-depends:       base >= 4.7 && < 5, split,
                        containers <= 0.7,
                        mtl,
-                       text
+                       text,
+                       ansi-terminal
   ghc-options:         -Wall
                        -Wcompat
                        -Widentities

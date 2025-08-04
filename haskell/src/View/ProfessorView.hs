@@ -5,14 +5,13 @@ import System.IO (hFlush, stdout)
 import Data.Char (toLower)
 import Text.Read (readMaybe)
 import Data.List.Split (splitOn)
-import Repository.ClassRepository 
+import Repository.ClassRepository
+import View.UI (drawHeader)
 
 -- A função recebe a lista de turmas e, caso haja alterações, retorna a lista atualizada.
 welcome_screen :: [Class] -> IO [Class]
 welcome_screen clss = do
-    putStrLn "=================================="
-    putStrLn "       Bem-vindo ao Sistema"
-    putStrLn "=================================="
+    drawHeader "PROFESSOR"
     putStrLn "Por favor, escolha uma opção:"
     putStrLn "1. Vizualizar Alocações de um Professor"
     putStrLn "2. Alterar requisitos da turma"

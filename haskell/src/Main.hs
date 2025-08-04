@@ -10,6 +10,8 @@ import Repository.ClassroomRepository
 import Control.Monad ()
 import View.ProfessorView
 import Data.Map as Map
+import View.RegisterView (register_screen, login_screen)
+import View.UI (drawHeader)
 
 classroom :: Classroom
 class1 :: Class
@@ -30,24 +32,28 @@ getclassSubject (Class {subject = materia}) = materia
 
 main :: IO ()
 main = do
-    let newClassr = addOccupation class1 classroom
-    putStrLn "Alocador de Turmas e Salas"
-    putStrLn $ "Nome da sala: " ++ getclassroomCode classroom
-    putStrLn $ "Matéria da turma: " ++ getclassSubject class1
-    putStrLn $ "Requisitos da turma: " ++ show (requirements class1)
-    putStrLn $ "Recursos da sala: " ++ show (resources classroom)  
-    putStrLn $ "Horarios da sala: " ++ show (roomSchedule newClassr)    
-    putStrLn $ "Alocação possível: " ++ show (allocateClass class1 classroom)
-    classrooms <- getClassroom
-    updateClassrooms <- createClassRoom classrooms
-    saveAllClassrooms updateClassrooms
-    putStrLn "Salas atualizadas"
-    clss <- getClass
-    clss' <- createClass clss
-    putStrLn "Carregando turmas..."
-    -- A função welcome_screen recebe a lista de turmas e retorna a lista atualizada com as alterações feitas pelo usuário.
-    -- Como não é possivel alterar a propria clss, é preciso criar uma nova variável clss' para receber o retorno da função (a lista atualizada).
-    clss'' <- welcome_screen clss'
-    -- Ao final da execução sempre rodar a função saveAllClasses para salvar no arquivo as turmas atualizadas ou adicionadas. O mesmo deverá ser feito para as salas e as alocações quando prontas.
-    saveAllClasses clss''
-    putStrLn "Salvando turmas..."
+    -- let newClassr = addOccupation class1 classroom
+    -- putStrLn "Alocador de Turmas e Salas"
+    -- putStrLn $ "Id da turma " ++ getclassroomId classroom
+    -- putStrLn $ "Matéria da turma: " ++ getclassSubject class1
+    -- putStrLn $ "Requisitos da turma: " ++ show (requirements class1)
+    -- putStrLn $ "Recursos da sala: " ++ show (resources classroom)  
+    -- putStrLn $ "Horarios da sala: " ++ show (roomSchedule newClassr)    
+    -- putStrLn $ "Alocação possível: " ++ show (allocateClass class1 classroom)
+    -- clss <- getClass
+    -- clss' <- createClass clss
+    -- putStrLn "Carregando turmas..."
+    -- -- A função welcome_screen recebe a lista de turmas e retorna a lista atualizada com as alterações feitas pelo usuário.
+    -- -- Como não é possivel alterar a propria clss, é preciso criar uma nova variável clss' para receber o retorno da função (a lista atualizada).
+    -- clss'' <- welcome_screen clss'
+    -- -- Ao final da execução sempre rodar a função saveAllClasses para salvar no arquivo as turmas atualizadas ou adicionadas. O mesmo deverá ser feito para as salas e as alocações quando prontas.
+    -- saveAllClasses clss''
+    -- putStrLn "Salvando turmas..."
+    drawHeader "BEM-VINDO AO SISTEMA"
+    putStrLn "1 - Register"
+    putStrLn "2 - Login"
+    option <- getLine
+    case option of
+        "1" -> register_screen
+        "2" -> login_screen
+        _   -> putStrLn "Invalid option"
