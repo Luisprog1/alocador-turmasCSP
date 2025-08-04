@@ -26,7 +26,8 @@ getClass :: IO [Class]
 getClass = do
     contents <- readFile "src/data/class.txt"
     let linesOfText = lines contents
-    return $ mapMaybe readMaybe linesOfText
+        turmas = mapMaybe readMaybe linesOfText
+    length turmas `seq` return turmas
 
 -- Função auxiliar para converter uma string em um recurso. Funciona para a entrada do usuário quando ele digita os recursos (String) e precisa ser convertida para o tipo Resource.
 -- Funciona para Salas e Turmas.

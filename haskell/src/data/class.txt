@@ -1,4 +1,4 @@
 Class {classId = 0, subject = "Calculo", course = "Ciencia da Computacao", professor = "Luis", schedule = [(Monday,5)], quantity = 40, requirements = [Projector]}
 Class {classId = 1, subject = "Banco de Dados", course = "Ciencia da Computacao", professor = "Eduardo", schedule = [(Monday,5)], quantity = 43, requirements = [Projector,Laboratory]}
 Class {classId = 2, subject = "Programacao I", course = "Ciencia da Computacao", professor = "Clara", schedule = [(Monday,5)], quantity = 50, requirements = [Laboratory]}
-Class {classId = 3, subject = "teste", course = "testes", professor = "tst", schedule = [(Monday,5)], quantity = 10000, requirements = [Other "test"]}
+Class {classId = 3, subject = "teste", course = "testes", professor = "tst", schedule = [(Monday,5)], quantity = 10000, requirements = [Other "aaaaaaaaaaa"]}

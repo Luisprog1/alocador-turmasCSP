@@ -23,6 +23,8 @@ welcome_screen clss = do
     case opcao of
         "1" -> do
             view_allocations clss
+            putStrLn "Pressione Enter para continuar..."
+            _ <- getLine
             welcome_screen clss 
         "2" -> do
             clss' <- change_requirements clss
