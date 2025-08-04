@@ -20,7 +20,7 @@ executable haskell
                        View.RegisterView
                        View.ProfessorView
                        View.UI
-                       Alocador 
+                       Utils.Alocate 
                        Tipos
                        Utils.Schedule
                        

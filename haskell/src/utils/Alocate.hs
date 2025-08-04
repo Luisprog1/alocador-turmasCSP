@@ -1,4 +1,4 @@
-module Alocador where
+module Utils.Alocate where
 import Utils.Schedule 
 import Tipos
 
