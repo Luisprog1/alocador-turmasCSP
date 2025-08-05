@@ -1,54 +1,81 @@
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# HLINT ignore "Use camelCase" #-}
 module View.AdminView where
 
 import Tipos
 import System.IO (hFlush, stdout)
 import Text.Read (readMaybe)
-import Data.List (intercalate, find)
 import Data.List.Split (splitOn)
 import View.UI (drawHeader)
 import View.ClassView (createClass)
 import View.ProfessorView (change_requirements)
 import Repository.ClassRepository (getClass, saveAllClasses, parseResource)
 import View.ClassroomView (createClassRoom)
-import Repository.ClassroomRepository(getClassroomByCode, saveAllClassrooms)
+import Repository.ClassroomRepository (getClassroomByCode, saveAllClassrooms)
+import Repository.UserRepository (User(..), getUsers, saveAllUsers)
 
-
+-- | Menu principal do administrador
 adminMenu :: [Class] -> [Classroom] -> IO ([Class], [Classroom])
 adminMenu classes classroom = do
     drawHeader "ADMINISTRADOR"
     putStrLn "Escolha uma opção"
     putStrLn "1. Gerar alocação"
-    putStrLn "2. Cadastrar Sala"
-    putStrLn "3. Cadastrar Turma"
-    putStrLn "4. Editar Sala"
-    putStrLn "5. Editar Turma"
-    putStrLn "6. Sair e salvar"
+    putStrLn "2. Cadastrar Professor"
+    putStrLn "3. Cadastrar Sala"
+    putStrLn "4. Cadastrar Turma"
+    putStrLn "5. Editar Sala"
+    putStrLn "6. Editar Turma"
+    putStrLn "7. Sair e salvar"
     putStr "Opção: "
     hFlush stdout
     opcao <- getLine
     case opcao of
-        --"1" -> do 
-        "2" -> do 
+        "2" -> do
+            createProfessor
+            adminMenu classes classroom
+        "3" -> do 
             classroom' <- createClassRoom classroom
             putStrLn "Sala cadastrada com sucesso!"
             adminMenu classes classroom'
-        "3" -> do 
+        "4" -> do 
             classes' <- createClass classes
             putStrLn "Turma cadastrada com sucesso!"
             adminMenu classes' classroom
-        "4" -> do 
+        "5" -> do 
             classroom' <- edit_classroom classroom
             adminMenu classes classroom'
-        "5" -> do
+        "6" -> do
             classes' <- change_requirements classes
             adminMenu classes' classroom
-        "6" -> do
+        "7" -> do
             saveAllClasses classes
             return (classes, classroom)
         _ -> do
             putStrLn "Opção inválida!"
             adminMenu classes classroom
 
+-- | Função para cadastrar professor (pré-cadastro sem senha)
+createProfessor :: IO ()
+createProfessor = do
+    putStrLn "Informe a matrícula do professor:"
+    matriculaStr <- getLine
+    putStrLn "Informe o nome do professor:"
+    nome <- getLine
+
+    let matricula = read matriculaStr :: Int
+
+    users <- getUsers
+    let existe = any (\u -> userMatricula u == matricula) users
+
+    if existe
+        then putStrLn "Já existe um professor com essa matrícula!"
+        else do
+            -- SALVA COM SENHA VAZIA
+            let novoProfessor = User 1 matricula nome ""
+            saveAllUsers (users ++ [novoProfessor])
+            putStrLn "Professor cadastrado com sucesso!"
+
+-- Restante do código (submenu de sala, edição etc.)
 sub_menu :: [Classroom] -> String -> IO [Classroom]
 sub_menu classroom idClassroom = do
     drawHeader "SUBMENU SALA"
