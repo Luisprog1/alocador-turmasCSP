@@ -24,7 +24,7 @@ executable haskell
                        View.ProfessorView
                        View.UI
                        Utils.Alocate 
-                       Utils.AddResources
+                       Utils.Resources
                        Tipos
                        Utils.Schedule
                        

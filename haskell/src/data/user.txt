@@ -1,7 +1,7 @@
 0;0;ADMIN;0000
 1;1001;Luis;437*d#E
 1;1002;Eduardo;@y9%8qP
-1;1003;Clara;M$r2!5Lp
+1;1003;Clara;teste
 1;1004;tst;8aB#6G?
 1;1005;Jennifer;xT4@%8z
 1;1006;Emmily;Q5w#&rP2

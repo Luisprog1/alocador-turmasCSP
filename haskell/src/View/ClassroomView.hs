@@ -1,5 +1,5 @@
 module View.ClassroomView where
-import Utils.AddResources
+import Utils.Resources
 import Tipos    
 import Repository.ClassroomRepository 
 import Repository.ClassRepository 
