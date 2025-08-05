@@ -1,13 +1,13 @@
 module Tipos where
 import qualified Data.Map as Map
 
-data Resource = Projector | Laboratory | Acessibility | Other String deriving(Show, Eq, Read)
+data Resource = Projector | Laboratory | Acessibility | Whiteboard deriving(Show, Eq, Read)
 
 data Class = Class {  
 classId :: Int,
 subject :: String,
 course :: String,
-professor :: String,
+professorId :: Int,
 schedule :: [(Weekend, Int)],
 quantity :: Int,
 requirements :: [Resource]

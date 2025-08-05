@@ -23,7 +23,7 @@ roomSchedule = Map.fromList
     , (Wednesday,  [5, 6])
     ]}
 
-class1 = Class { classId = 1, subject = "Physics", course ="Engineering", professor = "Dr. Smith", schedule = [(Monday, 6), (Monday, 5)], quantity = 25, requirements = [Projector, Laboratory]}
+class1 = Class { classId = 1, subject = "Physics", course ="Engineering", professorId = 1234, schedule = [(Monday, 6), (Monday, 5)], quantity = 25, requirements = [Projector, Laboratory]}
 
 getclassroomCode :: Classroom -> String
 getclassroomCode (Classroom {classroomCode = code}) = code
@@ -46,9 +46,9 @@ main = do
     -- | clss <- getClass
     -- | clss' <- createClass clss
     -- | putStrLn "Carregando turmas..."
-    -- | -- | A função welcome_screen recebe a lista de turmas e retorna a lista atualizada com as alterações feitas pelo usuário.
+    -- | -- | A função professorMenu recebe a lista de turmas e retorna a lista atualizada com as alterações feitas pelo usuário.
     -- | -- | Como não é possivel alterar a propria clss, é preciso criar uma nova variável clss' para receber o retorno da função (a lista atualizada).
-    -- | clss'' <- welcome_screen clss'
+    -- | clss'' <- professorMenu clss'
     -- | -- | Ao final da execução sempre rodar a função saveAllClasses para salvar no arquivo as turmas atualizadas ou adicionadas. O mesmo deverá ser feito para as salas e as alocações quando prontas.
     -- | saveAllClasses clss''
     -- | putStrLn "Salvando turmas..."

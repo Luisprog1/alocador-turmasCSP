@@ -1,6 +1,7 @@
 module View.ProfessorView where
 
 import Tipos
+import Utils.AddResources
 import System.IO (hFlush, stdout)
 import Data.Char (toLower)
 import Text.Read (readMaybe)
@@ -9,11 +10,11 @@ import Repository.ClassRepository
 import View.UI (drawHeader)
 
 -- | A função recebe a lista de turmas e, caso haja alterações, retorna a lista atualizada.
-welcome_screen :: [Class] -> Int -> IO [Class]
-welcome_screen clss idProfessor = do
+professorMenu :: [Class] -> Int -> IO [Class]
+professorMenu clss idProfessor = do
     drawHeader "PROFESSOR"
     putStrLn "Por favor, escolha uma opção:"
-    putStrLn "1. Visualizar Alocações de um Professor"
+    putStrLn "1. Visualizar turmas"
     putStrLn "2. Alterar requisitos da turma"
     putStrLn "3. Sair e salvar"
     putStr "Opção: "
@@ -25,19 +26,19 @@ welcome_screen clss idProfessor = do
             view_allocations clss idProfessor
             putStrLn "Pressione Enter para continuar..."
             _ <- getLine
-            welcome_screen clss idProfessor
+            professorMenu clss idProfessor
         "2" -> do
             clss' <- change_requirements clss
-            welcome_screen clss' idProfessor
+            professorMenu clss' idProfessor
         "3" -> return clss
         _   -> do
             putStrLn "Opção inválida. Tente novamente."
-            welcome_screen clss idProfessor
+            professorMenu clss idProfessor
 
--- | Vê as turmas de um professor.
+-- | Imprime as turmas do professor logado.
 view_allocations :: [Class] -> Int -> IO ()
 view_allocations clss id = do
-    putStrLn "Visualizando suas Alocações..."
+    putStrLn "Carregando suas turmas..."
     let turmas = filter (\c -> id == professorId c) clss
     if null turmas
         then putStrLn $ "Nenhuma turma encontrada para o professor de matrícula " ++ show id ++ "."
@@ -48,12 +49,12 @@ view_allocations clss id = do
 -- | Função para alterar os requisitos de uma turma. Ela recebe a lista de turmas e retorna a lista atualizada com os requisitos alterados.
 change_requirements :: [Class] -> IO [Class]
 change_requirements clss = do
-    putStrLn "Informe o ID da turma que deseja alterar os requisitos:"
+    putStrLn "Informe o ID da turma:"
     hFlush stdout
     turmaId <- getLine
     case readMaybe turmaId :: Maybe Int of
         Nothing -> do
-            putStrLn "ID inválido. Por favor, insira um número inteiro válido."
+            putStrLn "ID inválido. Insira um ID numérico válido."
             change_requirements clss
         Just turmaIdInt -> do
             putStrLn "Informe os novos requisitos (separados por vírgula, ex: Projector, Laboratory):"
