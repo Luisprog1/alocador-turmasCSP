@@ -73,7 +73,6 @@ createProfessor = do
             saveAllUsers (users ++ [novoProfessor])
             putStrLn "Professor cadastrado com sucesso!"
 
--- Restante do código (submenu de sala, edição etc.)
 sub_menu :: [Classroom] -> String -> IO [Classroom]
 sub_menu classroom idClassroom = do
     drawHeader "SUBMENU SALA"
