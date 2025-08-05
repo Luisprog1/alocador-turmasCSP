@@ -1,1 +1,6 @@
-Classroom {classroomCode = "caa302", capacity = 90, block = "caa", resources = [Projector], roomSchedule = fromList []}
+Classroom {classroomCode = "caa302", capacity = 90, block = "caa", resources = [Projector], roomSchedule = fromList [(Monday,[5,1,8,10]),(Tuesday,[8]),(Wednesday,[8,10])]}
+Classroom {classroomCode = "cp001", capacity = 90, block = "cp", resources = [Projector,Laboratory], roomSchedule = fromList [(Monday,[2,4]),(Tuesday,[10,14]),(Wednesday,[14]),(Thursday,[10,14])]}
+Classroom {classroomCode = "LAB01", capacity = 30, block = "Bloco A", resources = [Projector,Laboratory], roomSchedule = fromList []}
+Classroom {classroomCode = "SALA02", capacity = 50, block = "Bloco B", resources = [Projector,Acessibility], roomSchedule = fromList [(Monday,[8]),(Friday,[14])]}
+Classroom {classroomCode = "AUD01", capacity = 100, block = "Bloco C", resources = [Projector,Laboratory,Acessibility,Other "Whiteboard"], roomSchedule = fromList [(Wednesday,[10]),(Friday,[8])]}
+Classroom {classroomCode = "SALA03", capacity = 40, block = "Bloco A", resources = [Projector,Other "Smartboard"], roomSchedule = fromList [(Thursday,[8])]}

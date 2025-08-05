@@ -4,13 +4,14 @@ import Tipos
 import Utils.Schedule
 import Utils.Alocate
 import View.ClassView 
-import Repository.ClassRepository
+import Repository.ClassRepository -- getClass
+import Repository.ClassroomRepository-- getClassrooms
 import View.ClassroomView
 import Repository.ClassroomRepository
 import Control.Monad ()
 import View.ProfessorView
 import Data.Map as Map
-import View.RegisterView (register_screen, login_screen)
+import View.RegisterView (userScreen)
 import View.UI (drawHeader)
 
 classroom :: Classroom
@@ -29,6 +30,8 @@ getclassroomCode (Classroom {classroomCode = code}) = code
 
 getclassSubject :: Class -> String
 getclassSubject (Class {subject = materia}) = materia
+
+type AllocationSolution = Maybe [Allocation]
 
 main :: IO ()
 main = do
@@ -49,11 +52,18 @@ main = do
     -- | -- | Ao final da execução sempre rodar a função saveAllClasses para salvar no arquivo as turmas atualizadas ou adicionadas. O mesmo deverá ser feito para as salas e as alocações quando prontas.
     -- | saveAllClasses clss''
     -- | putStrLn "Salvando turmas..."
-    drawHeader "BEM-VINDO AO SISTEMA"
-    putStrLn "1 - Register"
-    putStrLn "2 - Login"
-    option <- getLine
-    case option of
-        "1" -> register_screen
-        "2" -> login_screen
-        _   -> putStrLn "Invalid option"
+    --clss <- getClass
+    --classrooms <- getClassroom
+    --mapM print clss
+    --mapM print classrooms
+    --let emptyRooms = resetClassrooms classrooms
+    --let (allocationResult, finalId, newClassrooms) = backtrackAllocate 1 clss emptyRooms
+    --saveAllClassrooms newClassrooms
+    --case allocationResult of
+        --Right allocations -> do
+            --mapM_ print allocations
+                --saveAllAllocations allocations -- |Salva as alocações em um arquivo COMENTÁRIO
+                --putStrLn $ "\nPróximo ID de alocação disponível: " ++ show finalId COMENTÁRIO
+        --Left conflictCls -> do
+            --putStrLn $ "Conflito encontrado com a turma: " ++ show (classId conflictCls)
+    userScreen

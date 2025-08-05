@@ -53,3 +53,13 @@ addSlotToClass clss (day, hour)
     | elem (day, hour) (schedule clss) = clss
     | otherwise = 
         clss {schedule = schedule clss ++ [(day,hour)]}
+
+-- | Limpa o agendamento de uma única sala de aula.
+clearRoomSchedule :: Classroom -> Classroom
+clearRoomSchedule room = room {
+    roomSchedule = Map.empty -- Usa um Map vazio para limpar o agendamento
+}
+
+-- | Aplica a limpeza do agendamento em todas as salas da lista.
+resetClassrooms :: [Classroom] -> [Classroom]
+resetClassrooms = map clearRoomSchedule

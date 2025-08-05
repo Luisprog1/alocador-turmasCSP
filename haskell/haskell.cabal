@@ -16,6 +16,9 @@ executable haskell
   main-is:             Main.hs
   other-modules:       Repository.ClassRepository
                        Repository.UserRepository
+                       Repository.ClassroomRepository
+                       View.AdminView
+                       View.ClassroomView
                        View.ClassView
                        View.RegisterView
                        View.ProfessorView
