@@ -4,7 +4,7 @@ import Tipos
 import Repository.ClassRepository 
 import System.IO (hFlush, stdout)
 import Data.List.Split (splitOn)
-import Utils.AddResources
+import Utils.Resources
 
 -- | Função para criar uma nova turma. Ele recebe a lista de turmas manipulada durante a execução e retorna a lista atualizada com a nova turma.
 createClass :: [Class] -> IO [Class] 

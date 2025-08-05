@@ -8,7 +8,7 @@ import View.UI (drawHeader)
 import Repository.ClassRepository (getClass, saveAllClasses)
 import Repository.ClassroomRepository (getClassroom, saveAllClassrooms)
 import View.AdminView (adminMenu)
-import View.ProfessorView (professorMenu)
+import View.ProfessorView 
 
 -- | Tipos de entrada possíveis para o sistema
 data InputType = Tipo | Matricula | Senha
@@ -142,7 +142,7 @@ loginScreen = do
                             putStrLn "Carregando tela do administrador..."
                             classes <- getClass
                             classrooms <- getClassroom
-                            (classes', classrooms') <- adminMenu classes classrooms
+                            (classes', classrooms') <- adminMenu 0 classes classrooms
                             saveAllClasses classes'
                             saveAllClassrooms classrooms'
                         Just 1 -> do

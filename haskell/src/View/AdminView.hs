@@ -4,7 +4,7 @@ import Tipos
 import System.IO (hFlush, stdout)
 import Text.Read (readMaybe)
 import Data.List.Split (splitOn)
-import Utils.AddResources
+import Utils.Resources
 import View.UI 
 import View.ClassView 
 import View.ProfessorView 
@@ -14,8 +14,8 @@ import Repository.ClassroomRepository
 import Repository.UserRepository
 
 -- | Menu principal do administrador
-adminMenu :: [Class] -> [Classroom] -> IO ([Class], [Classroom])
-adminMenu classes classroom = do
+adminMenu :: Int -> [Class] -> [Classroom] -> IO ([Class], [Classroom])
+adminMenu id classes classroom = do
     drawHeader "ADMINISTRADOR"
     putStrLn "Escolha uma opção"
     putStrLn "1. Gerar alocação"
@@ -31,27 +31,27 @@ adminMenu classes classroom = do
     case opcao of
         "2" -> do
             createProfessor
-            adminMenu classes classroom
+            adminMenu id classes classroom
         "3" -> do 
             classroom' <- createClassRoom classroom
             putStrLn "Sala cadastrada com sucesso!"
-            adminMenu classes classroom'
+            adminMenu id classes classroom'
         "4" -> do 
             classes' <- createClass classes
             putStrLn "Turma cadastrada com sucesso!"
-            adminMenu classes' classroom
+            adminMenu id classes' classroom
         "5" -> do 
             classroom' <- edit_classroom classroom
-            adminMenu classes classroom'
+            adminMenu id classes classroom'
         "6" -> do
-            classes' <- change_requirements classes
-            adminMenu classes' classroom
+            classes' <- change_requirements classes 0 id
+            adminMenu id classes' classroom
         "7" -> do
             saveAllClasses classes
             return (classes, classroom)
         _ -> do
             putStrLn "Opção inválida!"
-            adminMenu classes classroom
+            adminMenu id classes classroom
 
 -- | Função para cadastrar professor (pré-cadastro sem senha)
 createProfessor :: IO ()
