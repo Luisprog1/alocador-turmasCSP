@@ -4,13 +4,14 @@ import Tipos
 import System.IO (hFlush, stdout)
 import Text.Read (readMaybe)
 import Data.List.Split (splitOn)
-import View.UI (drawHeader)
-import View.ClassView (createClass)
-import View.ProfessorView (change_requirements)
-import Repository.ClassRepository (getClass, saveAllClasses, parseResource)
-import View.ClassroomView (createClassRoom)
-import Repository.ClassroomRepository (getClassroomByCode, saveAllClassrooms)
-import Repository.UserRepository (User(..), getUsers, saveAllUsers)
+import Utils.AddResources
+import View.UI 
+import View.ClassView 
+import View.ProfessorView 
+import Repository.ClassRepository 
+import View.ClassroomView 
+import Repository.ClassroomRepository 
+import Repository.UserRepository
 
 -- | Menu principal do administrador
 adminMenu :: [Class] -> [Classroom] -> IO ([Class], [Classroom])

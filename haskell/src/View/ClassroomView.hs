@@ -1,8 +1,8 @@
 module View.ClassroomView where
-
+import Utils.AddResources
 import Tipos    
 import Repository.ClassroomRepository 
-import Repository.ClassRepository (parseResource)
+import Repository.ClassRepository 
 import qualified Data.Map as Map
 
 import System.IO (hFlush, stdout)

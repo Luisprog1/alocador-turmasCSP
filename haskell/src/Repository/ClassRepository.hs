@@ -29,14 +29,7 @@ getClass = do
         turmas = mapMaybe readMaybe linesOfText
     length turmas `seq` return turmas
 
--- | Função auxiliar para converter uma string em um recurso. Funciona para a entrada do usuário quando ele digita os recursos (String) e precisa ser convertida para o tipo Resource.
--- | Funciona para Salas e Turmas.
-parseResource :: String -> Resource
-parseResource str = case map toLower str of
-  "projector"     -> Projector
-  "laboratory"    -> Laboratory
-  "acessibility"  -> Acessibility
-  _ -> Other str
+
 
 -- | Gera um ID único para uma nova turma. Ele pega o maior ID existente e adiciona 1.
 genereteID :: [Class] -> Int

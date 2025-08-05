@@ -4,6 +4,7 @@ import Tipos
 import Repository.ClassRepository 
 import System.IO (hFlush, stdout)
 import Data.List.Split (splitOn)
+import Utils.AddResources
 
 -- | Função para criar uma nova turma. Ele recebe a lista de turmas manipulada durante a execução e retorna a lista atualizada com a nova turma.
 createClass :: [Class] -> IO [Class] 
@@ -22,7 +23,7 @@ createClass clssData = do
     curso <- getLine
     putStr "Professor: "
     hFlush stdout
-    professor <- getLine
+    profId <- getLine
     putStr "Horário: "
     hFlush stdout
     horario <- getLine
@@ -33,7 +34,7 @@ createClass clssData = do
     hFlush stdout
     line <- getLine
     let recursos = map parseResource (splitOn ", " line)
-    let clss = Class {classId = id ,subject = disciplina, course = curso, professor = professor, schedule = [(Monday, 5)], quantity = read qtdAlunos :: Int, requirements = recursos}
+    let clss = Class {classId = id ,subject = disciplina, course = curso, professorId = read profId, schedule = [(Monday, 5)], quantity = read qtdAlunos :: Int, requirements = recursos}
     let updateClss = saveClass clssData clss
     putStrLn ("Turma de id: " ++ show id ++ " cadastrada com sucesso!")
     -- | Retorna a lista de turmas atualizada

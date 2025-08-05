@@ -8,7 +8,7 @@ import View.UI (drawHeader)
 import Repository.ClassRepository (getClass, saveAllClasses)
 import Repository.ClassroomRepository (getClassroom, saveAllClassrooms)
 import View.AdminView (adminMenu)
-import View.ProfessorView (welcome_screen)
+import View.ProfessorView (professorMenu)
 
 -- | Tipos de entrada possíveis para o sistema
 data InputType = Tipo | Matricula | Senha
@@ -148,7 +148,7 @@ loginScreen = do
                         Just 1 -> do
                             putStrLn "Carregando turmas..."
                             classes <- getClass
-                            classes' <- welcome_screen classes
+                            classes' <- professorMenu classes (read matricula)
                             saveAllClasses classes'
                         Nothing ->
                             retry "Matrícula ou senha incorretos!" userScreen
