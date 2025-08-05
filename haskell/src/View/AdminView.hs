@@ -10,9 +10,11 @@ import View.UI (drawHeader)
 import View.ClassView (createClass)
 import View.ProfessorView (change_requirements)
 import Repository.ClassRepository (getClass, saveAllClasses)
+import View.ClassroomView (createClassRoom)
 
-adminMenu :: [Class] -> IO [Class]
-adminMenu classes = do
+
+adminMenu :: [Class] -> [Classroom] -> IO ([Class], [Classroom])
+adminMenu classes classroom = do
     drawHeader "ADMINISTRADOR"
     putStrLn "Escolha uma opção"
     putStrLn "1. Gerar alocação"
@@ -26,11 +28,21 @@ adminMenu classes = do
     opcao <- getLine
     case opcao of
         --"1" -> do 
-        --"2" -> do
-        --"3" -> do 
+        "2" -> do 
+            classroom' <- createClassRoom classroom
+            putStrLn "Sala cadastrada com sucesso!"
+            adminMenu classes classroom'
+        "3" -> do 
+            classes' <- createClass classes
+            putStrLn "Turma cadastrada com sucesso!"
+            adminMenu classes' classroom
         --"4" -> do
-        --"5" -> do
-        --"6" -> 
+        "5" -> do
+            classes' <- change_requirements classes
+            adminMenu classes' classroom
+        "6" -> do
+            saveAllClasses classes
+            return (classes, classroom)
         _ -> do
             putStrLn "Opção inválida!"
-            adminMenu classes
+            adminMenu classes classroom

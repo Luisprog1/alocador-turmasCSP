@@ -3,6 +3,7 @@ module Repository.UserRepository where
 import View.ProfessorView (welcome_screen)
 import Repository.ClassRepository
 import View.AdminView (adminMenu)
+import Repository.ClassroomRepository (getClassroom, saveAllClassrooms)
 
 -- | Lê todos os usuários do arquivo no formato (tipo, matrícula, senha)
 -- | tipo: 0 = Administrador, 1 = Professor
@@ -47,6 +48,7 @@ loginUser matricula senha = do
     case encontrado of
         [(tipo, _, _)] -> do
             clss <- getClass
+            clssroom <- getClassroom
             if tipo == 1
                 then do
                     putStrLn "Carregando turmas..."
@@ -54,6 +56,7 @@ loginUser matricula senha = do
                     saveAllClasses clss'
                 else do
                     putStrLn "Carregando tela do administrador..."
-                    clss' <- adminMenu clss
+                    (clss', clssroom') <- adminMenu clss clssroom
                     saveAllClasses clss'
+                    saveAllClassrooms clssroom'
         _ -> putStrLn "Matrícula ou senha incorretos!"
