@@ -1,62 +1,114 @@
 module Repository.UserRepository where
 
-import View.ProfessorView (welcome_screen)
-import Repository.ClassRepository
-import View.AdminView (adminMenu)
-import Repository.ClassroomRepository (getClassroom, saveAllClassrooms)
+-- Módulo responsável apenas por dados: CRUD de usuários
 
--- | Lê todos os usuários do arquivo no formato (tipo, matrícula, senha)
--- | tipo: 0 = Administrador, 1 = Professor
-getUsers :: IO [(Int, Int, String)]
+-- | Representa um usuário do sistema
+data User = User
+  { userTipo      :: Int      -- 0 = admin, 1 = professor
+  , userMatricula :: Int
+  , userNome      :: String
+  , userSenha     :: String
+  } deriving (Show, Eq)
+
+-- -----------------------------
+-- Funções de persistência
+-- -----------------------------
+
+-- | Lê todos os usuários do arquivo 'user.txt'
+getUsers :: IO [User]
 getUsers = do
     contents <- readFile "src/data/user.txt"
-    length contents `seq` return ()
+    length contents `seq` return ()  -- força leitura
     let linhas = lines contents
-    return $ map (\linha ->
-        let [tipoStr, matStr, senha] = words linha
-        in (read tipoStr, read matStr, senha)
-      ) linhas
+    return $ map parseUser linhas
 
--- | Sobrescreve o arquivo com a lista de usuários
-saveAllUsers :: [(Int, Int, String)] -> IO ()
+-- | Converte uma linha do arquivo em um 'User'
+parseUser :: String -> User
+parseUser linha =
+    case words linha of
+        [tipoStr, matStr, nome, senha] ->
+            User (read tipoStr) (read matStr) nome senha
+        [tipoStr, matStr, nome] ->
+            User (read tipoStr) (read matStr) nome ""   -- senha vazia
+        _ -> error ("Linha mal formatada em user.txt: " ++ linha)
+
+-- | Salva todos os usuários sobrescrevendo o arquivo 'user.txt'
+saveAllUsers :: [User] -> IO ()
 saveAllUsers users =
     writeFile "src/data/user.txt" $
-        unlines (map (\(tipo, idU, senha) -> show tipo ++ " " ++ show idU ++ " " ++ senha) users)
+        unlines (map serializeUser users)
 
--- | Registra novo usuário; impede mais de um administrador no sistema
-registerUser :: Int -> Int -> String -> String -> IO ()
-registerUser tipo matricula senha senhaConf =
-    if senha == senhaConf
+-- | Converte um 'User' para string para salvar no arquivo
+serializeUser :: User -> String
+serializeUser (User tipo mat nome senha)
+    | null senha = show tipo ++ " " ++ show mat ++ " " ++ nome
+    | otherwise  = show tipo ++ " " ++ show mat ++ " " ++ nome ++ " " ++ senha
+
+-- -----------------------------
+-- Funções de negócio
+-- -----------------------------
+
+-- | Registra um novo usuário (Administrador ou Professor)
+-- Retorna True se sucesso, False se erro ou já existir admin
+registerUser :: Int -> Int -> String -> String -> String -> IO Bool
+registerUser tipo matricula _ senha senhaConf = do
+    users <- getUsers
+    if senha /= senhaConf
         then do
-            users <- getUsers
-            if tipo == 0 && any (\(t,_,_) -> t == 0) users
-                then putStrLn "Já existe um administrador cadastrado!"
-                else do
-                    let newUsers = users ++ [(tipo, matricula, senha)]
-                    saveAllUsers newUsers
-                    putStrLn "Usuário registrado com sucesso!"
-                    -- | Após registrar, já efetua login automático
-                    loginUser matricula senha
-        else
             putStrLn "Senhas não conferem!"
+            return False
+        else case tipo of
+            0 -> registerAdmin users matricula senha
+            1 -> registerProfessor users matricula senha
+            _ -> do
+                putStrLn "Tipo inválido!"
+                return False
 
--- | Faz login: chama tela do professor ou do administrador conforme o tipo
-loginUser :: Int -> String -> IO ()
+-- | Registra um administrador (se não existir outro)
+-- | Retorna True se cadastro bem-sucedido, False se admin já existe
+registerAdmin :: [User] -> Int -> String -> IO Bool
+registerAdmin users matricula senha =
+    if null users || not (any (\u -> userTipo u == 0) users)
+        then do
+            let newUsers = users ++ [User 0 matricula "ADMIN" senha]
+            saveAllUsers newUsers
+            putStrLn "Administrador registrado com sucesso!"
+            return True
+        else do
+            return False
+
+-- | Registra senha de professor existente (primeiro login)
+-- Retorna True se sucesso, False se matrícula não encontrada ou senha já cadastrada
+registerProfessor :: [User] -> Int -> String -> IO Bool
+registerProfessor users matricula senha =
+    case filter (\u -> userMatricula u == matricula) users of
+        [] -> do
+            putStrLn "Matrícula não encontrada! Peça para o administrador adicioná-lo à lista de professores."
+            return False
+        [professor]
+            | null (userSenha professor) -> do
+                let usersAtualizados = map
+                        (\u -> if userMatricula u == matricula
+                               then u { userSenha = senha }
+                               else u)
+                        users
+                saveAllUsers usersAtualizados
+                putStrLn $ "Senha cadastrada com sucesso para " ++ userNome professor ++ "!"
+                putStrLn "\nPressione Enter para continuar..."
+                _ <- getLine
+                return True
+            | otherwise -> do
+                putStrLn "Essa matrícula já possui senha. Faça login normalmente."
+                return False
+        _ -> do
+            putStrLn "Erro inesperado: múltiplos usuários encontrados."
+            return False
+
+-- | Faz login e retorna o tipo do usuário (0 = admin, 1 = professor)
+loginUser :: Int -> String -> IO (Maybe Int)
 loginUser matricula senha = do
     users <- getUsers
-    let encontrado = filter (\(_, mat, pass) -> mat == matricula && pass == senha) users
+    let encontrado = filter (\u -> userMatricula u == matricula && userSenha u == senha) users
     case encontrado of
-        [(tipo, _, _)] -> do
-            clss <- getClass
-            clssroom <- getClassroom
-            if tipo == 1
-                then do
-                    putStrLn "Carregando turmas..."
-                    clss' <- welcome_screen clss
-                    saveAllClasses clss'
-                else do
-                    putStrLn "Carregando tela do administrador..."
-                    (clss', clssroom') <- adminMenu clss clssroom
-                    saveAllClasses clss'
-                    saveAllClassrooms clssroom'
-        _ -> putStrLn "Matrícula ou senha incorretos!"
+        [User tipo _ _ _] -> return (Just tipo)
+        _                 -> return Nothing
