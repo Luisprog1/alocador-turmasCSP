@@ -1,5 +1,7 @@
 module Repository.UserRepository where
 
+import Data.List.Split (splitOn)
+
 -- Módulo responsável apenas por dados: CRUD de usuários
 
 -- | Representa um usuário do sistema
@@ -18,14 +20,16 @@ data User = User
 getUsers :: IO [User]
 getUsers = do
     contents <- readFile "src/data/user.txt"
-    length contents `seq` return ()  -- força leitura
-    let linhas = lines contents
-    return $ map parseUser linhas
+    if null contents
+        then return []  -- arquivo totalmente vazio
+        else do
+            let linhas = filter (not . null) (lines contents)  -- ignora linhas vazias
+            return $ map parseUser linhas
 
 -- | Converte uma linha do arquivo em um 'User'
 parseUser :: String -> User
 parseUser linha =
-    case words linha of
+    case splitOn ";" linha of
         [tipoStr, matStr, nome, senha] ->
             User (read tipoStr) (read matStr) nome senha
         [tipoStr, matStr, nome] ->
@@ -41,8 +45,8 @@ saveAllUsers users =
 -- | Converte um 'User' para string para salvar no arquivo
 serializeUser :: User -> String
 serializeUser (User tipo mat nome senha)
-    | null senha = show tipo ++ " " ++ show mat ++ " " ++ nome
-    | otherwise  = show tipo ++ " " ++ show mat ++ " " ++ nome ++ " " ++ senha
+    | null senha = show tipo ++ ";" ++ show mat ++ ";" ++ nome
+    | otherwise  = show tipo ++ ";" ++ show mat ++ ";" ++ nome ++ ";" ++ senha
 
 -- -----------------------------
 -- Funções de negócio
@@ -72,7 +76,6 @@ registerAdmin users matricula senha =
         then do
             let newUsers = users ++ [User 0 matricula "ADMIN" senha]
             saveAllUsers newUsers
-            putStrLn "Administrador registrado com sucesso!"
             return True
         else do
             return False

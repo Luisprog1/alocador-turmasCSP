@@ -151,7 +151,7 @@ loginScreen = do
                             classes' <- welcome_screen classes
                             saveAllClasses classes'
                         Nothing ->
-                            retry "Matrícula ou senha incorretos!" loginScreen
+                            retry "Matrícula ou senha incorretos!" userScreen
 
 -- | Lê senha mascarando caracteres
 readPassword :: IO String
