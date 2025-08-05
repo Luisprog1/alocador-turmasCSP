@@ -14,6 +14,7 @@ resourcesMenu = unlines [  "1. Projetor"
                          , "4. Quadro Branco"
                          ]
 
+
 -- | Função auxiliar para converter uma string em um recurso. Usada no menu de recursos (ou requisitos).
 parseResource :: String -> Resource
 parseResource op = case op of
@@ -23,15 +24,19 @@ parseResource op = case op of
   "4" -> Whiteboard
   _ -> error ("Recurso inexistente")
 
+-- =========================
+-- ADIÇÃO DE REQUISITOS DAS TURMAS
+-- =========================
+
 -- | Adiciona um recurso a uma turma com base no ID da turma.
-addResources :: Resource -> Int -> [Class] -> IO [Class]
-addResources resource classID clss = do
+addRequirements :: Resource -> Int -> [Class] -> IO [Class]
+addRequirements resource classID clss = do
     let clss' = map (\c -> if classId c == classID then c {requirements = nub (resource : requirements c)} else c) clss
     return clss'
 
 -- | Remove um recurso de uma turma com base no ID da turma.
-removeResources :: Resource -> Int -> [Class] -> IO [Class]
-removeResources resource classID clss= do
+removeRequirements :: Resource -> Int -> [Class] -> IO [Class]
+removeRequirements resource classID clss= do
     let clss' = map (\c -> if classId c == classID then c { requirements = filter (/= resource) (requirements c) } else c) clss
     return clss'
 
@@ -71,13 +76,76 @@ change_requirements classes typeId profId = do
                 putStrLn resourcesMenu
                 hFlush stdout
                 req <- getLine
-                clss' <- addResources (parseResource req) classId classes
+                clss' <- addRequirements (parseResource req) classId classes
                 return clss'
               "2" -> do
                 putStrLn resourcesMenu
                 req <- getLine
-                clss' <- removeResources (parseResource req) classId classes
+                clss' <- removeRequirements (parseResource req) classId classes
                 return clss'
               _ -> do
                 putStrLn "Opção inválida. Tente novamente."
                 change_requirements classes typeId profId
+                
+-- =========================
+-- ADIÇÃO DE RECURSOS DAS SALAS
+-- =========================
+
+-- | Adiciona um recurso a uma sala de aula com base no código da sala.
+addResources :: Resource -> String -> [Classroom] -> IO [Classroom]
+addResources resource classroomCode' clssrms = do
+    let clssrms' = map (\c -> if classroomCode c == classroomCode'
+                                then c { resources = nub (resource : resources c) }
+                                else c) clssrms
+    return clssrms'
+
+-- | Remove um recurso de uma sala de aula com base no código da sala.
+removeResources :: Resource -> String -> [Classroom] -> IO [Classroom]
+removeResources resource classroomCode' clssrms = do
+    let clssrms' = map (\c -> if classroomCode c == classroomCode'
+                                then c { resources = filter (/= resource) (resources c) }
+                                else c) clssrms
+    return clssrms'
+
+-- | Verifica se o código da sala de aula existe na lista.
+verifyIfClassroomExists :: [Classroom] -> String -> Maybe Bool
+verifyIfClassroomExists classrooms classroomCode' = do
+    _ <- find (\c -> classroomCode c == classroomCode') classrooms
+    return True
+
+-- | Adiciona ou remove recursos de uma sala de aula.
+change_resources :: [Classroom] -> IO [Classroom]
+change_resources classrooms = do
+    putStrLn "Informe o código da sala de aula:"
+    hFlush stdout
+    classroomCode' <- getLine
+    case verifyIfClassroomExists classrooms classroomCode' of
+      Nothing -> do
+        putStrLn "Sala de aula não encontrada. Tente novamente."
+        change_resources classrooms
+      Just True -> do
+        putStrLn "1. Adicionar recurso"
+        putStrLn "2. Remover recurso"
+        hFlush stdout
+        op <- getLine
+        case op of
+          "1" -> do
+            putStrLn resourcesMenu
+            hFlush stdout
+            req <- getLine
+            clssrms' <- addResources (parseResource req) classroomCode' classrooms
+            putStrLn "Recurso adicionado com sucesso!"
+            return clssrms'
+          "2" -> do
+            putStrLn resourcesMenu
+            hFlush stdout
+            req <- getLine
+            clssrms' <- removeResources (parseResource req) classroomCode' classrooms
+            putStrLn "Recurso removido com sucesso!"
+            return clssrms'
+          _ -> do
+            putStrLn "Opção inválida. Tente novamente."
+            change_resources classrooms
+      Just False -> do
+        putStrLn "Sala de aula não encontrada. Tente novamente."
+        change_resources classrooms
