@@ -5,14 +5,13 @@ import Repository.ClassRepository
 import System.IO (hFlush, stdout)
 import Data.List.Split (splitOn)
 import Utils.Resources
+import View.UI (drawHeader)
 
 -- | Função para criar uma nova turma. Ele recebe a lista de turmas manipulada durante a execução e retorna a lista atualizada com a nova turma.
 createClass :: [Class] -> IO [Class] 
 createClass clssData = do
     putStr "\ESC[2J"
-    putStrLn "=================================="
-    putStrLn "       Cadastro de Turmas"
-    putStrLn "=================================="
+    drawHeader "Cadastro de Turmas"
     id <- return (genereteID clssData)
     putStrLn "Insira os dados da turma:"
     putStr "Disciplina: "
