@@ -18,12 +18,12 @@ classroom :: Classroom
 class1 :: Class
 classroom = Classroom { classroomCode = "CD105", capacity = 30, block = "Block C", resources = [Projector, Laboratory],
 roomSchedule = Map.fromList
-    [ (Monday, [1, 2, 3, 4])
-    , (Tuesday,   [1, 2, 3, 4])
-    , (Wednesday,  [5, 6])
+    [ (Segunda, [1, 2, 3, 4])
+    , (Terça,   [1, 2, 3, 4])
+    , (Quarta,  [5, 6])
     ]}
 
-class1 = Class { classId = 1, subject = "Physics", course ="Engineering", professorId = 1234, schedule = [(Monday, 6), (Monday, 5)], quantity = 25, requirements = [Projector, Laboratory]}
+class1 = Class { classId = 1, subject = "Physics", course ="Engineering", professorId = 1234, schedule = [(Segunda, 6), (Segunda, 5)], quantity = 25, requirements = [Projector, Laboratory]}
 
 getclassroomCode :: Classroom -> String
 getclassroomCode (Classroom {classroomCode = code}) = code
