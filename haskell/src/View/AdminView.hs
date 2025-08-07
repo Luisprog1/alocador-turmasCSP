@@ -12,6 +12,7 @@ import Repository.ClassRepository
 import View.ClassroomView 
 import Repository.ClassroomRepository 
 import Repository.UserRepository
+import System.Console.ANSI
 
 -- | Menu principal do administrador
 adminMenu :: Int -> [Class] -> [Classroom] -> IO ([Class], [Classroom])
@@ -74,8 +75,8 @@ createProfessor = do
             saveAllUsers (users ++ [novoProfessor])
             putStrLn "Professor cadastrado com sucesso!"
 
-sub_menu :: [Classroom] -> String -> IO [Classroom]
-sub_menu classroom idClassroom = do
+sub_menu_classroom :: [Classroom] -> String -> IO [Classroom]
+sub_menu_classroom classroom idClassroom = do
     drawHeader "SUBMENU SALA"
     putStrLn "1. Editar os recursos da sala"
     putStrLn "2. Editar a capacidade da sala"
@@ -84,31 +85,27 @@ sub_menu classroom idClassroom = do
     opcao <- getLine
     case opcao of
         "1" -> do
-            putStrLn "Informe os novos requisitos (separados por vírgula, ex: Projector, Laboratory):"
-            hFlush stdout
-            recursos <- getLine
-            let novosRecursos = map parseResource (splitOn ", " recursos)
-            putStrLn "Alterando requisitos da sala..."
-            let classroom' = map (\c -> if classroomCode c == idClassroom then c { resources = novosRecursos } else c) classroom
-            putStrLn "Requisitos da turma alterados com sucesso na memória."
-            sub_menu classroom' idClassroom 
+            updatedclassroom <- change_resources classroom idClassroom
+            sub_menu_classroom updatedclassroom idClassroom
         "2" -> do
+            setSGR [SetColor Foreground Dull Blue]
             putStrLn "Informa a nova capacidade da sala:"
+            setSGR [Reset]
             hFlush stdout
             cap <- getLine
             case readMaybe cap :: Maybe Int of
                 Nothing -> do 
                     putStrLn "ID inválido. Por favor, insira um número inteiro válido."
-                    sub_menu classroom idClassroom
+                    sub_menu_classroom classroom idClassroom
                 Just cap -> do
                     let classroom' = map (\c -> if classroomCode c == idClassroom then c { capacity = cap } else c) classroom
-                    sub_menu classroom' idClassroom
+                    sub_menu_classroom classroom' idClassroom
         "3" -> do
             saveAllClassrooms (classroom)
             return classroom
         _  -> do
             putStrLn "Opção inválida!"
-            sub_menu classroom idClassroom 
+            sub_menu_classroom classroom idClassroom
 
 
 edit_classroom :: [Classroom] -> IO[Classroom]
@@ -121,6 +118,6 @@ edit_classroom classroom = do
             putStrLn "Código errado. Por favor, insira um número inteiro válido."
             edit_classroom classroom
         Just idClassroomInt -> do
-            updatedClassroom <- sub_menu classroom idClassroom
+            updatedClassroom <- sub_menu_classroom classroom idClassroom
             return updatedClassroom
             
