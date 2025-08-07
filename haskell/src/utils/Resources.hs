@@ -4,6 +4,7 @@ import Data.Char (toLower)
 import Data.List (nub, find)
 import System.IO (hFlush, stdout)
 import Text.Read (readMaybe)
+import View.UI (drawHeader)
 
 
 
@@ -67,8 +68,9 @@ change_requirements classes typeId profId = do
             putStrLn "ID inválido. Por favor, insira um número inteiro válido."
             change_requirements classes typeId profId
           Just classId -> do
-            putStrLn "1. Adicionar"
-            putStrLn "2. Remover"
+            drawHeader "submenu Turma"
+            putStrLn "1. Adicionar requisito"
+            putStrLn "2. Remover requisito"
             hFlush stdout
             op <- getLine
             case op of

@@ -7,14 +7,13 @@ import qualified Data.Map as Map
 
 import System.IO (hFlush, stdout)
 import Data.List.Split (splitOn)
+import View.UI (drawHeader)
 
 -- | Função para criar uma nova sala. Ele recebe a lista de salas manipulada durante a execução e retorna a lista atualizada com a nova sala.
 createClassRoom :: [Classroom] -> IO [Classroom] 
 createClassRoom clsroomData = do
     putStr "\ESC[2J"
-    putStrLn "=================================="
-    putStrLn "       Cadastro de salas"
-    putStrLn "=================================="
+    drawHeader "Cadastro de salas"
     putStrLn "Insira os dados da sala:"
     putStr "Codigo da sala: "
     hFlush stdout
