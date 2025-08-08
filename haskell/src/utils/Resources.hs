@@ -9,11 +9,12 @@ import Repository.ClassroomRepository (getClassroomByCode)
 import Control.Monad.RWS (MonadState(put))
 import System.Console.ANSI
 import Repository.ClassRepository
+import View.UI
 
 
 
 resourcesMenu :: String
-resourcesMenu = unlines [" 1. Projeto         2. Laboratório"
+resourcesMenu = unlines [" 1. Projetor         2. Laboratório"
                           , " 3. Acessibilidade  4. Quadro Branco"
                           ]
 
@@ -26,6 +27,17 @@ parseResource op = case op of
   "3"  -> Acessibility
   "4" -> Whiteboard
   _ -> error ("Recurso inexistente")
+
+
+readResources :: [Resource] -> IO [Resource]
+readResources acc = do
+    putStrLn resourcesMenu
+    putStr "Digite o requisito (ou pressione Enter para finalizar): "
+    hFlush stdout
+    resourceOp <- getLine
+    if null resourceOp
+        then return acc
+        else readResources (acc ++ [parseResource resourceOp])
 
 -- =========================
 -- ADIÇÃO DE REQUISITOS DAS TURMAS
@@ -70,7 +82,7 @@ change_requirements classes typeId profId = do
             putStrLn "ID inválido. Por favor, insira um número inteiro válido."
             change_requirements classes typeId profId
           Just classId -> do
-            drawHeader "submenu Turma"
+            drawHeader "ALTERAR REQUISITOS"
             putStrLn "1. Adicionar requisito"
             putStrLn "2. Remover requisito"
             putStrLn "3. Salvar e sair"
@@ -78,18 +90,14 @@ change_requirements classes typeId profId = do
             op <- getLine
             case op of
               "1" -> do
-                setSGR [SetColor Foreground Dull Blue]
-                putStrLn "Escolha uma opção:"
-                setSGR [Reset]
+                drawSubHeader "Escolha uma opção:"
                 putStrLn resourcesMenu
                 hFlush stdout
                 req <- getLine
                 clss' <- addRequirements (parseResource req) classId classes
                 return clss'
               "2" -> do
-                setSGR [SetColor Foreground Dull Blue]
-                putStrLn "Escolha uma opção:"
-                setSGR [Reset]
+                drawSubHeader "Escolha uma opção:"
                 putStrLn resourcesMenu
                 req <- getLine
                 clss' <- removeRequirements (parseResource req) classId classes
@@ -124,19 +132,15 @@ removeResources resource classroomCode' clssrms = do
 -- | Adiciona ou remove recursos de uma sala de aula.
 change_resources :: [Classroom] -> String -> IO [Classroom]
 change_resources classrooms idClassroom = do
-        drawHeader "EDITAR SALA"
-        setSGR [SetColor Foreground Dull Blue]
-        putStrLn "Escolha uma opção:"
-        setSGR [Reset]
+        drawHeader "ALTERAR RECURSOS"
+        drawSubHeader "Escolha uma opção:"
         putStrLn "1. Adicionar recurso"
         putStrLn "2. Remover recurso"
         hFlush stdout
         op <- getLine
         case op of
           "1" -> do
-            setSGR [SetColor Foreground Dull Blue]
-            putStrLn "Recursos disponíveis:"
-            setSGR [Reset]
+            drawSubHeader "Recursos disponíveis:"
             putStrLn resourcesMenu
             hFlush stdout
             req <- getLine
@@ -144,9 +148,7 @@ change_resources classrooms idClassroom = do
             putStrLn "Recurso adicionado com sucesso!"
             return clssrms'
           "2" -> do
-            setSGR [SetColor Foreground Dull Blue]
-            putStrLn "Escolha uma opção:"
-            setSGR [Reset]
+            drawSubHeader "Escolha uma opção:"
             putStrLn resourcesMenu
             hFlush stdout
             req <- getLine

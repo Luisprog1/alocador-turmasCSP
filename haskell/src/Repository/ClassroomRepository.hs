@@ -15,6 +15,7 @@ saveClassroom clssData newClassroom = clssData ++ [newClassroom]
 saveAllClassrooms :: [Classroom] -> IO ()
 saveAllClassrooms classrooms = do
     writeFile "src/data/classroom.txt" (intercalate "\n" (map show classrooms))
+    
 getClassroomByCode :: [Classroom] -> String -> Maybe Classroom
 getClassroomByCode salas codigo =
     find (\sala -> classroomCode sala == codigo) salas

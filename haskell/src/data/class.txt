@@ -1,12 +1,2 @@
-Class {classId = 1, subject = "Calculo", course = "Ciencia da Computacao", professorId = 1001, schedule = [(Monday,5)], quantity = 40, requirements = [Acessibility,Projector]}
-Class {classId = 2, subject = "Banco de Dados", course = "Ciencia da Computacao", professorId = 1002, schedule = [(Monday,2)], quantity = 43, requirements = [Projector,Laboratory]}
-Class {classId = 3, subject = "Programacao I", course = "Ciencia da Computacao", professorId = 1003, schedule = [(Monday,4)], quantity = 50, requirements = [Laboratory]}
-Class {classId = 4, subject = "teste", course = "testes", professorId = 1004, schedule = [(Monday,1)], quantity = 90, requirements = [Projector]}
-Class {classId = 5, subject = "Calculo I", course = "Eng. Software", professorId = 1005, schedule = [(Monday,8),(Wednesday,8)], quantity = 30, requirements = [Projector]}
-Class {classId = 6, subject = "Estruturas de Dados", course = "Ciencia da Computacao", professorId = 1006, schedule = [(Tuesday,10),(Thursday,10)], quantity = 25, requirements = [Laboratory]}
-Class {classId = 7, subject = "Programacao Funcional", course = "Ciencia da Computacao", professorId = 1007, schedule = [(Monday,8),(Friday,14)], quantity = 20, requirements = [Projector,Acessibility]}
-Class {classId = 9, subject = "Banco de Dados", course = "Ciencia da Computacao", professorId = 1009, schedule = [(Tuesday,14),(Thursday,14)], quantity = 35, requirements = [Projector,Laboratory]}
-Class {classId = 10, subject = "Sistemas Operacionais", course = "Eng. Software", professorId = 1010, schedule = [(Monday,10),(Wednesday,10)], quantity = 28, requirements = [Projector]}
-Class {classId = 11, subject = "Inteligencia Artificial", course = "Ciencia da Computacao", professorId = 1011, schedule = [(Friday,8)], quantity = 22, requirements = [Laboratory,Acessibility]}
-Class {classId = 12, subject = "Desenvolvimento Web", course = "Eng. Software", professorId = 1012, schedule = [(Tuesday,8)], quantity = 50, requirements = [Projector]}
-Class {classId = 14, subject = "Compiladores", course = "Ciencia da Computacao", professorId = 1014, schedule = [(Wednesday,14)], quantity = 20, requirements = [Projector,Laboratory]}
+Class {classId = 1, subject = "bd1", course = "cc", professorId = 1001, schedule = [(Quarta,1)], quantity = 42, requirements = [Projector]}
+Class {classId = 2, subject = "atal", course = "cc", professorId = 1002, schedule = [(Ter‡a,5)], quantity = 43, requirements = [Laboratory,Whiteboard,Projector]}

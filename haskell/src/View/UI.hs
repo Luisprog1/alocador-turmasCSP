@@ -26,3 +26,9 @@ drawHeader title = do
     putStrLn ("===============  " ++ title ++ "  ===============")
     setSGR [Reset]
     putStrLn ""
+
+drawSubHeader :: String -> IO ()
+drawSubHeader subtitle = do
+    setSGR [SetColor Foreground Dull Blue]
+    putStrLn (subtitle ++ "---")
+    setSGR [Reset]

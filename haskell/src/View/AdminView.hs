@@ -8,7 +8,7 @@ import Utils.Resources
 import View.UI 
 import View.ClassView 
 import View.ProfessorView 
-import Repository.ClassRepository 
+import Repository.ClassRepository
 import View.ClassroomView 
 import Repository.ClassroomRepository 
 import Repository.UserRepository
@@ -108,16 +108,24 @@ sub_menu_classroom classroom idClassroom = do
             sub_menu_classroom classroom idClassroom
 
 
-edit_classroom :: [Classroom] -> IO[Classroom]
-edit_classroom classroom = do
+edit_classroom :: [Classroom] -> IO [Classroom]
+edit_classroom classrooms = do
     putStrLn "Informe o Código da sala que deseja alterar:"
     hFlush stdout
     idClassroom <- getLine
-    case getClassroomByCode classroom idClassroom of
-        Nothing -> do
-            putStrLn "Código errado. Por favor, insira um número inteiro válido."
-            edit_classroom classroom
-        Just idClassroomInt -> do
-            updatedClassroom <- sub_menu_classroom classroom idClassroom
-            return updatedClassroom
+    if null idClassroom then do
+        putStrLn "Edição cancelada."
+        return classrooms
+    else do
+        let maybeClassroom = case filter (\c -> idClassroom == classroomCode c) classrooms of
+                                []    -> Nothing
+                                (c:_) -> Just c
+        case maybeClassroom of
+            Nothing -> do
+                putStrLn "Código errado. Por favor, insira um código válido, ou pressione Enter para cancelar."
+                edit_classroom classrooms
+            Just classroomObj -> do
+                let code = classroomCode classroomObj
+                updatedClassrooms <- sub_menu_classroom classrooms code
+                return updatedClassrooms
             

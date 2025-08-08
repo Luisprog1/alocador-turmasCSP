@@ -19,7 +19,7 @@ class1 :: Class
 classroom = Classroom { classroomCode = "CD105", capacity = 30, block = "Block C", resources = [Projector, Laboratory],
 roomSchedule = Map.fromList
     [ (Segunda, [1, 2, 3, 4])
-    , (Terça,   [1, 2, 3, 4])
+    , (Terca,   [1, 2, 3, 4])
     , (Quarta,  [5, 6])
     ]}
 

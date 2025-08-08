@@ -40,7 +40,7 @@ addOccupation clss classroom
 parseSchedule :: String -> Weekday
 parseSchedule str = case str of
   "1" -> Segunda
-  "2" -> Terça
+  "2" -> Terca
   "3" -> Quarta
   "4" -> Quinta
   "5" -> Sexta
@@ -93,3 +93,26 @@ pickDayClass = do
             _ -> do
                 putStrLn "Horário inválido. Tente novamente."
                 pickHour dia
+
+readSchedule :: [(Weekday, Int)] -> IO [(Weekday, Int)]
+readSchedule schedule = do
+    putStrLn "Escolha o dia (ou pressione Enter para finalizar):"
+    putStrLn "[1] Segunda   [2] Terça   [3] Quarta   [4] Quinta   [5] Sexta"
+    hFlush stdout
+    day <- getLine
+    if null day
+        then return schedule
+        else do
+            let weekday = parseSchedule day
+            putStrLn "Escolha o horário:"
+            putStrLn "[1] 08:00 - 10:00   [2] 10:00 - 12:00   [3] 14:00 - 16:00\n[4] 16:00 - 18:00   [5] 18:00 - 20:00   [6] 20:00 - 22:00"
+            hFlush stdout
+            hour <- getLine
+            if null hour
+                then return schedule
+                else do
+                    case readMaybe hour of
+                        Just h -> readSchedule (schedule ++ [(weekday, h)])
+                        Nothing -> do
+                            putStrLn "Horário inválido. Tente novamente."
+                            readSchedule schedule
