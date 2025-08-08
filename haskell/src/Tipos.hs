@@ -8,7 +8,7 @@ classId :: Int,
 subject :: String,
 course :: String,
 professorId :: Int,
-schedule :: [(Weekend, Int)],
+schedule :: [(Weekday, Int)],
 quantity :: Int,
 requirements :: [Resource]
 } deriving (Show, Eq, Read)
@@ -27,5 +27,5 @@ allocClassId :: Int,
 allocClassroomCode :: String
 }deriving (Show, Eq, Read)
 
-data Weekend = Monday | Tuesday | Wednesday | Thursday | Friday deriving (Show, Eq, Read, Ord)
-type ScheduleMap = Map.Map Weekend [Int]
+data Weekday = Segunda | Terca | Quarta | Quinta | Sexta deriving (Show, Eq, Read, Ord)
+type ScheduleMap = Map.Map Weekday [Int]

@@ -37,9 +37,9 @@ professorMenu clss idProfessor = do
 
 -- | Imprime as turmas do professor logado no sistema.
 view_allocations :: [Class] -> Int -> IO ()
-view_allocations clss id = do
+view_allocations classes id = do
     putStrLn "Carregando suas turmas..."
-    let turmas = filter (\c -> id == professorId c) clss
+    let turmas = filter (\c -> id == professorId c) classes
     if null turmas
         then putStrLn $ "Nenhuma turma encontrada para o professor de matrícula " ++ show id ++ "."
         else do
