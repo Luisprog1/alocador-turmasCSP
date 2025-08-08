@@ -5,6 +5,9 @@ import Repository.ClassRepository
 import System.IO (hFlush, stdout)
 import Data.List.Split (splitOn)
 import Utils.Resources
+import Repository.UserRepository
+import System.Console.ANSI
+
 
 -- | Função para criar uma nova turma. Ele recebe a lista de turmas manipulada durante a execução e retorna a lista atualizada com a nova turma.
 createClass :: [Class] -> IO [Class] 
@@ -21,6 +24,12 @@ createClass clssData = do
     putStr "Curso: "
     hFlush stdout
     curso <- getLine
+    putStr "Professores Disponiveis:\n"
+    users <- getUsers
+    let professores = filter (\u -> userTipo u == 1) users
+    setSGR [SetColor Foreground Vivid Green]
+    mapM_ putStrLn $ map ("  -  " ++) (map userNome professores)
+    setSGR [Reset]
     putStr "Professor: "
     hFlush stdout
     profId <- getLine
