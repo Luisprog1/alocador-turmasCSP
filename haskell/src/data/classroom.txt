@@ -2,5 +2,4 @@ Classroom {classroomCode = "lab01", capacity = 45, block = "Bloco A", resources 
 Classroom {classroomCode = "bg101", capacity = 100, block = "bg", resources = [Laboratory,Whiteboard], roomSchedule = fromList [(Segunda,[4]),(Quarta,[3,4]),(Sexta,[3])]}
 Classroom {classroomCode = "caa302", capacity = 90, block = "caa", resources = [Projector], roomSchedule = fromList [(Segunda,[1,2]),(Terca,[6,2]),(Quarta,[1]),(Quinta,[2,1]),(Sexta,[5])]}
 Classroom {classroomCode = "cp001", capacity = 90, block = "cp", resources = [Projector,Laboratory], roomSchedule = fromList [(Terca,[2]),(Quarta,[1]),(Quinta,[1,2])]}
-Classroom {classroomCode = "LAB01", capacity = 50, block = "Bloco A", resources = [Projector,Laboratory], roomSchedule = fromList []}
 Classroom {classroomCode = "SALA02", capacity = 50, block = "Bloco B", resources = [Projector,Acessibility], roomSchedule = fromList []}
