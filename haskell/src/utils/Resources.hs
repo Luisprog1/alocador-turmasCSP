@@ -63,7 +63,8 @@ verifyIfProfessorHasClass classes typeId profId clssId =
   return (professorId clss == profId)
 
 
--- | Adiciona ou remove requisitos de uma turma.
+-- | Adiciona ou remove requisitos de uma turma. 
+-- Recebe como parâmetros todas as turmas, o typeId: 0 para admin, 1 para professor, e a matrícula do professor ou ADM.
 change_requirements :: [Class] -> Int -> Int -> IO [Class]
 change_requirements classes typeId profId = do
     putStrLn "Informe o ID da turma:"

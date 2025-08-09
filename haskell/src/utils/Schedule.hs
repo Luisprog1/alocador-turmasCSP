@@ -6,6 +6,7 @@ import Text.Read (readMaybe)
 import System.IO (hFlush, stdout)
 import System.Console.ANSI
 
+
 -- | | Retorna True se um tipo ScheduleMap contém um horário em um dia da semana.
 scheduleContains :: ScheduleMap -> Weekday -> Int -> Bool
 scheduleContains scheduleMap day hour = 
@@ -51,11 +52,11 @@ parseSchedule str = case str of
 createHour :: Weekday -> Int -> (Weekday, Int)
 createHour day hour = (day, hour)
 
-addSlotToClass :: Class -> (Weekday, Int) -> Class
-addSlotToClass clss (day, hour) 
-    | elem (day, hour) (schedule clss) = clss
-    | otherwise = 
-        clss {schedule = nub (schedule clss ++ [(day,hour)])}
+addSlotToClass :: Class -> [(Weekday, Int)] -> Class
+addSlotToClass clss slots = clss {schedule = nub (schedule clss ++ slots)}
+
+removeSlotFromClass :: Class -> (Weekday, Int) -> Class
+removeSlotFromClass clss slot = clss {schedule = filter (/= slot) (schedule clss)}
 
 -- | Limpa o agendamento de uma única sala de aula.
 clearRoomSchedule :: Classroom -> Classroom
@@ -67,25 +68,37 @@ clearRoomSchedule room = room {
 resetClassrooms :: [Classroom] -> [Classroom]
 resetClassrooms = map clearRoomSchedule
 
-readSchedule :: [(Weekday, Int)] -> IO [(Weekday, Int)]
-readSchedule schedule = do
+readDay :: IO Weekday
+readDay = do
     putStrLn "Escolha o dia (ou pressione Enter para finalizar):"
     putStrLn "[1] Segunda   [2] Terça   [3] Quarta   [4] Quinta   [5] Sexta"
     hFlush stdout
     day <- getLine
     if null day
+        then return None
+        else return (parseSchedule day)
+
+readHour :: IO Int
+readHour = do
+    putStrLn "Escolha o horário:"
+    putStrLn "[1] 08:00 - 10:00   [2] 10:00 - 12:00   [3] 14:00 - 16:00\n[4] 16:00 - 18:00   [5] 18:00 - 20:00   [6] 20:00 - 22:00"
+    hFlush stdout
+    hour <- getLine
+    case readMaybe hour of
+        Just h -> return h
+        Just h | h < 1 || h > 6 -> do
+            putStrLn "Horário inválido. Tente novamente."
+            readHour
+        Nothing -> do
+            putStrLn "Horário inválido. Tente novamente."
+            readHour
+
+readSchedule :: [(Weekday, Int)] -> IO [(Weekday, Int)]
+readSchedule schedule = do
+    day <- readDay
+    if day == None
         then return schedule
         else do
-            let weekday = parseSchedule day
-            putStrLn "Escolha o horário:"
-            putStrLn "[1] 08:00 - 10:00   [2] 10:00 - 12:00   [3] 14:00 - 16:00\n[4] 16:00 - 18:00   [5] 18:00 - 20:00   [6] 20:00 - 22:00"
-            hFlush stdout
-            hour <- getLine
-            if null hour
-                then return schedule
-                else do
-                    case readMaybe hour of
-                        Just h -> readSchedule (nub (schedule ++ [(weekday, h)]))
-                        Nothing -> do
-                            putStrLn "Horário inválido. Tente novamente."
-                            readSchedule schedule
+            let weekday = day
+            hour <- readHour
+            readSchedule (nub (schedule ++ [(weekday, hour)]))

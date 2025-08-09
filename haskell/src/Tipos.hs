@@ -28,5 +28,5 @@ allocProfessorId :: Int,
 allocClassroomCode :: String
 }deriving (Show, Eq, Read)
 
-data Weekday = Segunda | Terca | Quarta | Quinta | Sexta deriving (Show, Eq, Read, Ord)
+data Weekday = Segunda | Terca | Quarta | Quinta | Sexta | None deriving (Show, Eq, Read, Ord)
 type ScheduleMap = Map.Map Weekday [Int]
