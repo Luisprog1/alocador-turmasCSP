@@ -35,8 +35,6 @@ adminMenu id classes classroom = do
     case opcao of
         "1" -> do
             classroom' <- generateAllocs classes classroom
-            putStrLn $ "Pressione enter para continuar"
-            stop <- getLine
             adminMenu id classes classroom'
         "2" -> do
             createProfessor
@@ -60,6 +58,8 @@ adminMenu id classes classroom = do
             return (classes, classroom)
         _ -> do
             putStrLn "Opção inválida!"
+            putStrLn $ "Pressione enter para continuar"
+            stop <- getLine
             adminMenu id classes classroom
 
 
@@ -70,6 +70,8 @@ generateAllocs clss classrooms = do
     case allocationResult of
         Right allocations -> do
             saveAllocs allocations
+            putStrLn $ show (finalId - 1) ++ " alocações realizadas\nPressione enter para continuar"
+            stop <- getLine
             return newClassrooms
         Left conflictCls -> do
             putStrLn $ "Conflito encontrado com a turma: " ++ show (classId conflictCls)

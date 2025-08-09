@@ -1,1 +1,16 @@
-Class {classId = 1, subject = "bd1", course = "cc", professorId = 1001, schedule = [(Quarta,1)], quantity = 42, requirements = [Projector]}
+Class {classId = 1, subject = "Calculo", course = "Ciencia da Computacao", professorId = 1001, schedule = [(Segunda,5),(Quinta,6)], quantity = 40, requirements = [Acessibility,Projector]}
+Class {classId = 2, subject = "Banco de Dados", course = "Ciencia da Computacao", professorId = 1002, schedule = [(Segunda,2),(Quarta,1)], quantity = 43, requirements = [Projector,Laboratory]}
+Class {classId = 3, subject = "Programacao I", course = "Ciencia da Computacao", professorId = 1003, schedule = [(Segunda,4),(Quarta,3)], quantity = 50, requirements = [Laboratory]}
+Class {classId = 4, subject = "teste", course = "testes", professorId = 1004, schedule = [(Segunda,1),(Quinta,2)], quantity = 90, requirements = [Projector]}
+Class {classId = 5, subject = "Calculo I", course = "Eng. Software", professorId = 1005, schedule = [(Segunda,3),(Quarta,4)], quantity = 30, requirements = [Projector]}
+Class {classId = 6, subject = "Estruturas de Dados", course = "Ciencia da Computacao", professorId = 1006, schedule = [(Terca,2),(Quinta,1)], quantity = 25, requirements = [Laboratory]}
+Class {classId = 7, subject = "Programacao Funcional", course = "Ciencia da Computacao", professorId = 1007, schedule = [(Terca,1),(Sexta,2)], quantity = 20, requirements = [Projector,Acessibility]}
+Class {classId = 8, subject = "Redes de Computadores", course = "Eng. Software", professorId = 1008, schedule = [(Quarta,4),(Sexta,3)], quantity = 45, requirements = [Whiteboard]}
+Class {classId = 9, subject = "Banco de Dados", course = "Ciencia da Computacao", professorId = 1009, schedule = [(Terca,2),(Quinta,1)], quantity = 35, requirements = [Projector,Laboratory]}
+Class {classId = 10, subject = "Sistemas Operacionais", course = "Eng. Software", professorId = 1010, schedule = [(Segunda,4),(Quarta,3)], quantity = 28, requirements = [Projector]}
+Class {classId = 11, subject = "Inteligencia Artificial", course = "Ciencia da Computacao", professorId = 1011, schedule = [(Terca,4),(Sexta,3)], quantity = 22, requirements = [Laboratory,Acessibility]}
+Class {classId = 12, subject = "Desenvolvimento Web", course = "Eng. Software", professorId = 1012, schedule = [(Terca,6),(Sexta,5)], quantity = 50, requirements = [Projector]}
+Class {classId = 13, subject = "Seguranca da Informacao", course = "Ciencia da Computacao", professorId = 1013, schedule = [(Terca,5),(Sexta,6)], quantity = 30, requirements = [Projector,Laboratory]}
+Class {classId = 14, subject = "Compiladores", course = "Ciencia da Computacao", professorId = 1014, schedule = [(Quarta,1),(Quinta,2)], quantity = 20, requirements = [Projector,Laboratory]}
+Class {classId = 15, subject = "Banco de Dados", course = "Ciencia da Computacao", professorId = 1001, schedule = [(Segunda,2),(Quarta,1)], quantity = 42, requirements = [Projector]}
+Class {classId = 16, subject = "Organizacao e Arquitetura de Computadores", course = "Ciencia da Computacao", professorId = 1001, schedule = [(Terca,2),(Quinta,1)], quantity = 40, requirements = [Projector,Projector]}
