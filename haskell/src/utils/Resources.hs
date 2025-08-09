@@ -12,11 +12,11 @@ import Repository.ClassRepository
 import View.UI
 
 
-
 resourcesMenu :: String
 resourcesMenu = unlines [" 1. Projetor         2. Laboratório"
                           , " 3. Acessibilidade  4. Quadro Branco"
-                          ]
+                          , " Presssione Enter para sair" ]
+                          
 
 
 -- | Função auxiliar para converter uma string em um recurso. Usada no menu de recursos (ou requisitos).
@@ -28,16 +28,23 @@ parseResource op = case op of
   "4" -> Whiteboard
   _ -> error ("Recurso inexistente")
 
-
 readResources :: [Resource] -> IO [Resource]
 readResources acc = do
     putStrLn resourcesMenu
-    putStr "Digite o requisito (ou pressione Enter para finalizar): "
+    putStr "Digite o requisito (ou pressione Enter para finalizar):"
     hFlush stdout
     resourceOp <- getLine
     if null resourceOp
         then return acc
-        else readResources (acc ++ [parseResource resourceOp])
+        else do
+          let r = parseResource resourceOp
+          if r `elem` acc
+             then do
+               putStrLn "Recurso já adicionado. Digite outro ou pressione Enter para finalizar.\n"
+               readResources acc
+             else
+               readResources (acc ++ [r])
+
 
 -- =========================
 -- ADIÇÃO DE REQUISITOS DAS TURMAS
@@ -66,6 +73,7 @@ verifyIfProfessorHasClass classes typeId profId clssId =
 -- | Adiciona ou remove requisitos de uma turma.
 change_requirements :: [Class] -> Int -> Int -> IO [Class]
 change_requirements classes typeId profId = do
+    drawHeader "ALTERAR REQUISITOS"
     putStrLn "Informe o ID da turma:"
     hFlush stdout
     classId <- getLine
@@ -94,8 +102,14 @@ change_requirements classes typeId profId = do
                 putStrLn resourcesMenu
                 hFlush stdout
                 req <- getLine
-                clss' <- addRequirements (parseResource req) classId classes
-                return clss'
+                if null req then do
+                  change_requirements classes typeId profId
+                else if req `notElem` ["1", "2", "3", "4"] then do
+                  putStrLn "Opção inválida. Tente novamente."
+                  change_requirements classes typeId profId
+                else do
+                  clss' <- addRequirements (parseResource req) classId classes
+                  return clss'
               "2" -> do
                 drawSubHeader "Escolha uma opção:"
                 putStrLn resourcesMenu
@@ -132,29 +146,62 @@ removeResources resource classroomCode' clssrms = do
 -- | Adiciona ou remove recursos de uma sala de aula.
 change_resources :: [Classroom] -> String -> IO [Classroom]
 change_resources classrooms idClassroom = do
-        drawHeader "ALTERAR RECURSOS"
-        drawSubHeader "Escolha uma opção:"
-        putStrLn "1. Adicionar recurso"
-        putStrLn "2. Remover recurso"
+    drawHeader "ALTERAR RECURSOS"
+    drawSubHeader "Escolha uma opção:"
+    putStrLn "1. Adicionar recurso"
+    putStrLn "2. Remover recurso"
+    putStrLn "Pressione Enter para voltar"
+    hFlush stdout
+    op <- getLine
+    case op of
+      "1" -> do
+        drawSubHeader "Recursos disponíveis:"
+        putStrLn resourcesMenu
         hFlush stdout
-        op <- getLine
-        case op of
-          "1" -> do
-            drawSubHeader "Recursos disponíveis:"
-            putStrLn resourcesMenu
-            hFlush stdout
-            req <- getLine
-            clssrms' <- addResources (parseResource req) idClassroom classrooms
-            putStrLn "Recurso adicionado com sucesso!"
-            return clssrms'
-          "2" -> do
-            drawSubHeader "Escolha uma opção:"
-            putStrLn resourcesMenu
-            hFlush stdout
-            req <- getLine
-            clssrms' <- removeResources (parseResource req) idClassroom classrooms
-            putStrLn "Recurso removido com sucesso!"
-            return clssrms'
-          _ -> do
+        req <- getLine
+        if null req then do
+          change_resources classrooms idClassroom
+        else case verifyResource req of
+          Nothing -> do
             putStrLn "Opção inválida. Tente novamente."
             change_resources classrooms idClassroom
+          Just r -> 
+            case getClassroomByCode classrooms idClassroom of
+              Nothing -> do
+                putStrLn "Sala de aula não encontrada."
+                return classrooms
+              Just sala -> 
+                if r `elem` resources sala then do
+                  putStrLn "Recurso já existe na sala!"
+                  change_resources classrooms idClassroom
+                else do
+                  clssrms' <- addResources r idClassroom classrooms
+                  putStrLn "Recurso adicionado com sucesso!"
+                  return clssrms'
+      "2" -> do
+        drawSubHeader "Escolha uma opção:"
+        putStrLn resourcesMenu
+        hFlush stdout
+        req <- getLine
+        case verifyResource req of
+          Nothing -> do
+            putStrLn "Opção inválida. Tente novamente."
+            change_resources classrooms idClassroom
+          Just r -> do
+            clssrms' <- removeResources r idClassroom classrooms
+            putStrLn "Recurso removido com sucesso!"
+            return clssrms'
+      "" -> do
+        return classrooms
+      _ -> do
+        putStrLn "Opção inválida. Tente novamente."
+        change_resources classrooms idClassroom
+
+verifyResource :: String -> Maybe Resource
+verifyResource op = case op of
+  "1" -> Just Projector
+  "2" -> Just Laboratory
+  "3" -> Just Acessibility
+  "4" -> Just Whiteboard
+  _   -> Nothing
+
