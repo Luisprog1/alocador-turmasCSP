@@ -15,6 +15,7 @@ executable haskell
   hs-source-dirs:      src
   main-is:             Main.hs
   other-modules:       Repository.ClassRepository
+                       Repository.AlocateRepository
                        Repository.UserRepository
                        Repository.ClassroomRepository
                        View.AdminView

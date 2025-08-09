@@ -7,6 +7,7 @@ import System.IO
 import View.UI (drawHeader)
 import Repository.ClassRepository (getClass, saveAllClasses)
 import Repository.ClassroomRepository (getClassroom, saveAllClassrooms)
+import Repository.AlocateRepository (getAllocs, saveAllocs)
 import View.AdminView (adminMenu)
 import View.ProfessorView 
 
