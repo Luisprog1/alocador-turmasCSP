@@ -7,13 +7,13 @@ import Data.Char (toLower)
 import Text.Read (readMaybe)
 import Data.List.Split (splitOn)
 import Repository.ClassRepository
-import View.UI (drawHeader)
+import View.UI (drawHeader, drawSubHeader)
 
 -- | A função recebe a lista de turmas e, caso haja alterações, retorna a lista atualizada.
 professorMenu :: [Class] -> Int -> IO [Class]
 professorMenu clss idProfessor = do
     drawHeader "PROFESSOR"
-    putStrLn "Por favor, escolha uma opção:"
+    drawSubHeader "Por favor, escolha uma opção:"
     putStrLn "1. Visualizar turmas"
     putStrLn "2. Alterar requisitos da turma"
     putStrLn "3. Sair e salvar"
