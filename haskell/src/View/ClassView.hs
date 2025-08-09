@@ -24,21 +24,26 @@ createClass clssData = do
     putStr "Curso: "
     hFlush stdout
     curso <- getLine
+
     putStr "Professores Disponiveis:\n"
     users <- getUsers
     let professores = filter (\u -> userTipo u == 1) users
     setSGR [SetColor Foreground Vivid Green]
-    mapM_ putStrLn $ map ("  -  " ++) (map userNome professores)
+    mapM_ putStrLn [ "  -  " ++ userNome u ++ " [" ++ show (userMatricula u) ++ "]" | u <- professores ]
     setSGR [Reset]
+
     putStr "Professor: "
     hFlush stdout
     profId <- getLine
+
     drawSubHeader "Adicionar horários"
     hFlush stdout
     horario <- readSchedule []
+
     putStr "Quantidade de alunos: "
     hFlush stdout
     qtdAlunos <- getLine
+
     drawSubHeader "Adicionar requisitos: "
     req <- readResources []
 
