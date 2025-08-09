@@ -14,3 +14,4 @@ Class {classId = 13, subject = "Seguranca da Informacao", course = "Ciencia da C
 Class {classId = 14, subject = "Compiladores", course = "Ciencia da Computacao", professorId = 1014, schedule = [(Quarta,1),(Quinta,2)], quantity = 20, requirements = [Projector,Laboratory]}
 Class {classId = 15, subject = "Banco de Dados", course = "Ciencia da Computacao", professorId = 1001, schedule = [(Segunda,2),(Quarta,1)], quantity = 42, requirements = [Projector]}
 Class {classId = 16, subject = "Organizacao e Arquitetura de Computadores", course = "Ciencia da Computacao", professorId = 1001, schedule = [(Terca,2),(Quinta,1)], quantity = 40, requirements = [Projector,Projector]}
+Class {classId = 17, subject = "teste2", course = "teste", professorId = 1004, schedule = [(Segunda,1),(Quinta,2)], quantity = 40, requirements = [Whiteboard]}
