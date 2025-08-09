@@ -30,5 +30,5 @@ drawHeader title = do
 drawSubHeader :: String -> IO ()
 drawSubHeader subtitle = do
     setSGR [SetColor Foreground Dull Blue]
-    putStrLn (subtitle ++ "---")
+    putStrLn (subtitle ++ " ---")
     setSGR [Reset]

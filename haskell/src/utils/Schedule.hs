@@ -55,7 +55,7 @@ addSlotToClass :: Class -> (Weekday, Int) -> Class
 addSlotToClass clss (day, hour) 
     | elem (day, hour) (schedule clss) = clss
     | otherwise = 
-        clss {schedule = schedule clss ++ [(day,hour)]}
+        clss {schedule = nub (schedule clss ++ [(day,hour)])}
 
 -- | Limpa o agendamento de uma única sala de aula.
 clearRoomSchedule :: Classroom -> Classroom
@@ -66,33 +66,6 @@ clearRoomSchedule room = room {
 -- | Aplica a limpeza do agendamento em todas as salas da lista.
 resetClassrooms :: [Classroom] -> [Classroom]
 resetClassrooms = map clearRoomSchedule
-
--- | Função do terminal para escolher um dia e horário para uma turma.
-pickDayClass :: IO (Weekday, Int)
-pickDayClass = do
-    setSGR [SetColor Foreground Dull Blue]
-    putStrLn "Escolha o dia da semana:"
-    setSGR [Reset]
-    putStrLn "[1] Segunda   [2] Terça   [3] Quarta   [4] Quinta   [5] Sexta"
-    hFlush stdout
-    diaStr <- getLine
-    let weeknd = parseSchedule diaStr
-    pickHour weeknd
-
-    where
- pickHour :: Weekday -> IO (Weekday, Int)
- pickHour dia = do
-        setSGR [SetColor Foreground Dull Blue]
-        putStrLn $ "\nEscolha o horário para " ++ show dia ++ ":"
-        setSGR [Reset]
-        putStrLn "[1] 08:00 - 10:00   [2] 10:00 - 12:00   [3] 14:00 - 16:00\n[4] 16:00 - 18:00   [5] 18:00 - 20:00   [6] 20:00 - 22:00"
-        hFlush stdout
-        horaStr <- getLine
-        case readMaybe horaStr of
-            Just h | h >= 1 && h <= 6 -> return (dia, h)
-            _ -> do
-                putStrLn "Horário inválido. Tente novamente."
-                pickHour dia
 
 readSchedule :: [(Weekday, Int)] -> IO [(Weekday, Int)]
 readSchedule schedule = do
@@ -112,7 +85,7 @@ readSchedule schedule = do
                 then return schedule
                 else do
                     case readMaybe hour of
-                        Just h -> readSchedule (schedule ++ [(weekday, h)])
+                        Just h -> readSchedule (nub (schedule ++ [(weekday, h)]))
                         Nothing -> do
                             putStrLn "Horário inválido. Tente novamente."
                             readSchedule schedule
