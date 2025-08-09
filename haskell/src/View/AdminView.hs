@@ -1,5 +1,6 @@
 module View.AdminView where
-
+import Utils.Alocate
+import Repository.AlocateRepository
 import Tipos
 import System.IO (hFlush, stdout)
 import Text.Read (readMaybe)
@@ -30,8 +31,11 @@ adminMenu id classes classroom = do
     hFlush stdout
     opcao <- getLine
     case opcao of
+        "1" -> do
+            classroom' <- generateAllocs classes classroom
+            adminMenu id classes classroom'
         "2" -> do
-            createProfessor
+            viewAllocs
             adminMenu id classes classroom
         "3" -> do 
             classroom' <- createClassRoom classroom
@@ -53,6 +57,29 @@ adminMenu id classes classroom = do
         _ -> do
             putStrLn "Opção inválida!"
             adminMenu id classes classroom
+
+
+generateAllocs :: [Class] -> [Classroom] -> IO [Classroom]
+generateAllocs clss classrooms = do
+    let emptyRooms = resetClassrooms classrooms
+    let (allocationResult, finalId, newClassrooms) = backtrackAllocate 1 clss emptyRooms
+    case allocationResult of
+        Right allocations -> do
+            saveAllocs allocations
+            putStrLn $ show (finalId - 1) ++ " alocações realizadas\nPressione enter para continuar"
+            stop <- getLine
+            return newClassrooms
+        Left conflictCls -> do
+            putStrLn $ "Conflito encontrado com a turma: " ++ show (classId conflictCls)
+            return classrooms
+
+viewAllocs :: IO ()
+viewAllocs = do
+    allocs <- getAllocs
+    mapM_ print allocs
+    putStrLn $ "Pressione enter para continuar"
+    stop <- getLine
+    return()
 
 -- | Função para cadastrar professor (pré-cadastro sem senha)
 createProfessor :: IO ()
