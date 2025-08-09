@@ -1,2 +1,2 @@
-Classroom {classroomCode = "lab01", capacity = 30, block = "Bloco A", resources = [Acessibility,Projector,Laboratory], roomSchedule = fromList []}
+Classroom {classroomCode = "lab01", capacity = 45, block = "Bloco A", resources = [Acessibility,Projector,Laboratory], roomSchedule = fromList []}
 Classroom {classroomCode = "bg101", capacity = 100, block = "bg", resources = [Laboratory,Whiteboard], roomSchedule = fromList []}

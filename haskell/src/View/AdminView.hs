@@ -5,11 +5,14 @@ import System.IO (hFlush, stdout)
 import Text.Read (readMaybe)
 import Data.List.Split (splitOn)
 import Utils.Resources
+import Utils.Alocate
+import Utils.Schedule  
 import View.UI 
 import View.ClassView 
 import View.ProfessorView 
-import Repository.ClassRepository
 import View.ClassroomView 
+import Repository.AlocateRepository
+import Repository.ClassRepository
 import Repository.ClassroomRepository 
 import Repository.UserRepository
 import System.Console.ANSI
@@ -30,6 +33,11 @@ adminMenu id classes classroom = do
     hFlush stdout
     opcao <- getLine
     case opcao of
+        "1" -> do
+            classroom' <- generateAllocs classes classroom
+            putStrLn $ "Pressione enter para continuar"
+            stop <- getLine
+            adminMenu id classes classroom'
         "2" -> do
             createProfessor
             adminMenu id classes classroom
@@ -54,6 +62,19 @@ adminMenu id classes classroom = do
             putStrLn "Opção inválida!"
             adminMenu id classes classroom
 
+
+generateAllocs :: [Class] -> [Classroom] -> IO [Classroom]
+generateAllocs clss classrooms = do
+    let emptyRooms = resetClassrooms classrooms
+    let (allocationResult, finalId, newClassrooms) = backtrackAllocate 1 clss emptyRooms
+    case allocationResult of
+        Right allocations -> do
+            saveAllocs allocations
+            return newClassrooms
+        Left conflictCls -> do
+            putStrLn $ "Conflito encontrado com a turma: " ++ show (classId conflictCls)
+            return classrooms
+            
 -- | Função para cadastrar professor (pré-cadastro sem senha)
 createProfessor :: IO ()
 createProfessor = do

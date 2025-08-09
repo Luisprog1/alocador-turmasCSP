@@ -1,0 +1,1 @@
+Allocation {allocationId = 1, allocClassId = 1, allocProfessorId = 1001, allocClassroomCode = "lab01"}

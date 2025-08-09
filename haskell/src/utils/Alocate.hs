@@ -59,5 +59,6 @@ createAllocation allocId clss classroom =
     Allocation {
         allocationId = allocId,
         allocClassId = classId clss,
+        allocProfessorId = professorId clss,
         allocClassroomCode = classroomCode classroom
         }   

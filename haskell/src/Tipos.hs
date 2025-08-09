@@ -24,6 +24,7 @@ roomSchedule :: ScheduleMap
 data Allocation = Allocation { 
 allocationId :: Int, 
 allocClassId :: Int,
+allocProfessorId :: Int,
 allocClassroomCode :: String
 }deriving (Show, Eq, Read)
 

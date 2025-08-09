@@ -1,2 +1,1 @@
 Class {classId = 1, subject = "bd1", course = "cc", professorId = 1001, schedule = [(Quarta,1)], quantity = 42, requirements = [Projector]}
-Class {classId = 2, subject = "atal", course = "cc", professorId = 1002, schedule = [(Ter‡a,5)], quantity = 43, requirements = [Laboratory,Whiteboard,Projector]}
