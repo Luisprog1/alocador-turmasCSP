@@ -4,7 +4,12 @@ import Tipos
 import Text.Read (readMaybe)
 import Data.Maybe (mapMaybe)
 import System.IO (writeFile)
-import Data.List (intercalate, find)
+import Data.List (intercalate, find, dropWhileEnd)
+import Data.Char (toLower, isSpace)
+
+-- Normaliza o código para comparação (ignora espaços e case)
+normalizeCode :: String -> String
+normalizeCode = map toLower . dropWhileEnd isSpace . dropWhile isSpace
 
 -- | Adiciona uma sala à lista de salas durante a execução do programa
 saveClassroom :: [Classroom] -> Classroom -> [Classroom]
@@ -18,7 +23,8 @@ saveAllClassrooms classrooms = do
     
 getClassroomByCode :: [Classroom] -> String -> Maybe Classroom
 getClassroomByCode salas codigo =
-    find (\sala -> classroomCode sala == codigo) salas
+    let alvo = normalizeCode codigo
+    in find (\sala -> normalizeCode (classroomCode sala) == alvo) salas
 
 -- | Lê as salas de um arquivo. Converte as salas do arquivo para que as salas possam ser manipuladas durante a execução do programa.
 getClassroom :: IO [Classroom]
