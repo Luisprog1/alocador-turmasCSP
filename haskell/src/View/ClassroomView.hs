@@ -17,9 +17,7 @@ createClassRoom clsroomData = do
     drawHeader "Cadastro de salas"
     putStrLn "Insira os dados da sala:"
 
-    putStr "Codigo da sala: "
-    hFlush stdout
-    code <- getLine
+    code <- readLine "Codigo da sala: "
 
     persistidas <- getClassroom
     let universo =
@@ -36,13 +34,9 @@ createClassRoom clsroomData = do
         _ <- getLine
         return clsroomData
       Nothing -> do
-        putStr "Capacidade: "
-        hFlush stdout
-        capacidade <- getLine
+        capacidade <- readLine "Capacidade: "
 
-        putStr "Bloco: "
-        hFlush stdout
-        bloco <- getLine
+        bloco <- readLine "Bloco: "
 
         drawSubHeader "Adicionar recursos: "
         resources <- readResources []

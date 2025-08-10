@@ -88,9 +88,7 @@ verifyIfProfessorHasClass classes typeId profId clssId =
 change_requirements :: [Class] -> Int -> Int -> IO [Class]
 change_requirements classes typeId profId = do
     drawHeader "ALTERAR REQUISITOS"
-    putStrLn "Informe o ID da turma:"
-    hFlush stdout
-    classId <- getLine
+    classId <- readLine "Informe o ID da turma: "
     case verifyIfProfessorHasClass classes typeId profId (read classId) of
       Nothing -> do
         putStrLn "Turma não encontrada. Tente novamente."
@@ -108,14 +106,12 @@ change_requirements classes typeId profId = do
             putStrLn "1. Adicionar requisito"
             putStrLn "2. Remover requisito"
             putStrLn "3. Salvar e sair"
-            hFlush stdout
-            op <- getLine
+            op <- readLine " "
             case op of
               "1" -> do
                 drawSubHeader "Escolha uma opção:"
                 putStrLn resourcesMenu
-                hFlush stdout
-                req <- getLine
+                req <- readLine " "
                 if null req then do
                   change_requirements classes typeId profId
                 else if req `notElem` ["1", "2", "3", "4"] then do
@@ -127,7 +123,7 @@ change_requirements classes typeId profId = do
               "2" -> do
                 drawSubHeader "Escolha uma opção:"
                 putStrLn resourcesMenu
-                req <- getLine
+                req <- readLine " "
                 clss' <- removeRequirements (parseResource req) classId classes
                 return clss'
               "3" -> do
@@ -179,8 +175,7 @@ change_resources classrooms idClassroom = do
       "1" -> do
         drawSubHeader "Recursos disponíveis:"
         putStrLn resourcesMenu
-        hFlush stdout
-        req <- getLine
+        req <- readLine " "
         if null req then do
           change_resources classrooms idClassroom
         else case verifyResource req of
@@ -203,8 +198,7 @@ change_resources classrooms idClassroom = do
       "2" -> do
         drawSubHeader "Escolha uma opção:"
         putStrLn resourcesMenu
-        hFlush stdout
-        req <- getLine
+        req <- readLine " "
         case verifyResource req of
           Nothing -> do
             putStrLn "Opção inválida. Tente novamente."
