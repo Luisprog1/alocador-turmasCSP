@@ -21,12 +21,13 @@ adminMenu id classes classroom = do
     drawHeader "ADMINISTRADOR"
     putStrLn "Escolha uma opção"
     putStrLn "1. Gerar alocação"
-    putStrLn "2. Cadastrar Professor"
-    putStrLn "3. Cadastrar Sala"
-    putStrLn "4. Cadastrar Turma"
-    putStrLn "5. Editar Sala"
-    putStrLn "6. Editar Turma"
-    putStrLn "7. Sair e salvar"
+    putStrLn "2. Visualizar Alocações"
+    putStrLn "3. Cadastrar Professor"
+    putStrLn "4. Cadastrar Sala"
+    putStrLn "5. Cadastrar Turma"
+    putStrLn "6. Editar Sala"
+    putStrLn "7. Editar Turma"
+    putStrLn "8. Sair e salvar"
     opcao <- readLine "Opção: "
     case opcao of
         "1" -> do
@@ -35,21 +36,24 @@ adminMenu id classes classroom = do
         "2" -> do
             viewAllocs
             adminMenu id classes classroom
-        "3" -> do 
+        "3" -> do
+            createProfessor
+            adminMenu id classes classroom
+        "4" -> do 
             classroom' <- createClassRoom classroom
             putStrLn "Sala cadastrada com sucesso!"
             adminMenu id classes classroom'
-        "4" -> do 
+        "5" -> do 
             classes' <- createClass classes
             putStrLn "Turma cadastrada com sucesso!"
             adminMenu id classes' classroom
-        "5" -> do 
+        "6" -> do 
             classroom' <- edit_classroom classroom
             adminMenu id classes classroom'
-        "6" -> do
+        "7" -> do
             classes' <- editClass id classes
             adminMenu id classes' classroom
-        "7" -> do
+        "8" -> do
             saveAllClasses classes
             return (classes, classroom)
         _ -> do

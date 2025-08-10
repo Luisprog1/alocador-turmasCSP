@@ -11,15 +11,15 @@ import System.Console.ANSI
 import Repository.ClassRepository
 import View.UI
 
-
+-- | Menu de recursos disponíveis
 resourcesMenu :: String
 resourcesMenu = unlines [" 1. Projetor         2. Laboratório"
                           , " 3. Acessibilidade  4. Quadro Branco"
-                          , " Presssione Enter para sair" ]
-                          
+                          , " Pressione Enter para sair" ]                       
 
-
--- | Função auxiliar para converter uma string em um recurso. Usada no menu de recursos (ou requisitos).
+-- | Esta função é responsável por mapear as opções do menu para os tipos de recursos correspondentes.
+--
+-- * op: opção selecionada pelo usuário
 parseResource :: String -> Resource
 parseResource op = case op of
   "1"     -> Projector
@@ -28,6 +28,8 @@ parseResource op = case op of
   "4" -> Whiteboard
   _ -> error ("Recurso inexistente")
 
+-- | Lê os recursos do usuário e retorna uma lista de recursos.
+-- Se o usuário pressionar Enter sem digitar nada, a lista é retornada como está
 readResources :: [Resource] -> IO [Resource]
 readResources acc = do
     putStrLn resourcesMenu
@@ -45,24 +47,32 @@ readResources acc = do
              else
                readResources (acc ++ [r])
 
-
--- =========================
--- ADIÇÃO DE REQUISITOS DAS TURMAS
--- =========================
-
--- | Adiciona um recurso a uma turma com base no ID da turma.
+-- | Função auxiliar que adiciona um requisito a uma turma com base no ID da turma.
+--
+-- * resource: recurso a ser adicionado
+-- * classID: ID da turma da qual o recurso será adicionado
+-- * classes: lista de turmas
 addRequirements :: Resource -> Int -> [Class] -> IO [Class]
-addRequirements resource classID clss = do
-    let clss' = map (\c -> if classId c == classID then c {requirements = nub (resource : requirements c)} else c) clss
-    return clss'
-
--- | Remove um recurso de uma turma com base no ID da turma.
+addRequirements resource classID classes = do
+    let classes' = map (\c -> if classId c == classID then c {requirements = nub (resource : requirements c)} else c) classes
+    return classes'
+    
+-- | Função auxiliar que remove um requisito de uma turma com base no ID da turma.
+--
+-- * resource: recurso a ser removido
+-- * classID: ID da turma da qual o recurso será removido
+-- * classes: lista de turmas
 removeRequirements :: Resource -> Int -> [Class] -> IO [Class]
-removeRequirements resource classID clss= do
-    let clss' = map (\c -> if classId c == classID then c { requirements = filter (/= resource) (requirements c) } else c) clss
-    return clss'
+removeRequirements resource classID classes = do
+    let classes' = map (\c -> if classId c == classID then c { requirements = filter (/= resource) (requirements c) } else c) classes
+    return classes'
 
 -- | Verifica se o professor tem permissão para alterar os requisitos da turma.
+--
+-- * classes: lista de turmas
+-- * typeId: tipo de usuário (0 para admin, 1 para professor)
+-- * profId: ID do professor
+-- * clssId: ID da turma
 verifyIfProfessorHasClass :: [Class] -> Int -> Int -> Int -> Maybe Bool
 verifyIfProfessorHasClass classes typeId profId clssId =
   if typeId == 0 then Just True else do
@@ -71,7 +81,10 @@ verifyIfProfessorHasClass classes typeId profId clssId =
 
 
 -- | Adiciona ou remove requisitos de uma turma. 
--- Recebe como parâmetros todas as turmas, o typeId: 0 para admin, 1 para professor, e a matrícula do professor ou ADM.
+-- 
+-- * classes: lista de turmas
+-- * typeId: tipo de usuário (0 para admin, 1 para professor)
+-- * profId: ID do professor
 change_requirements :: [Class] -> Int -> Int -> IO [Class]
 change_requirements classes typeId profId = do
     drawHeader "ALTERAR REQUISITOS"
@@ -120,27 +133,35 @@ change_requirements classes typeId profId = do
                 putStrLn "Opção inválida. Tente novamente."
                 change_requirements classes typeId profId
                 
--- =========================
--- ADIÇÃO DE RECURSOS DAS SALAS
--- =========================
 
 -- | Adiciona um recurso a uma sala de aula com base no código da sala.
+--
+-- * resource: recurso a ser adicionado
+-- * classroomCode': código da sala onde o recurso será adicionado
+-- * classrooms: lista de salas de aula
 addResources :: Resource -> String -> [Classroom] -> IO [Classroom]
-addResources resource classroomCode' clssrms = do
-    let clssrms' = map (\c -> if classroomCode c == classroomCode'
-                                then c { resources = nub (resource : resources c) }
-                                else c) clssrms
-    return clssrms'
+addResources resource classroomCode' classrooms = do
+    let classrooms' = map (\c -> if classroomCode c == classroomCode'
+                                    then c { resources = nub (resource : resources c) }
+                                    else c) classrooms
+    return classrooms'
 
 -- | Remove um recurso de uma sala de aula com base no código da sala.
+--
+-- * resource: recurso a ser removido
+-- * classroomCode': código da sala onde o recurso será removido
+-- * classrooms: lista de salas de aula
 removeResources :: Resource -> String -> [Classroom] -> IO [Classroom]
-removeResources resource classroomCode' clssrms = do
-    let clssrms' = map (\c -> if classroomCode c == classroomCode'
-                                then c { resources = filter (/= resource) (resources c) }
-                                else c) clssrms
-    return clssrms'
+removeResources resource classroomCode' classrooms = do
+    let classrooms' = map (\c -> if classroomCode c == classroomCode'
+                                    then c { resources = filter (/= resource) (resources c) }
+                                    else c) classrooms
+    return classrooms'
 
 -- | Adiciona ou remove recursos de uma sala de aula.
+--
+-- * classrooms: lista de salas de aula
+-- * idClassroom: código da sala de aula
 change_resources :: [Classroom] -> String -> IO [Classroom]
 change_resources classrooms idClassroom = do
     drawHeader "ALTERAR RECURSOS"
@@ -192,6 +213,9 @@ change_resources classrooms idClassroom = do
         putStrLn "Opção inválida. Tente novamente."
         change_resources classrooms idClassroom
 
+-- | Verifica se um recurso é válido.
+--
+-- * op: opção selecionada pelo usuário
 verifyResource :: String -> Maybe Resource
 verifyResource op = case op of
   "1" -> Just Projector
