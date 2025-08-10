@@ -93,6 +93,8 @@ change_requirements classes typeId profId classId = do
         change_requirements classes typeId profId classId
       Just False -> do
         putStrLn "Você não tem permissão para alterar os requisitos desta turma."
+        putStrLn "Pressione Enter para continuar..."
+        stop <- getLine
         return classes
       Just True -> do
             drawHeader "ALTERAR REQUISITOS"
