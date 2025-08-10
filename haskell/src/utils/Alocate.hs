@@ -6,19 +6,24 @@ import Data.List as List
 import Data.Map as Map
 
 
+-- | Verifica se todos os requisitos de uma turma estão presentes nos recursos disponíveis de uma sala.
 checkResources :: Eq a => [a] -> [a] -> Bool
 checkResources requisitos recursos = all (\x -> elem x recursos) requisitos
 
+-- | Verifica se há alguma ocupação de horário na sala para a turma e se a turma é compatível com a sala.
+--
+-- * clss: turma a ser alocada
+-- * classroom: sala onde a turma será alocada
 allocateClass :: Class -> Classroom -> Bool
 allocateClass clss classroom 
     | checkResources (requirements clss) (resources classroom)
     && (quantity clss <= capacity classroom)
     && not (isAnyOccupation classroom clss) = True
-    | otherwise = False 
-  
-        
+    | otherwise = False
+
 type AllocationSolution = Either Class [Allocation]
--- | Função principal: agora apenas chama as funções auxiliares.
+
+-- | Função principal do algoritmo de backtracking para alocação de turmas em salas.
 backtrackAllocate :: Int -> [Class] -> [Classroom] -> (AllocationSolution, Int, [Classroom])
 backtrackAllocate currentId [] classrooms = (Right [], currentId, classrooms)
 backtrackAllocate currentId (clss:restClasses) classrooms =
@@ -26,8 +31,13 @@ backtrackAllocate currentId (clss:restClasses) classrooms =
      -- | 'classrooms' é passado duas vezes para representar 'allRooms' e 'availableRooms' iniciais.
      tryAllocateClass currentId clss restClasses classrooms classrooms
      
--- | Tenta alocar uma turma em uma lista de salas.
--- | A função agora recebe a lista completa de salas, a lista de salas a tentar, e as classes restantes.
+-- | Tenta alocar uma turma em uma lista de salas
+--
+-- * currentId: ID atual da alocação
+-- * clss: turma a ser alocada
+-- * restClasses: turmas restantes
+-- * allRooms: todas as salas disponíveis
+-- * availableRooms: salas disponíveis para alocação
 tryAllocateClass :: Int -> Class -> [Class] -> [Classroom] -> [Classroom] -> (AllocationSolution, Int, [Classroom])
 tryAllocateClass currentId clss restClasses allRooms [] = (Left clss, currentId, allRooms)
 tryAllocateClass currentId clss restClasses allRooms (room:otherRooms) =
@@ -46,7 +56,7 @@ tryAllocateClass currentId clss restClasses allRooms (room:otherRooms) =
     else
         tryAllocateClass currentId clss restClasses allRooms otherRooms
 
--- | Substitui uma sala atualizada na lista de todas as salas.
+-- | Substitui uma sala atualizada na lista de todas as salas. 
 replaceRoom :: [Classroom] -> Classroom -> [Classroom]
 replaceRoom [] _ = []
 replaceRoom (r:rs) updatedR
