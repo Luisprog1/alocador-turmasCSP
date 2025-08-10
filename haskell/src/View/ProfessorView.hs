@@ -30,7 +30,11 @@ professorMenu clss idProfessor = do
             _ <- getLine
             professorMenu clss idProfessor
         "2" -> do
-            clss' <- change_requirements clss 1 idProfessor
+            drawHeader "ALTERAR REQUISITOS"
+            putStrLn "Informe o ID da turma:"
+            hFlush stdout
+            classId <- getLine
+            clss' <- change_requirements clss 1 idProfessor (read classId)
             professorMenu clss' idProfessor
         "3" -> return clss
         _   -> do

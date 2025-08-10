@@ -51,6 +51,7 @@ adminMenu id classes classroom = do
             adminMenu id classes classroom'
         "5" -> do 
             classes' <- createClass classes
+            saveAllClasses classes'
             putStrLn "Turma cadastrada com sucesso!"
             adminMenu id classes' classroom
         "6" -> do 
@@ -60,7 +61,6 @@ adminMenu id classes classroom = do
             classes' <- editClass id classes
             adminMenu id classes' classroom
         "8" -> do
-            saveAllClasses classes
             return (classes, classroom)
         _ -> do
             putStrLn "Opção inválida!"
@@ -223,7 +223,7 @@ classSubMenu idAdmin allClasses clssId = do
                     updatedClasses <- editSchedule allClasses clss
                     classSubMenu idAdmin updatedClasses clssId
                 "2" -> do
-                    updatedClasses <- change_requirements allClasses 0 idAdmin
+                    updatedClasses <- change_requirements allClasses 0 idAdmin clssId
                     classSubMenu idAdmin updatedClasses clssId
                 "3" -> do
                     users <- getUsers
