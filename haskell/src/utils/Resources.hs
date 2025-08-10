@@ -85,23 +85,18 @@ verifyIfProfessorHasClass classes typeId profId clssId =
 -- * classes: lista de turmas
 -- * typeId: tipo de usuário (0 para admin, 1 para professor)
 -- * profId: ID do professor
-change_requirements :: [Class] -> Int -> Int -> IO [Class]
-change_requirements classes typeId profId = do
-    drawHeader "ALTERAR REQUISITOS"
-    classId <- readLine "Informe o ID da turma: "
-    case verifyIfProfessorHasClass classes typeId profId (read classId) of
+change_requirements :: [Class] -> Int -> Int -> Int -> IO [Class]
+change_requirements classes typeId profId classId = do
+    case verifyIfProfessorHasClass classes typeId profId classId of
       Nothing -> do
         putStrLn "Turma não encontrada. Tente novamente."
-        change_requirements classes typeId profId
+        change_requirements classes typeId profId classId
       Just False -> do
         putStrLn "Você não tem permissão para alterar os requisitos desta turma."
-        change_requirements classes typeId profId
-      Just True ->
-        case readMaybe classId :: Maybe Int of
-          Nothing -> do
-            putStrLn "ID inválido. Por favor, insira um número inteiro válido."
-            change_requirements classes typeId profId
-          Just classId -> do
+        putStrLn "Pressione Enter para continuar..."
+        stop <- getLine
+        return classes
+      Just True -> do
             drawHeader "ALTERAR REQUISITOS"
             putStrLn "1. Adicionar requisito"
             putStrLn "2. Remover requisito"
@@ -113,10 +108,10 @@ change_requirements classes typeId profId = do
                 putStrLn resourcesMenu
                 req <- readLine " "
                 if null req then do
-                  change_requirements classes typeId profId
+                  change_requirements classes typeId profId classId
                 else if req `notElem` ["1", "2", "3", "4"] then do
                   putStrLn "Opção inválida. Tente novamente."
-                  change_requirements classes typeId profId
+                  change_requirements classes typeId profId classId
                 else do
                   clss' <- addRequirements (parseResource req) classId classes
                   return clss'
@@ -131,8 +126,7 @@ change_requirements classes typeId profId = do
                 return classes
               _ -> do
                 putStrLn "Opção inválida. Tente novamente."
-                change_requirements classes typeId profId
-                
+                change_requirements classes typeId profId classId
 
 -- | Adiciona um recurso a uma sala de aula com base no código da sala.
 --
