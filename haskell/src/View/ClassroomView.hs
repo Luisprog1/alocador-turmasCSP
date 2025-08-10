@@ -10,6 +10,7 @@ import Data.List.Split (splitOn)
 import View.UI (drawHeader)
 
 -- | Função para criar uma nova sala. Ele recebe a lista de salas manipulada durante a execução e retorna a lista atualizada com a nova sala.
+-- * clsroomData: lista de salas já persistidas
 createClassRoom :: [Classroom] -> IO [Classroom]
 createClassRoom clsroomData = do
     putStr "\ESC[2J"

@@ -1,6 +1,7 @@
 module Tipos where
 import qualified Data.Map as Map
 
+-- | Tipos de dados utilizados no sistema de alocação de turmas
 data Resource = Projector | Laboratory | Acessibility | Whiteboard deriving(Show, Eq, Read)
 
 data Class = Class {  
