@@ -27,6 +27,7 @@ userScreen = do
         _   -> retry "Opção inválida!" userScreen
 
 -- | Solicita entrada do usuário de acordo com o tipo (Tipo, Matrícula ou Senha)
+-- * Senha: entrada de senha com máscara
 askInput :: InputType -> String -> IO String
 askInput Senha prompt = do
     putStr prompt
@@ -107,6 +108,9 @@ registerProfessor = do
                 _ -> retry "Erro inesperado no cadastro." userScreen
 
 -- | Permite ao Professor cadastrar uma nova senha
+-- * users: lista de usuários atuais
+-- * matricula: matrícula do professor
+-- * nome: nome do professor
 setNewPassword :: [User] -> Int -> String -> IO ()
 setNewPassword users matricula nome = do
     putStrLn $ "Bem-vindo, " ++ nome ++ "! Cadastre sua nova senha:"

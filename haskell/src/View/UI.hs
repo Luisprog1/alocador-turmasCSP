@@ -12,6 +12,7 @@ logo =
     "  ╚═╝  ╚═╝╚══════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═════╝  ╚═════╝  ╚═╝  ╚═╝ "
 
 -- | Função para desenhar cabeçalho com logo e título
+-- * title: título da tela
 drawHeader :: String -> IO ()
 drawHeader title = do
     clearScreen
@@ -27,6 +28,8 @@ drawHeader title = do
     setSGR [Reset]
     putStrLn ""
 
+-- | Função para desenhar um subtítulo
+-- * subtitle: subtítulo da seção
 drawSubHeader :: String -> IO ()
 drawSubHeader subtitle = do
     setSGR [SetColor Foreground Dull Blue]

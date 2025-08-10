@@ -8,6 +8,8 @@ import Data.List (intercalate)
 import Data.Char (toLower)
 
 -- | Adiciona uma turma à lista de turmas durante a execução do programa
+-- * clssData: lista de turmas atual
+-- * newClass: nova turma a ser adicionada
 saveClass :: [Class] -> Class -> [Class]
 saveClass clssData newClass = clssData ++ [newClass]
     
@@ -15,8 +17,8 @@ saveClass clssData newClass = clssData ++ [newClass]
 --saveClasses clssData = do
     --writeFile "src/data/class.txt" (show clssData ++ "\n")
 
---Função para escrever todas as turmas em um arquivo
---As turmas são geradas em tempo de execução. Elas podem ser lidas de um arquivo e alteradas ou adicionadas durante a execução do programa.
+-- | Função para escrever todas as turmas em um arquivo. As turmas são geradas em tempo de execução. Elas podem ser lidas de um arquivo e alteradas ou adicionadas durante a execução do programa.
+-- * classes: lista de turmas a serem salvas
 saveAllClasses :: [Class] -> IO ()
 saveAllClasses classes = do
     writeFile "src/data/class.txt" (intercalate "\n" (map show classes))

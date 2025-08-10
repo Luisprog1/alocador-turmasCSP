@@ -15,7 +15,11 @@ import Repository.ClassroomRepository
 import Repository.UserRepository
 import System.Console.ANSI
 import Utils.Schedule
+
 -- | Menu principal do administrador
+--- * id: ID do administrador
+--- * classes: lista de turmas  
+--- * classroom: lista de salas
 adminMenu :: Int -> [Class] -> [Classroom] -> IO ([Class], [Classroom])
 adminMenu id classes classroom = do
     drawHeader "ADMINISTRADOR"
@@ -62,7 +66,9 @@ adminMenu id classes classroom = do
             putStrLn "Opção inválida!"
             adminMenu id classes classroom
 
-
+-- | Gera alocações para as turmas e salva no arquivo. Se houver conflito, retorna a sala original.
+-- * clss: lista de turmas
+-- * classrooms: lista de salas
 generateAllocs :: [Class] -> [Classroom] -> IO [Classroom]
 generateAllocs clss classrooms = do
     let emptyRooms = resetClassrooms classrooms
@@ -77,6 +83,7 @@ generateAllocs clss classrooms = do
             putStrLn $ "Conflito encontrado com a turma: " ++ show (classId conflictCls)
             return classrooms
 
+-- | Visualiza todas as alocações salvas
 viewAllocs :: IO ()
 viewAllocs = do
     allocs <- getAllocs
@@ -106,6 +113,9 @@ createProfessor = do
             saveAllUsers (users ++ [novoProfessor])
             putStrLn "Professor cadastrado com sucesso!"
 
+-- | SubMenu para editar capacidade ou recursos de uma sala de aula já validada
+-- * classroom: lista de salas
+-- * idClassroom: código da sala a ser editada
 sub_menu_classroom :: [Classroom] -> String -> IO [Classroom]
 sub_menu_classroom classroom idClassroom = do
     drawHeader "SUBMENU SALA"
@@ -138,7 +148,8 @@ sub_menu_classroom classroom idClassroom = do
             putStrLn "Opção inválida!"
             sub_menu_classroom classroom idClassroom
 
-
+-- | Função para editar uma sala de aula
+--- * classrooms: lista de salas
 edit_classroom :: [Classroom] -> IO [Classroom]
 edit_classroom classrooms = do
     putStrLn "Informe o Código da sala que deseja alterar:"
@@ -160,7 +171,9 @@ edit_classroom classrooms = do
                 updatedClassrooms <- sub_menu_classroom classrooms code
                 return updatedClassrooms
 
-
+-- | Função para editar uma turma
+--- * idAdmin: ID do administrador
+--- * classes: lista de turmas
 editClass :: Int -> [Class] -> IO [Class]
 editClass idAdmin classes = do
     putStrLn "Informe o ID da turma que deseja editar (ou pressione Enter para cancelar):"
@@ -185,6 +198,10 @@ editClass idAdmin classes = do
                         classes' <- classSubMenu idAdmin classes (classId classObj)
                         return classes'
 
+-- | Submenu para editar uma turma já validada
+--- * idAdmin: ID do administrador
+--- * allClasses: lista de turmas
+--- * clssId: ID da turma a ser editada
 classSubMenu :: Int -> [Class] -> Int -> IO [Class]
 classSubMenu idAdmin allClasses clssId = do
     case find (\c -> classId c == clssId) allClasses of
@@ -247,7 +264,9 @@ classSubMenu idAdmin allClasses clssId = do
                     putStrLn "Opção inválida!"
                     classSubMenu idAdmin allClasses clssId
 
-
+-- | Função para adicionar ou remover os horários de uma turma
+-- * allClasses: lista de turmas
+-- * clss: turma a ser editada
 editSchedule :: [Class] -> Class -> IO [Class]
 editSchedule allClasses clss = do
     drawSubHeader "Escolha uma ação:"

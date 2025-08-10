@@ -37,6 +37,7 @@ parseUser linha =
         _ -> error ("Linha mal formatada em user.txt: " ++ linha)
 
 -- | Salva todos os usuários sobrescrevendo o arquivo 'user.txt'
+--- * users: lista de usuários a serem salvos
 saveAllUsers :: [User] -> IO ()
 saveAllUsers users =
     writeFile "src/data/user.txt" $
@@ -53,7 +54,11 @@ serializeUser (User tipo mat nome senha)
 -- -----------------------------
 
 -- | Registra um novo usuário (Administrador ou Professor)
--- Retorna True se sucesso, False se erro ou já existir admin
+-- | Retorna True se sucesso, False se erro ou já existir admin
+-- * tipo: 0 para admin, 1 para professor
+-- * matricula: matrícula do usuário
+-- * senha: senha do usuário
+-- * senhaConf: confirmação da senha
 registerUser :: Int -> Int -> String -> String -> String -> IO Bool
 registerUser tipo matricula _ senha senhaConf = do
     users <- getUsers
@@ -68,8 +73,11 @@ registerUser tipo matricula _ senha senhaConf = do
                 putStrLn "Tipo inválido!"
                 return False
 
--- | Registra um administrador (se não existir outro)
--- | Retorna True se cadastro bem-sucedido, False se admin já existe
+-- | Registra um administrador
+-- | Se já existir um administrador, não registra outro
+-- * users: lista de usuários atuais
+-- * matricula: matrícula do admin          
+-- * senha: senha do admin
 registerAdmin :: [User] -> Int -> String -> IO Bool
 registerAdmin users matricula senha =
     if null users || not (any (\u -> userTipo u == 0) users)
@@ -81,7 +89,10 @@ registerAdmin users matricula senha =
             return False
 
 -- | Registra senha de professor existente (primeiro login)
--- Retorna True se sucesso, False se matrícula não encontrada ou senha já cadastrada
+-- | Retorna True se sucesso, False se matrícula não encontrada ou senha já cadastrada
+-- * users: lista de usuários atuais
+-- * matricula: matrícula do professor
+-- * senha: senha do professor
 registerProfessor :: [User] -> Int -> String -> IO Bool
 registerProfessor users matricula senha =
     case filter (\u -> userMatricula u == matricula) users of
@@ -108,6 +119,8 @@ registerProfessor users matricula senha =
             return False
 
 -- | Faz login e retorna o tipo do usuário (0 = admin, 1 = professor)
+-- * matricula: matrícula do usuário
+-- * senha: senha do usuário
 loginUser :: Int -> String -> IO (Maybe Int)
 loginUser matricula senha = do
     users <- getUsers

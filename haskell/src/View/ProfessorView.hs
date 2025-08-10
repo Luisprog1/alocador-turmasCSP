@@ -10,6 +10,8 @@ import Repository.ClassRepository
 import View.UI (drawHeader, drawSubHeader)
 
 -- | A função recebe a lista de turmas e, caso haja alterações, retorna a lista atualizada.
+-- * clss: lista de turmas
+-- * idProfessor: ID do professor logado
 professorMenu :: [Class] -> Int -> IO [Class]
 professorMenu clss idProfessor = do
     drawHeader "PROFESSOR"
@@ -36,6 +38,8 @@ professorMenu clss idProfessor = do
             professorMenu clss idProfessor
 
 -- | Imprime as turmas do professor logado no sistema.
+-- * classes: lista de turmas
+-- * id: ID do professor logado
 view_allocations :: [Class] -> Int -> IO ()
 view_allocations classes id = do
     putStrLn "Carregando suas turmas..."

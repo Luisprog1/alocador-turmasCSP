@@ -12,6 +12,7 @@ import Repository.UserRepository
 import System.Console.ANSI
 
 -- | Função para criar uma nova turma. Ele recebe a lista de turmas manipulada durante a execução e retorna a lista atualizada com a nova turma.
+-- * clssData: lista de turmas já persistidas
 createClass :: [Class] -> IO [Class] 
 createClass clssData = do
     putStr "\ESC[2J"
