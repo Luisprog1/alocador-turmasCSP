@@ -1,5 +1,6 @@
 module View.ClassroomView where
 import Utils.Resources
+import Utils.IOUtils
 import Tipos
 import Repository.ClassroomRepository
 import Repository.ClassRepository
@@ -12,13 +13,11 @@ import View.UI (drawHeader)
 -- | Função para criar uma nova sala. Ele recebe a lista de salas manipulada durante a execução e retorna a lista atualizada com a nova sala.
 createClassRoom :: [Classroom] -> IO [Classroom]
 createClassRoom clsroomData = do
-    putStr "\ESC[2J"
+    clearScreen
     drawHeader "Cadastro de salas"
     putStrLn "Insira os dados da sala:"
 
-    putStr "Codigo da sala: "
-    hFlush stdout
-    code <- getLine
+    code <- readLine "Codigo da sala: "
 
     persistidas <- getClassroom
     let universo =
@@ -35,13 +34,9 @@ createClassRoom clsroomData = do
         _ <- getLine
         return clsroomData
       Nothing -> do
-        putStr "Capacidade: "
-        hFlush stdout
-        capacidade <- getLine
+        capacidade <- readLine "Capacidade: "
 
-        putStr "Bloco: "
-        hFlush stdout
-        bloco <- getLine
+        bloco <- readLine "Bloco: "
 
         drawSubHeader "Adicionar recursos: "
         resources <- readResources []

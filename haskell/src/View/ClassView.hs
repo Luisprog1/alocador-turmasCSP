@@ -7,6 +7,7 @@ import Data.List.Split (splitOn)
 import Utils.Resources
 import View.UI (drawHeader)
 import Utils.Schedule
+import Utils.IOUtils
 import View.UI 
 import Repository.UserRepository
 import System.Console.ANSI
@@ -18,12 +19,8 @@ createClass clssData = do
     drawHeader "Cadastro de Turmas"
     id <- return (genereteID clssData)
     putStrLn "Insira os dados da turma:"
-    putStr "Disciplina: "
-    hFlush stdout
-    disciplina <- getLine
-    putStr "Curso: "
-    hFlush stdout
-    curso <- getLine
+    disciplina <- readLine "Disciplina: "
+    curso <- readLine "Curso: "
 
     putStr "Professores Disponiveis:\n"
     users <- getUsers
@@ -32,17 +29,13 @@ createClass clssData = do
     mapM_ putStrLn [ "  -  " ++ userNome u ++ " [" ++ show (userMatricula u) ++ "]" | u <- professores ]
     setSGR [Reset]
 
-    putStr "Professor: "
-    hFlush stdout
-    profId <- getLine
+    profId <- readLine "Professor: "
 
     drawSubHeader "Adicionar horários"
     hFlush stdout
     horario <- readSchedule []
 
-    putStr "Quantidade de alunos: "
-    hFlush stdout
-    qtdAlunos <- getLine
+    qtdAlunos <- readLine "Quantidade de alunos: "
 
     drawSubHeader "Adicionar requisitos: "
     req <- readResources []
