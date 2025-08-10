@@ -4,7 +4,7 @@ module View.RegisterView where
 
 import Repository.UserRepository (User(..), registerUser, loginUser, getUsers, saveAllUsers)
 import System.IO
-import View.UI (drawHeader)
+import View.UI
 import Repository.ClassRepository (getClass, saveAllClasses)
 import Repository.ClassroomRepository (getClassroom, saveAllClassrooms)
 import Repository.AlocateRepository (getAllocs, saveAllocs)
@@ -20,7 +20,7 @@ userScreen = do
     drawHeader "BEM-VINDO AO SISTEMA"
     putStrLn "1 - Registrar"
     putStrLn "2 - Login"
-    option <- getLine
+    option <- readLine " "
     case option of
         "1" -> registerScreen
         "2" -> loginScreen

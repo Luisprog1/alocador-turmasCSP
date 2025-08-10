@@ -27,9 +27,7 @@ adminMenu id classes classroom = do
     putStrLn "5. Editar Sala"
     putStrLn "6. Editar Turma"
     putStrLn "7. Sair e salvar"
-    putStr "Opção: "
-    hFlush stdout
-    opcao <- getLine
+    opcao <- readLine "Opção: "
     case opcao of
         "1" -> do
             classroom' <- generateAllocs classes classroom
@@ -84,10 +82,9 @@ viewAllocs = do
 -- | Função para cadastrar professor (pré-cadastro sem senha)
 createProfessor :: IO ()
 createProfessor = do
-    putStrLn "Informe a matrícula do professor:"
-    matriculaStr <- getLine
-    putStrLn "Informe o nome do professor:"
-    nome <- getLine
+    
+    matriculaStr <- readLine "Informe a matrícula do professor: "
+    nome <- readLine "Informe o nome do professor:"
 
     let matricula = read matriculaStr :: Int
 
@@ -108,18 +105,15 @@ sub_menu_classroom classroom idClassroom = do
     putStrLn "1. Editar os recursos da sala"
     putStrLn "2. Editar a capacidade da sala"
     putStrLn "3. Salvar e sair"
-    hFlush stdout
-    opcao <- getLine
+    opcao <- readLine " "
     case opcao of
         "1" -> do
             updatedclassroom <- change_resources classroom idClassroom
             sub_menu_classroom updatedclassroom idClassroom
         "2" -> do
             setSGR [SetColor Foreground Dull Blue]
-            putStrLn "Informa a nova capacidade da sala:"
+            cap <- readLine "Informe a nova capacidade da sala:"
             setSGR [Reset]
-            hFlush stdout
-            cap <- getLine
             case readMaybe cap :: Maybe Int of
                 Nothing -> do 
                     putStrLn "ID inválido. Por favor, insira um número inteiro válido."
@@ -137,9 +131,7 @@ sub_menu_classroom classroom idClassroom = do
 
 edit_classroom :: [Classroom] -> IO [Classroom]
 edit_classroom classrooms = do
-    putStrLn "Informe o Código da sala que deseja alterar:"
-    hFlush stdout
-    idClassroom <- getLine
+    idClassroom <- readLine "Informe o Código da sala que deseja alterar:"
     if null idClassroom then do
         putStrLn "Edição cancelada."
         return classrooms
@@ -159,9 +151,7 @@ edit_classroom classrooms = do
 
 editClass :: Int -> [Class] -> IO [Class]
 editClass idAdmin classes = do
-    putStrLn "Informe o ID da turma que deseja editar (ou pressione Enter para cancelar):"
-    hFlush stdout
-    id <- getLine
+    id <- readLine "Informe o ID da turma que deseja editar (ou pressione Enter para cancelar):"
     if null id then do
         putStrLn "Edição cancelada."
         return classes
@@ -195,8 +185,7 @@ classSubMenu idAdmin allClasses clssId = do
             putStrLn "4. Editar quantidade de alunos"
             putStrLn "5. Remover turma"
             putStrLn "6. Voltar"
-            hFlush stdout
-            opcao <- getLine
+            opcao <- readLine " "
             case opcao of
                 "1" -> do
                     updatedClasses <- editSchedule allClasses clss
@@ -211,9 +200,7 @@ classSubMenu idAdmin allClasses clssId = do
                     putStrLn "Professores Disponíveis:\n"
                     mapM_ (putStrLn . ("  -  " ++) . userNome) professores
                     setSGR [Reset]
-                    putStrLn "Informe o ID do novo professor:"
-                    hFlush stdout
-                    profIdStr <- getLine
+                    profIdStr <- readLine "Informe o ID do novo professor:"
                     case readMaybe profIdStr :: Maybe Int of
                         Nothing -> do
                             putStrLn "ID inválido. Por favor, insira um número inteiro válido."
@@ -224,9 +211,7 @@ classSubMenu idAdmin allClasses clssId = do
                             putStrLn "Professor atualizado com sucesso!"
                             classSubMenu idAdmin updatedClasses (classId updatedClass)
                 "4" -> do
-                    putStrLn "Informe a nova quantidade de alunos:"
-                    hFlush stdout
-                    qtdStr <- getLine
+                    qtdStr <- readLine "Informe a nova quantidade de alunos:"
                     case readMaybe qtdStr :: Maybe Int of
                         Nothing -> do
                             putStrLn "Quantidade inválida. Por favor, insira um número inteiro válido."
@@ -249,8 +234,7 @@ editSchedule allClasses clss = do
     drawSubHeader "Escolha uma ação:"
     putStrLn "[a] Adicionar horário"
     putStrLn "[r] Remover horário"
-    hFlush stdout
-    action <- getLine
+    action <- readLine " "
     case action of
         "a" -> do
             newScheduleSlots <- readSchedule []
@@ -263,11 +247,9 @@ editSchedule allClasses clss = do
             putStrLn "Horários atuais:"
             mapM_ (putStrLn . show) (schedule clss)
             putStrLn "Informe o dia do horário que deseja remover:\n[1] Segunda   [2] Terça   [3] Quarta   [4] Quinta   [5] Sexta"
-            hFlush stdout
-            dayStr <- getLine
+            dayStr <- readLine " "
             putStrLn "Informe a hora do horário que deseja remover:\n[1] 08:00 - 10:00   [2] 10:00 - 12:00   [3] 14:00 - 16:00\n[4] 16:00 - 18:00   [5] 18:00 - 20:00   [6] 20:00 - 22:00"
-            hFlush stdout
-            hourStr <- getLine
+            hourStr <- readLine " "
             case (readMaybe dayStr :: Maybe Int, readMaybe hourStr :: Maybe Int) of
                 (Just dayNum, Just hourNum) | dayNum >= 1 && dayNum <= 5 && hourNum >= 1 && hourNum <= 6 -> do
                     let day = parseSchedule dayStr
