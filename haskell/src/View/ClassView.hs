@@ -7,7 +7,6 @@ import Data.List.Split (splitOn)
 import Utils.Resources
 import View.UI (drawHeader)
 import Utils.Schedule
-import Utils.IOUtils
 import View.UI 
 import Repository.UserRepository
 import System.Console.ANSI

@@ -1,5 +1,4 @@
-Classroom {classroomCode = "lab01", capacity = 45, block = "Bloco A", resources = [Acessibility,Projector,Laboratory], roomSchedule = fromList [(Segunda,[5,2,3,4]),(Terca,[2,1,4,5]),(Quarta,[1,4,3]),(Quinta,[6,1]),(Sexta,[2,3,6])]}
-Classroom {classroomCode = "bg101", capacity = 100, block = "bg", resources = [Laboratory,Whiteboard], roomSchedule = fromList [(Segunda,[4]),(Quarta,[3,4]),(Sexta,[3])]}
-Classroom {classroomCode = "caa302", capacity = 90, block = "caa", resources = [Projector], roomSchedule = fromList [(Segunda,[1,2]),(Terca,[6,2]),(Quarta,[1]),(Quinta,[2,1]),(Sexta,[5])]}
-Classroom {classroomCode = "cp001", capacity = 90, block = "cp", resources = [Projector,Laboratory], roomSchedule = fromList [(Terca,[2]),(Quarta,[1]),(Quinta,[1,2])]}
-Classroom {classroomCode = "SALA02", capacity = 50, block = "Bloco B", resources = [Projector,Acessibility], roomSchedule = fromList []}
+Classroom {classroomCode = "caa235", capacity = 23, block = "caa", resources = [Projector,Whiteboard], roomSchedule = fromList []}
+Classroom {classroomCode = "345", capacity = 432, block = "234", resources = [Laboratory,Acessibility,Whiteboard], roomSchedule = fromList []}
+Classroom {classroomCode = "caa403", capacity = 98, block = "caa", resources = [Laboratory], roomSchedule = fromList []}
+Classroom {classroomCode = "cd234", capacity = 34, block = "234", resources = [Whiteboard], roomSchedule = fromList []}
