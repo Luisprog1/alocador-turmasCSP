@@ -256,6 +256,18 @@ classSubMenu idAdmin allClasses clssId = do
                             let updatedClasses = map (\c -> if classId c == classId clss then updatedClass else c) allClasses
                             putStrLn "Quantidade de alunos atualizada com sucesso!"
                             classSubMenu idAdmin updatedClasses (classId updatedClass)
+                "5" -> do
+                    conf <- readLine ("Tem certeza que deseja remover a turma " ++ show clssId ++ "? (s/N): ")
+                    if conf `elem` ["s","S","sim","SIM","Sim"]
+                      then do
+                        let updatedClasses = filter (\c -> classId c /= clssId) allClasses
+                        saveAllClasses updatedClasses
+                        putStrLn "Turma removida com sucesso!"
+                        -- não volta para o submenu da turma, pois ela não existe mais
+                        return updatedClasses
+                      else do
+                        putStrLn "Remoção cancelada."
+                        classSubMenu idAdmin allClasses clssId
                 "6" -> do
                     saveAllClasses allClasses
                     return allClasses
