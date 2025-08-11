@@ -10,6 +10,7 @@ import Repository.ClassroomRepository (getClassroom, saveAllClassrooms)
 import Repository.AlocateRepository (getAllocs, saveAllocs)
 import View.AdminView (adminMenu)
 import View.ProfessorView 
+import Utils.Error (printError)
 
 -- | Tipos de entrada possíveis para o sistema
 data InputType = Tipo | Matricula | Senha
@@ -24,7 +25,7 @@ userScreen = do
     case option of
         "1" -> registerScreen
         "2" -> loginScreen
-        _   -> retry "Opção inválida!" userScreen
+        _   -> retryError "Opção inválida!" userScreen
 
 -- | Solicita entrada do usuário de acordo com o tipo (Tipo, Matrícula ou Senha)
 -- * Senha: entrada de senha com máscara
@@ -50,12 +51,18 @@ errorMessage Tipo      = "Opção inválida. Digite 0 (Administrador) ou 1 (Prof
 errorMessage Matricula = "Matrícula inválida. Digite apenas números."
 errorMessage Senha     = "Senha não pode ser vazia."
 
--- | Exibe mensagem de erro e repete a ação fornecida após pressionar Enter
+-- | Exibe uma mensagem e pausa (usado para SUCESSO/INFO).
 retry :: String -> IO a -> IO a
 retry message action = do
     putStrLn message
     putStrLn "\nPressione Enter para continuar..."
     _ <- getLine
+    action
+
+-- | Exibe uma mensagem de ERRO em vermelho e pausa (usa printError).
+retryError :: String -> IO a -> IO a
+retryError message action = do
+    printError message
     action
 
 -- | Tela de registro que redireciona para o fluxo de Administrador ou Professor
@@ -67,23 +74,23 @@ registerScreen = do
         then case tipo of
             "0" -> registerAdmin
             "1" -> registerProfessor
-            _   -> retry (errorMessage Tipo) registerScreen
-        else retry (errorMessage Tipo) registerScreen
+            _   -> retryError (errorMessage Tipo) registerScreen
+        else retryError (errorMessage Tipo) registerScreen
 
 -- | Fluxo de registro para Administrador
 registerAdmin :: IO ()
 registerAdmin = do
     matricula <- askInput Matricula "Matrícula: "
     if not (validate Matricula matricula)
-        then retry (errorMessage Matricula) registerAdmin
+        then retryError (errorMessage Matricula) registerAdmin
         else do
             senha     <- askInput Senha "Senha: "
             if not (validate Senha senha)
-                then retry (errorMessage Senha) registerAdmin
+                then retryError (errorMessage Senha) registerAdmin
                 else do
                     senhaConf <- askInput Senha "Confirme a senha: "
                     if not (validate Senha senhaConf)
-                        then retry (errorMessage Senha) registerAdmin
+                        then retryError (errorMessage Senha) registerAdmin
                         else do
                             resultado <- registerUser 0 (read matricula) "ADMIN" senha senhaConf
                             if resultado
@@ -95,17 +102,17 @@ registerProfessor :: IO ()
 registerProfessor = do
     matricula <- askInput Matricula "Informe sua matrícula: "
     if not (validate Matricula matricula)
-        then retry (errorMessage Matricula) registerProfessor
+        then retryError (errorMessage Matricula) registerProfessor
         else do
             users <- getUsers
             let matriculaInt = read matricula :: Int
                 profs = filter (\u -> userTipo u == 1 && userMatricula u == matriculaInt) users
             case profs of
-                [] -> retry "Matrícula não encontrada! Peça para o administrador cadastrá-lo primeiro." userScreen
+                [] -> retryError "Matrícula não encontrada! Peça para o administrador cadastrá-lo primeiro." userScreen
                 [User _ m nome senha]
                     | null senha -> setNewPassword users m nome
                     | otherwise  -> retry "Essa matrícula já possui senha. Faça login normalmente." userScreen
-                _ -> retry "Erro inesperado no cadastro." userScreen
+                _ -> retryError "Erro inesperado no cadastro." userScreen
 
 -- | Permite ao Professor cadastrar uma nova senha
 -- * users: lista de usuários atuais
@@ -116,7 +123,7 @@ setNewPassword users matricula nome = do
     putStrLn $ "Bem-vindo, " ++ nome ++ "! Cadastre sua nova senha:"
     novaSenha <- askInput Senha "Nova senha: "
     if not (validate Senha novaSenha)
-        then retry (errorMessage Senha) (setNewPassword users matricula nome)
+        then retryError (errorMessage Senha) (setNewPassword users matricula nome)
         else do
             confSenha <- askInput Senha "Confirme a nova senha: "
             if novaSenha == confSenha
@@ -127,7 +134,7 @@ setNewPassword users matricula nome = do
                                 else u) users
                     saveAllUsers usersAtualizados
                     retry "Senha cadastrada com sucesso! Agora faça login normalmente." userScreen
-                else retry "Senhas não conferem!" registerProfessor
+                else retryError "Senhas não conferem!" registerProfessor
 
 -- | Tela de login: verifica tipo de usuário e redireciona
 loginScreen :: IO ()
@@ -135,11 +142,11 @@ loginScreen = do
     drawHeader "SISTEMA DE LOGIN"
     matricula <- askInput Matricula "Matrícula: "
     if not (validate Matricula matricula)
-        then retry (errorMessage Matricula) loginScreen
+        then retryError (errorMessage Matricula) loginScreen
         else do
             senha <- askInput Senha "Senha: "
             if not (validate Senha senha)
-                then retry (errorMessage Senha) loginScreen
+                then retryError (errorMessage Senha) loginScreen
                 else do
                     tipoUsuario <- loginUser (read matricula) senha
                     case tipoUsuario of
@@ -156,7 +163,7 @@ loginScreen = do
                             classes' <- professorMenu classes (read matricula)
                             saveAllClasses classes'
                         Nothing ->
-                            retry "Matrícula ou senha incorretos!" userScreen
+                            retryError "Matrícula ou senha incorretos!" userScreen
 
 -- | Lê senha mascarando caracteres
 readPassword :: IO String

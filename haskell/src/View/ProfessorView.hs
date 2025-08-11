@@ -6,6 +6,7 @@ import System.IO (hFlush, stdout)
 import Repository.ClassRepository
 import View.UI (drawHeader, drawSubHeader)
 import Utils.Table (drawProfessorClassesTable)
+import Utils.Error (printError)
 
 -- | A função recebe a lista de turmas e, caso haja alterações, retorna a lista atualizada.
 -- * clss: lista de turmas
@@ -36,7 +37,7 @@ professorMenu clss idProfessor = do
             professorMenu clss' idProfessor
         "3" -> return clss
         _   -> do
-            putStrLn "Opção inválida. Tente novamente."
+            printError "Opção inválida. Tente novamente."
             professorMenu clss idProfessor
 
 -- | Imprime as turmas do professor logado no sistema.

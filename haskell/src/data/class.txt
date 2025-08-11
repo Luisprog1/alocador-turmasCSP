@@ -18,3 +18,4 @@ Class {classId = 17, subject = "OAC", course = "computacao", professorId = 1009,
 Class {classId = 18, subject = "P1", course = "computacao", professorId = 1002, schedule = [(Segunda,1),(Quarta,2)], quantity = 40, requirements = [Projector,Whiteboard,Acessibility]}
 Class {classId = 19, subject = "P1", course = "computacao", professorId = 1004, schedule = [(Segunda,1),(Quarta,2)], quantity = 40, requirements = [Projector,Whiteboard,Acessibility]}
 Class {classId = 20, subject = "grafos", course = "computacao", professorId = 1007, schedule = [(Terca,2),(Sexta,1)], quantity = 80, requirements = [Projector,Whiteboard,Acessibility]}
+Class {classId = 21, subject = "tc", course = "cc", professorId = 1020, schedule = [(Segunda,2)], quantity = 50, requirements = [Projector,Laboratory,Acessibility,Whiteboard]}

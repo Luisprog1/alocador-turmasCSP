@@ -10,6 +10,8 @@ import Utils.Schedule
 import View.UI 
 import Repository.UserRepository
 import System.Console.ANSI
+import Text.Read (readMaybe)
+import Utils.Error (printError)
 
 -- | Função para criar uma nova turma. Ele recebe a lista de turmas manipulada durante a execução e retorna a lista atualizada com a nova turma.
 -- * clssData: lista de turmas já persistidas
@@ -29,19 +31,40 @@ createClass clssData = do
     mapM_ putStrLn [ "  -  " ++ userNome u ++ " [" ++ show (userMatricula u) ++ "]" | u <- professores ]
     setSGR [Reset]
 
-    profId <- readLine "Professor: "
+    profIdStr <- readLine "Matrícula do professor: "
+    case readMaybe profIdStr :: Maybe Int of
+      Nothing -> do
+        printError "Matrícula do professor inválida. Digite um número inteiro."
+        createClass clssData
+      Just profIdNum ->
+        if any (\u -> userMatricula u == profIdNum && userTipo u == 1) professores
+          then do
+            drawSubHeader "Adicionar horários"
+            hFlush stdout
+            horario <- readSchedule []
 
-    drawSubHeader "Adicionar horários"
-    hFlush stdout
-    horario <- readSchedule []
+            qtdAlunosStr <- readLine "Quantidade de alunos: "
+            case readMaybe qtdAlunosStr :: Maybe Int of
+              Nothing -> do
+                printError "Quantidade de alunos inválida. Digite um número inteiro."
+                createClass clssData
+              Just qtdAlunos -> do
+                drawSubHeader "Adicionar requisitos: "
+                req <- readResources []
 
-    qtdAlunos <- readLine "Quantidade de alunos: "
-
-    drawSubHeader "Adicionar requisitos: "
-    req <- readResources []
-
-    let clss = Class {classId = id ,subject = disciplina, course = curso, professorId = read profId, schedule = horario, quantity = read qtdAlunos :: Int, requirements = req}
-    let updateClss = saveClass clssData clss
-    putStrLn ("Turma de id: " ++ show id ++ " cadastrada com sucesso!")
-    -- | Retorna a lista de turmas atualizada
-    return updateClss
+                let clss = Class
+                      { classId      = id
+                      , subject      = disciplina
+                      , course       = curso
+                      , professorId  = profIdNum
+                      , schedule     = horario
+                      , quantity     = qtdAlunos
+                      , requirements = req
+                      }
+                let updateClss = saveClass clssData clss
+                putStrLn ("Turma de id: " ++ show id ++ " cadastrada com sucesso!")
+                -- | Retorna a lista de turmas atualizada
+                return updateClss
+          else do
+            printError "Professor não encontrado na lista. Informe uma matrícula válida."
+            createClass clssData

@@ -16,6 +16,7 @@ import Repository.UserRepository
 import System.Console.ANSI
 import Utils.Schedule
 import Utils.Table (drawAllocationsTable)
+import Utils.Error (printError)
 
 -- | Menu principal do administrador
 --- * id: ID do administrador
@@ -63,7 +64,7 @@ adminMenu id classes classroom = do
         "8" -> do
             return (classes, classroom)
         _ -> do
-            putStrLn "Opção inválida!"
+            printError "Opção inválida!"
             adminMenu id classes classroom
 
 -- | Gera alocações para as turmas e salva no arquivo. Se houver conflito, retorna a sala original.
@@ -77,10 +78,10 @@ generateAllocs clss classrooms = do
         Right allocations -> do
             saveAllocs allocations
             putStrLn $ show (finalId - 1) ++ " alocações realizadas\nPressione enter para continuar"
-            stop <- getLine
+            _ <- getLine
             return newClassrooms
         Left conflictCls -> do
-            putStrLn $ "Conflito encontrado com a turma: " ++ show (classId conflictCls)
+            printError $ "Conflito encontrado com a turma: " ++ show (classId conflictCls)
             return classrooms
 
 -- | Visualiza todas as alocações salvas
@@ -117,7 +118,7 @@ createProfessor = do
     let existe = any (\u -> userMatricula u == matricula) users
 
     if existe
-        then putStrLn "Já existe um professor com essa matrícula!"
+        then printError "Já existe um professor com essa matrícula!"
         else do
             -- SALVA COM SENHA VAZIA
             let novoProfessor = User 1 matricula nome ""
@@ -144,7 +145,7 @@ sub_menu_classroom classroom idClassroom = do
             setSGR [Reset]
             case readMaybe cap :: Maybe Int of
                 Nothing -> do 
-                    putStrLn "ID inválido. Por favor, insira um número inteiro válido."
+                    printError "ID inválido. Por favor, insira um número inteiro válido."
                     sub_menu_classroom classroom idClassroom
                 Just cap -> do
                     let classroom' = map (\c -> if classroomCode c == idClassroom then c { capacity = cap } else c) classroom
@@ -153,7 +154,7 @@ sub_menu_classroom classroom idClassroom = do
             saveAllClassrooms (classroom)
             return classroom
         _  -> do
-            putStrLn "Opção inválida!"
+            printError "Opção inválida!"
             sub_menu_classroom classroom idClassroom
 
 -- | Função para editar uma sala de aula
@@ -170,7 +171,7 @@ edit_classroom classrooms = do
                                 (c:_) -> Just c
         case maybeClassroom of
             Nothing -> do
-                putStrLn "Código errado. Por favor, insira um código válido, ou pressione Enter para cancelar."
+                printError "Código errado. Por favor, insira um código válido, ou pressione Enter para cancelar."
                 edit_classroom classrooms
             Just classroomObj -> do
                 let code = classroomCode classroomObj
@@ -182,20 +183,20 @@ edit_classroom classrooms = do
 --- * classes: lista de turmas
 editClass :: Int -> [Class] -> IO [Class]
 editClass idAdmin classes = do
-    id <- readLine "Informe o ID da turma que deseja editar (ou pressione Enter para cancelar):"
+    id <- readLineMaybe "Informe o ID da turma que deseja editar (ou pressione Enter para cancelar):"
     if null id then do
         putStrLn "Edição cancelada."
         return classes
     else do
         case readMaybe id :: Maybe Int of
             Nothing -> do
-                putStrLn "ID inválido. Por favor, insira um número inteiro válido."
+                printError "ID inválido. Por favor, insira um número inteiro válido."
                 editClass idAdmin classes
             Just id -> do
                 let maybeClass = find (\c -> classId c == id) classes
                 case maybeClass of
                     Nothing -> do
-                        putStrLn "Turma não encontrada. Tente novamente."
+                        printError "Turma não encontrada. Tente novamente."
                         editClass idAdmin classes
                     Just classObj -> do
                         putStrLn $ "Editando turma: " ++ show (classId classObj)
@@ -210,7 +211,7 @@ classSubMenu :: Int -> [Class] -> Int -> IO [Class]
 classSubMenu idAdmin allClasses clssId = do
     case find (\c -> classId c == clssId) allClasses of
         Nothing -> do
-            putStrLn "Turma não encontrada."
+            printError "Turma não encontrada."
             return allClasses
         Just clss -> do
             drawSubHeader "SUBMENU TURMA"
@@ -238,7 +239,7 @@ classSubMenu idAdmin allClasses clssId = do
                     profIdStr <- readLine "Informe o ID do novo professor:"
                     case readMaybe profIdStr :: Maybe Int of
                         Nothing -> do
-                            putStrLn "ID inválido. Por favor, insira um número inteiro válido."
+                            printError "ID inválido. Por favor, insira um número inteiro válido."
                             classSubMenu idAdmin allClasses clssId
                         Just profId -> do
                             let updatedClass = clss { professorId = profId }
@@ -249,7 +250,7 @@ classSubMenu idAdmin allClasses clssId = do
                     qtdStr <- readLine "Informe a nova quantidade de alunos:"
                     case readMaybe qtdStr :: Maybe Int of
                         Nothing -> do
-                            putStrLn "Quantidade inválida. Por favor, insira um número inteiro válido."
+                            printError "Quantidade inválida. Por favor, insira um número inteiro válido."
                             classSubMenu idAdmin allClasses clssId
                         Just qtd -> do
                             let updatedClass = clss { quantity = qtd }
@@ -260,7 +261,7 @@ classSubMenu idAdmin allClasses clssId = do
                     saveAllClasses allClasses
                     return allClasses
                 _   -> do
-                    putStrLn "Opção inválida!"
+                    printError "Opção inválida!"
                     classSubMenu idAdmin allClasses clssId
 
 -- | Função para adicionar ou remover os horários de uma turma
@@ -296,8 +297,8 @@ editSchedule allClasses clss = do
                     putStrLn "Horário removido com sucesso!"
                     return updatedClasses
                 _ -> do
-                    putStrLn "Entrada inválida. Tente novamente."
+                    printError "Entrada inválida. Tente novamente."
                     return allClasses
         _ -> do 
-            putStrLn "Entrada inválida. Tente novamente."
+            printError "Entrada inválida. Tente novamente."
             return allClasses

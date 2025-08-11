@@ -101,12 +101,12 @@ change_requirements classes typeId profId classId = do
             putStrLn "1. Adicionar requisito"
             putStrLn "2. Remover requisito"
             putStrLn "3. Salvar e sair"
-            op <- readLine " "
+            op <- readLineMaybe " "
             case op of
               "1" -> do
                 drawSubHeader "Escolha uma opção:"
                 putStrLn resourcesMenu
-                req <- readLine " "
+                req <- readLineMaybe " "
                 if null req then do
                   change_requirements classes typeId profId classId
                 else if req `notElem` ["1", "2", "3", "4"] then do
@@ -118,7 +118,7 @@ change_requirements classes typeId profId classId = do
               "2" -> do
                 drawSubHeader "Escolha uma opção:"
                 putStrLn resourcesMenu
-                req <- readLine " "
+                req <- readLineMaybe " "
                 clss' <- removeRequirements (parseResource req) classId classes
                 return clss'
               "3" -> do
@@ -169,7 +169,7 @@ change_resources classrooms idClassroom = do
       "1" -> do
         drawSubHeader "Recursos disponíveis:"
         putStrLn resourcesMenu
-        req <- readLine " "
+        req <- readLineMaybe " "
         if null req then do
           change_resources classrooms idClassroom
         else case verifyResource req of
@@ -192,7 +192,7 @@ change_resources classrooms idClassroom = do
       "2" -> do
         drawSubHeader "Escolha uma opção:"
         putStrLn resourcesMenu
-        req <- readLine " "
+        req <- readLineMaybe " "
         case verifyResource req of
           Nothing -> do
             putStrLn "Opção inválida. Tente novamente."
