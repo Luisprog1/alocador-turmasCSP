@@ -157,6 +157,7 @@ loginScreen = do
                             (classes', classrooms') <- adminMenu 0 classes classrooms
                             saveAllClasses classes'
                             saveAllClassrooms classrooms'
+                            userScreen
                         Just 1 -> do
                             putStrLn "Carregando turmas..."
                             classes <- getClass
