@@ -15,6 +15,7 @@ import Repository.ClassroomRepository
 import Repository.UserRepository
 import System.Console.ANSI
 import Utils.Schedule
+import Utils.Table (drawAllocationsTable)
 
 -- | Menu principal do administrador
 --- * id: ID do administrador
@@ -38,7 +39,8 @@ adminMenu id classes classroom = do
             classroom' <- generateAllocs classes classroom
             adminMenu id classes classroom'
         "2" -> do
-            viewAllocs
+            -- usa as listas já carregadas em memória
+            viewAllocs classes classroom
             adminMenu id classes classroom
         "3" -> do
             createProfessor
@@ -82,13 +84,25 @@ generateAllocs clss classrooms = do
             return classrooms
 
 -- | Visualiza todas as alocações salvas
-viewAllocs :: IO ()
-viewAllocs = do
+-- | Visualiza todas as alocações salvas (com nomes e descrições amigáveis)
+viewAllocs :: [Class] -> [Classroom] -> IO ()
+viewAllocs classes classrooms = do
+    -- lê as alocações do repositório
     allocs <- getAllocs
-    mapM_ print allocs
-    putStrLn $ "Pressione enter para continuar"
-    stop <- getLine
-    return()
+    if null allocs
+      then do
+        putStrLn "Nenhuma alocação salva."
+        putStrLn "Pressione enter para continuar"
+        _ <- getLine
+        return ()
+      else do
+        -- busca usuários para resolver nome do professor
+        users <- getUsers
+        -- imprime tabela formatada (Professor, Sala, Horários, Turma por último)
+        drawAllocationsTable users classes classrooms allocs
+        putStrLn "\nPressione enter para continuar"
+        _ <- getLine
+        return ()
 
 -- | Função para cadastrar professor (pré-cadastro sem senha)
 createProfessor :: IO ()

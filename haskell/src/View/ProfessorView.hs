@@ -3,11 +3,9 @@ module View.ProfessorView where
 import Tipos
 import Utils.Resources
 import System.IO (hFlush, stdout)
-import Data.Char (toLower)
-import Text.Read (readMaybe)
-import Data.List.Split (splitOn)
 import Repository.ClassRepository
 import View.UI (drawHeader, drawSubHeader)
+import Utils.Table (drawProfessorClassesTable)
 
 -- | A função recebe a lista de turmas e, caso haja alterações, retorna a lista atualizada.
 -- * clss: lista de turmas
@@ -49,8 +47,7 @@ view_allocations classes id = do
     putStrLn "Carregando suas turmas..."
     let turmas = filter (\c -> id == professorId c) classes
     if null turmas
-        then putStrLn $ "Nenhuma turma encontrada para o professor de matrícula " ++ show id ++ "."
+        then putStrLn "Nenhuma turma encontrada."
         else do
-            putStrLn $ "Turmas do professor " ++ show id ++ ":"
-            mapM_ print turmas 
-
+            putStrLn "Suas turmas:\n"
+            drawProfessorClassesTable turmas
