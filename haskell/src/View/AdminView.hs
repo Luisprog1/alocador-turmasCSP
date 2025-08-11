@@ -15,7 +15,7 @@ import Repository.ClassroomRepository
 import Repository.UserRepository
 import System.Console.ANSI
 import Utils.Schedule
-import Utils.Table (drawAllocationsTable)  -- << usar tabela do util
+import Utils.Table (drawAllocationsTable)
 
 -- | Menu principal do administrador
 --- * id: ID do administrador

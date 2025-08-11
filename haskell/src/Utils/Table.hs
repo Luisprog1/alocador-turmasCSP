@@ -78,7 +78,7 @@ printAllocRow users classes wId wProf wSala wHora wTurm sep a = do
 abbrRequirement :: Resource -> String
 abbrRequirement Projector    = "Proj"
 abbrRequirement Whiteboard   = "Wboard"
-abbrRequirement Acessibility = "Acess"   -- seu construtor é 'Acessibility'
+abbrRequirement Acessibility = "Acess"
 abbrRequirement Laboratory   = "Lab"
 
 -- Formata lista de requisitos abreviados (recebe [Resource])
@@ -91,8 +91,8 @@ drawProfessorClassesTable turmas = do
     let wId   = 4   :: Int
         wHora = 20  :: Int
         wAlun = 7   :: Int
-        wReq  = 32  :: Int  -- mais espaço pros requisitos abreviados
-        wTurm = 60  :: Int  -- espaço final pro nome da turma
+        wReq  = 32  :: Int
+        wTurm = 60  :: Int
         sep   = "│"
         hline = replicate (wId + wHora + wAlun + wReq + wTurm + 4 * length sep + 4) '─'
 

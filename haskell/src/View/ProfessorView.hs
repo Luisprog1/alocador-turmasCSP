@@ -5,7 +5,7 @@ import Utils.Resources
 import System.IO (hFlush, stdout)
 import Repository.ClassRepository
 import View.UI (drawHeader, drawSubHeader)
-import Utils.Table (drawProfessorClassesTable) -- tabela reutilizável
+import Utils.Table (drawProfessorClassesTable)
 
 -- | A função recebe a lista de turmas e, caso haja alterações, retorna a lista atualizada.
 -- * clss: lista de turmas
