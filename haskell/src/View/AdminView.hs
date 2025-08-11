@@ -183,7 +183,7 @@ edit_classroom classrooms = do
 --- * classes: lista de turmas
 editClass :: Int -> [Class] -> IO [Class]
 editClass idAdmin classes = do
-    id <- readLine "Informe o ID da turma que deseja editar (ou pressione Enter para cancelar):"
+    id <- readLineMaybe "Informe o ID da turma que deseja editar (ou pressione Enter para cancelar):"
     if null id then do
         putStrLn "Edição cancelada."
         return classes

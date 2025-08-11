@@ -95,7 +95,7 @@ registerAdmin = do
                             resultado <- registerUser 0 (read matricula) "ADMIN" senha senhaConf
                             if resultado
                                 then retry "Administrador registrado com sucesso!" userScreen
-                                else retry "Já existe um administrador cadastrado! Voltando para tela inicial..." userScreen
+                                else retry "Administrador não cadastrado! Voltando para tela inicial..." userScreen
 
 -- | Fluxo de registro para Professor
 registerProfessor :: IO ()
