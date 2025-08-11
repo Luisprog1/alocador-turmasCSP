@@ -1,6 +1,7 @@
 module Repository.UserRepository where
 
 import Data.List.Split (splitOn)
+import Utils.Error (printError)
 
 -- Módulo responsável apenas por dados: CRUD de usuários
 
@@ -64,13 +65,13 @@ registerUser tipo matricula _ senha senhaConf = do
     users <- getUsers
     if senha /= senhaConf
         then do
-            putStrLn "Senhas não conferem!"
+            printError "Senhas não conferem!"
             return False
         else case tipo of
             0 -> registerAdmin users matricula senha
             1 -> registerProfessor users matricula senha
             _ -> do
-                putStrLn "Tipo inválido!"
+                printError "Tipo inválido!"
                 return False
 
 -- | Registra um administrador
@@ -97,7 +98,7 @@ registerProfessor :: [User] -> Int -> String -> IO Bool
 registerProfessor users matricula senha =
     case filter (\u -> userMatricula u == matricula) users of
         [] -> do
-            putStrLn "Matrícula não encontrada! Peça para o administrador adicioná-lo à lista de professores."
+            printError "Matrícula não encontrada! Peça para o administrador adicioná-lo à lista de professores."
             return False
         [professor]
             | null (userSenha professor) -> do
@@ -112,10 +113,10 @@ registerProfessor users matricula senha =
                 _ <- getLine
                 return True
             | otherwise -> do
-                putStrLn "Essa matrícula já possui senha. Faça login normalmente."
+                printError "Essa matrícula já possui senha. Faça login normalmente."
                 return False
         _ -> do
-            putStrLn "Erro inesperado: múltiplos usuários encontrados."
+            printError "Erro inesperado: múltiplos usuários encontrados."
             return False
 
 -- | Faz login e retorna o tipo do usuário (0 = admin, 1 = professor)
