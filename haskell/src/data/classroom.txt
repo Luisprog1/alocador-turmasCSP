@@ -7,3 +7,4 @@ Classroom {classroomCode = "lcc1", capacity = 50, block = "CP", resources = [Pro
 Classroom {classroomCode = "lcc2", capacity = 50, block = "CP", resources = [Projector,Laboratory,Whiteboard], roomSchedule = fromList []}
 Classroom {classroomCode = "lcc3", capacity = 100, block = "CP", resources = [Laboratory,Whiteboard], roomSchedule = fromList []}
 Classroom {classroomCode = "re09", capacity = 90, block = "REENGE", resources = [Projector,Acessibility,Whiteboard], roomSchedule = fromList [(Segunda,[2]),(Terca,[2]),(Quinta,[1]),(Sexta,[1])]}
+Classroom {classroomCode = "CAA407", capacity = 60, block = "CAA", resources = [Projector,Laboratory,Acessibility,Whiteboard], roomSchedule = fromList []}

@@ -8,6 +8,7 @@ import View.UI
 import System.IO (hFlush, stdout)
 import Data.List.Split (splitOn)
 import View.UI (drawHeader)
+import Utils.Error (printError)
 
 -- | Função para criar uma nova sala. Ele recebe a lista de salas manipulada durante a execução e retorna a lista atualizada com a nova sala.
 -- * clsroomData: lista de salas já persistidas
@@ -29,9 +30,7 @@ createClassRoom clsroomData = do
 
     case getClassroomByCode universo code of
       Just _  -> do
-        putStrLn "Já existe uma sala com esse código. Cadastro cancelado."
-        putStrLn "\nPressione Enter para continuar..."
-        _ <- getLine
+        printError "Já existe uma sala com esse código. Cadastro cancelado."
         return clsroomData
       Nothing -> do
         capacidade <- readLine "Capacidade: "

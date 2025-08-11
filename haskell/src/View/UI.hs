@@ -3,6 +3,7 @@ module View.UI where
 import System.Console.ANSI
 import System.IO (hFlush, stdout)
 import Data.Char (isSpace)
+import Data.List (dropWhileEnd)
 
 logo :: String
 logo =
@@ -38,16 +39,28 @@ drawSubHeader subtitle = do
     putStrLn (subtitle ++ " ---")
     setSGR [Reset]
 
--- | Função para ler uma linha da entrada padrão
+-- | Trim simples (sem precisar de reverse duas vezes)
+trim :: String -> String
+trim = dropWhile isSpace . dropWhileEnd isSpace
+
+-- | Quando a entrada é OBRIGATÓRIA (não aceita vazio)
 readLine :: String -> IO String
 readLine prompt = do
-    putStr prompt
-    hFlush stdout
-    line <- getLine
-    let trimmed = dropWhile isSpace (reverse (dropWhile isSpace (reverse line)))
-    if null trimmed
-        then do
-            putStrLn "Entrada vazia, por favor tente novamente."
-            readLine prompt
-        else
-            return trimmed
+  putStr prompt
+  hFlush stdout
+  line <- getLine
+  let t = trim line
+  if null t
+     then do
+       putStrLn "Entrada vazia, por favor tente novamente."
+       readLine prompt
+     else
+       return t
+
+-- | Quando a entrada PODE ser vazia (Enter para cancelar/voltar)
+readLineMaybe :: String -> IO String
+readLineMaybe prompt = do
+  putStr prompt
+  hFlush stdout
+  line <- getLine
+  return (trim line)
