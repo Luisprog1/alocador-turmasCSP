@@ -52,7 +52,7 @@ tryAllocateClass currentId clss restClasses allRooms (room:otherRooms) =
         in
         case subAllocation of
             Right subAlloc -> (Right (createAllocation currentId clss room : subAlloc), finalSubId, finalRooms)
-            Left conflictCls -> (Left conflictCls, currentId, allRooms)
+            Left conflictCls -> tryAllocateClass currentId clss restClasses allRooms otherRooms
     else
         tryAllocateClass currentId clss restClasses allRooms otherRooms
 
