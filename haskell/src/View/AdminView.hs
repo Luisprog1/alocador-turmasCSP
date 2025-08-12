@@ -18,6 +18,25 @@ import Utils.Schedule
 import Utils.Table (drawAllocationsTable)
 import Utils.Error (printError)
 
+-- ===== Helpers de listagem (mostram [ID] + rótulo legível) =====
+rotuloTurma :: Class -> String
+rotuloTurma c = "[" ++ show (classId c) ++ "] " ++ subject c ++ " (" ++ course c ++ ")" ++ " - horário: " ++ show (schedule c)
+
+rotuloSala :: Classroom -> String
+rotuloSala s = "[" ++ classroomCode s ++ "] " ++ "Bloco " ++ block s ++ " - cap " ++ show (capacity s) ++ " - recursos: " ++ show (resources s)
+
+listarTurmas :: [Class] -> IO ()
+listarTurmas cs = 
+  if null cs 
+    then putStrLn "(nenhuma turma cadastrada)"
+    else mapM_ (putStrLn . rotuloTurma) cs
+
+listarSalas :: [Classroom] -> IO ()
+listarSalas ss = 
+  if null ss
+    then putStrLn "(nenhuma sala cadastrada)"
+    else mapM_ (putStrLn . rotuloSala) ss
+
 -- | Menu principal do administrador
 --- * id: ID do administrador
 --- * classes: lista de turmas  
@@ -56,9 +75,13 @@ adminMenu id classes classroom = do
             putStrLn "Turma cadastrada com sucesso!"
             adminMenu id classes' classroom
         "6" -> do 
+            putStrLn "\nSalas existentes:"
+            listarSalas classroom
             classroom' <- edit_classroom classroom
             adminMenu id classes classroom'
         "7" -> do
+            putStrLn "\nTurmas existentes:"
+            listarTurmas classes
             classes' <- editClass id classes
             adminMenu id classes' classroom
         "8" -> do
@@ -66,6 +89,7 @@ adminMenu id classes classroom = do
         _ -> do
             printError "Opção inválida!"
             adminMenu id classes classroom
+
 
 -- | Gera alocações para as turmas e salva no arquivo. Se houver conflito, retorna a sala original.
 -- * clss: lista de turmas
@@ -130,7 +154,7 @@ createProfessor = do
 -- * idClassroom: código da sala a ser editada
 sub_menu_classroom :: [Classroom] -> String -> IO [Classroom]
 sub_menu_classroom classroom idClassroom = do
-    drawHeader "SUBMENU SALA"
+    drawSubHeader "SUBMENU SALA"
     putStrLn "1. Editar os recursos da sala"
     putStrLn "2. Editar a capacidade da sala"
     putStrLn "3. Salvar e sair"
@@ -230,11 +254,11 @@ classSubMenu idAdmin allClasses clssId = do
                     updatedClasses <- change_requirements allClasses 0 idAdmin clssId
                     classSubMenu idAdmin updatedClasses clssId
                 "3" -> do
+                    putStr "Professores:\n"
                     users <- getUsers
                     let professores = filter (\u -> userTipo u == 1) users
                     setSGR [SetColor Foreground Vivid Green]
-                    putStrLn "Professores Disponíveis:\n"
-                    mapM_ (putStrLn . ("  -  " ++) . userNome) professores
+                    mapM_ putStrLn [ "  -  " ++ userNome u ++ " [" ++ show (userMatricula u) ++ "]" | u <- professores ]
                     setSGR [Reset]
                     profIdStr <- readLine "Informe o ID do novo professor:"
                     case readMaybe profIdStr :: Maybe Int of
