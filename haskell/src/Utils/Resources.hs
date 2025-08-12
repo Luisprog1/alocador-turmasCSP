@@ -97,7 +97,7 @@ change_requirements classes typeId profId classId = do
         stop <- getLine
         return classes
       Just True -> do
-            drawHeader "ALTERAR REQUISITOS"
+            drawSubHeader "ALTERAR REQUISITOS"
             putStrLn "1. Adicionar requisito"
             putStrLn "2. Remover requisito"
             putStrLn "3. Salvar e sair"
@@ -158,7 +158,7 @@ removeResources resource classroomCode' classrooms = do
 -- * idClassroom: código da sala de aula
 change_resources :: [Classroom] -> String -> IO [Classroom]
 change_resources classrooms idClassroom = do
-    drawHeader "ALTERAR RECURSOS"
+    drawSubHeader "ALTERAR RECURSOS"
     drawSubHeader "Escolha uma opção:"
     putStrLn "1. Adicionar recurso"
     putStrLn "2. Remover recurso"
