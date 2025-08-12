@@ -163,6 +163,7 @@ loginScreen = do
                             classes <- getClass
                             classes' <- professorMenu classes (read matricula)
                             saveAllClasses classes'
+                            userScreen
                         Nothing ->
                             retryError "Matrícula ou senha incorretos!" userScreen
 
