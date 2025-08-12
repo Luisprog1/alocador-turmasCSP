@@ -18,3 +18,4 @@ Allocation {allocationId = 17, allocClassId = 17, allocProfessorId = 1009, alloc
 Allocation {allocationId = 18, allocClassId = 18, allocProfessorId = 1002, allocClassroomCode = "caa101"}
 Allocation {allocationId = 19, allocClassId = 19, allocProfessorId = 1004, allocClassroomCode = "lcc1"}
 Allocation {allocationId = 20, allocClassId = 20, allocProfessorId = 1007, allocClassroomCode = "caa101"}
+Allocation {allocationId = 21, allocClassId = 21, allocProfessorId = 1020, allocClassroomCode = "lcc1"}

@@ -81,7 +81,7 @@ generateAllocs clss classrooms = do
             _ <- getLine
             return newClassrooms
         Left conflictCls -> do
-            printError $ "Conflito encontrado com a turma: " ++ show (classId conflictCls)
+            printError $ "Conflito encontrado entre turmas"
             return classrooms
 
 -- | Visualiza todas as alocações salvas
