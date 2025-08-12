@@ -1,5 +1,5 @@
 0;0;ADMIN;0000
-1;1001;Ricardo;prof
+1;1001;Ricardo
 1;1002;Dalton Serey
 1;1003;Jorge Figueiredo
 1;1004;Wilkerson
@@ -7,10 +7,9 @@
 1;1006;Claudio Campelo
 1;1007;Patricia
 1;1008;Livia
-1;1009;Joseana;profa
+1;1009;Joseana
 1;1010;Eanes Torres
 1;1011;Marcelo
 1;1012;Francisco Brasileiro
 1;1013;Eliane
 1;1014;Melina
-1;1020;Jennifer
