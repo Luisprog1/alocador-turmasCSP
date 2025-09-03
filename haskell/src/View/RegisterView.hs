@@ -157,11 +157,13 @@ loginScreen = do
                             (classes', classrooms') <- adminMenu 0 classes classrooms
                             saveAllClasses classes'
                             saveAllClassrooms classrooms'
+                            userScreen
                         Just 1 -> do
                             putStrLn "Carregando turmas..."
                             classes <- getClass
                             classes' <- professorMenu classes (read matricula)
                             saveAllClasses classes'
+                            userScreen
                         Nothing ->
                             retryError "Matrícula ou senha incorretos!" userScreen
 
