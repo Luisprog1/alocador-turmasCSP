@@ -1,4 +1,5 @@
 :- dynamic(class/7).
+:- ensure_loaded('src/dados.pl').
 
 entry_class :-
     write('ID: '), read_line_to_string(user_input, ID),
