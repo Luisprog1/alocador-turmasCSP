@@ -1,5 +1,7 @@
 :- dynamic(class/7).
 :- ensure_loaded('src/dados.pl').
+:- ensure_loaded('src/save.pl').
+:- load_classes('src/rules/classes.pl').
 
 entry_class :-
     write('ID: '), read_line_to_string(user_input, ID),
@@ -10,16 +12,4 @@ entry_class :-
     write('vagas: '), read_line_to_string(user_input, Vagas),
     write('recursos: '), read_line_to_string(user_input, Recursos),
     assertz(class(ID, Disciplina, Curso, ProfessorID, Horario, Vagas, Recursos)),
-    save_classes('src/repository/classes.pl').
-
-save_classes('src/repository/classes.pl') :-
-    open('src/repository/classes.pl', write, Stream),
-    forall(
-        class(ID, Disciplina, Curso, ProfessorID, Horario, Vagas, Recursos),
-        (writeq(Stream, class(ID, Disciplina, Curso, ProfessorID, Horario, Vagas, Recursos)), write(Stream, '.'), nl(Stream))
-    ),
-    close(Stream).
-
-load_classes('src/repository/classes.pl') :-
-    exists_files('src/repository/classes.pl'),
-    consult('src/repository/classes.pl').
+    save_classes('src/rules/classes.pl').
