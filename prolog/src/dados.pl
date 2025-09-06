@@ -91,3 +91,5 @@ curso('Engenharia de Software').
 curso('Sistemas de Informação').
 curso('Análise e Desenvolvimento de Sistemas').
 recursos('projector').
+role("admin").
+role("professor").
