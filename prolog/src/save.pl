@@ -25,7 +25,7 @@ save_users(File) :-
 save_ocupacao_sala(File) :- 
     open(File, write, Stream), 
     forall(   
-        horario_ocupado(Id_sala, Dia, Hora), 
-        (writeq(Stream, horario_ocupado(Id_sala, Dia, Hora)), write(Stream, '.'), nl(Stream)) 
+        horario_ocupado(Id_turma, Id_sala, Dia, Hora), 
+        (writeq(Stream, horario_ocupado(Id_turma, Id_sala, Dia, Hora)), write(Stream, '.'), nl(Stream)) 
     ), 
     close(Stream).
