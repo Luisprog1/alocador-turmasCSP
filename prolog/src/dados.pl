@@ -1,3 +1,4 @@
+:- encoding(utf8).
 disciplina("Álgebra Linear I").
 disciplina("Análise de Sistemas").
 disciplina("Análise e Técnicas de Algoritmos").
@@ -86,10 +87,13 @@ disciplina("Tópicos em Ciência da Computação II").
 disciplina("Transformação Digital").
 disciplina("Verificação e Validação de Software").
 disciplina("Visualização de Dados").
-curso('Ciência da Computação').
-curso('Engenharia de Software').
-curso('Sistemas de Informação').
-curso('Análise e Desenvolvimento de Sistemas').
-recursos('projector').
+curso("Ciência da Computação").
+curso("Engenharia de Software").
+curso("Sistemas de Informação").
+curso("Análise e Desenvolvimento de Sistemas").
+recursos("1","Projetor").
+recursos("2","Acessibilidade").
+recursos("3","Quadro Branco").
+recursos("4","Laboratório").
 role("admin").
 role("professor").

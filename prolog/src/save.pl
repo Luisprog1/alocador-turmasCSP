@@ -1,7 +1,8 @@
+:- encoding(utf8).
 save_classes(File) :-
     open(File, write, Stream),
     forall(
-        class(ID, Disciplina, Curso, ProfessorID, Horario, Vagas, Recursos),
+        class(ID, Disciplina, Curso, ProfessorID, Horario, Vagas, Requisitos),
         (writeq(Stream, class(ID, Disciplina, Curso, ProfessorID, Horario, Vagas, Requisitos)), write(Stream, '.'), nl(Stream))
     ),
     close(Stream).
