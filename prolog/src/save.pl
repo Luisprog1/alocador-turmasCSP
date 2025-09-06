@@ -21,3 +21,11 @@ save_users(File) :-
         (writeq(Stream, user(ID, Name, Password, Role)), write(Stream, '.'), nl(Stream))
     ),
     close(Stream).
+
+save_ocupacao_sala(File) :- 
+    open(File, write, Stream), 
+    forall(   
+        horario_ocupado(Id_turma, Id_sala, Dia, Hora), 
+        (writeq(Stream, horario_ocupado(Id_turma, Id_sala, Dia, Hora)), write(Stream, '.'), nl(Stream)) 
+    ), 
+    close(Stream).
