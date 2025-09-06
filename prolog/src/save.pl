@@ -13,3 +13,11 @@ save_classrooms(File) :-
         (writeq(Stream, classroom(ID, Block, Capacity, Resources, Schedule)), write(Stream, '.'), nl(Stream))
     ),
     close(Stream).
+
+save_users(File) :-
+    open(File, write, Stream),
+    forall(
+        user(ID, Name, Password, Role),
+        (writeq(Stream, user(ID, Name, Password, Role)), write(Stream, '.'), nl(Stream))
+    ),
+    close(Stream).
