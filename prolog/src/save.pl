@@ -1,10 +1,15 @@
-save_classes('src/rules/classes.pl') :-
-    open('src/rules/classes.pl', write, Stream),
+save_classes(File) :-
+    open(File, write, Stream),
     forall(
         class(ID, Disciplina, Curso, ProfessorID, Horario, Vagas, Recursos),
-        (writeq(Stream, class(ID, Disciplina, Curso, ProfessorID, Horario, Vagas, Recursos)), write(Stream, '.'), nl(Stream))
+        (writeq(Stream, class(ID, Disciplina, Curso, ProfessorID, Horario, Vagas, Requisitos)), write(Stream, '.'), nl(Stream))
     ),
     close(Stream).
 
-load_classes('src/rules/classes.pl') :-
-    consult('src/rules/classes.pl').
+save_classrooms(File) :-
+    open(File, write, Stream),
+    forall(
+        classroom(ID, Capacity, Block, Resources, Schedule),
+        (writeq(Stream, classroom(ID, Block, Capacity, Resources, Schedule)), write(Stream, '.'), nl(Stream))
+    ),
+    close(Stream).

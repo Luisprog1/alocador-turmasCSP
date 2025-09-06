@@ -1,7 +1,7 @@
 :- dynamic(class/7).
-:- ensure_loaded('src/dados.pl').
-:- ensure_loaded('src/save.pl').
-:- load_classes('src/rules/classes.pl').
+:- ensure_loaded('dados.pl').
+:- ensure_loaded('save.pl').
+:- consult('rules/classes.pl').
 
 entry_class :-
     write('ID: '), read_line_to_string(user_input, ID),
@@ -10,6 +10,14 @@ entry_class :-
     write('professor: '), read_line_to_string(user_input, ProfessorID),
     write('horario: '), read_line_to_string(user_input, Horario),
     write('vagas: '), read_line_to_string(user_input, Vagas),
-    write('recursos: '), read_line_to_string(user_input, Recursos),
-    assertz(class(ID, Disciplina, Curso, ProfessorID, Horario, Vagas, Recursos)),
-    save_classes('src/rules/classes.pl').
+    write('requisitos: '), read_line_to_string(user_input, Requisitos),
+    assertz(class(ID, Disciplina, Curso, ProfessorID, Horario, Vagas, Requisitos)),
+    save_classes('rules/classes.pl').
+
+entry_classroom :-
+    write('Código da sala: '), read_line_to_string(user_input, ID),
+    write('Bloco: '), read_line_to_string(user_input, Block),
+    write('Capacidade: '), read_line_to_string(user_input, Capacity),
+    write('Recursos: '), read_line_to_string(user_input, Resources),
+    assertz(classroom(ID, Block, Capacity, Resources, '')),
+    save_classrooms('rules/classrooms.pl').
