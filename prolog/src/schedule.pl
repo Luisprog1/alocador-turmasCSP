@@ -17,7 +17,7 @@ menu_hora("4", '16-18'):- !.
 menu_hora("5", '18-20'):- !.
 menu_hora("6", '20-22'):- !.
 
-read_day(Id_turma, Id_sala, Dia, Hora):-
+read_schedule(Id_turma, Id_sala, Dia, Hora):-
     write('Escolha um dia:\n'),
     write('1. Segunda   2. Terça    3. Quarta   4. Quinta    5. Sexta\n'),
     read_line_to_string(user_input, Dia_op),
@@ -25,7 +25,7 @@ read_day(Id_turma, Id_sala, Dia, Hora):-
         true
     ;
         write('\nOpção inválida, tente novamente.\n'), nl,
-        read_day(Id_turma, Id_sala, New_Dia, New_Hora)  
+        read_schedule(Id_turma, Id_sala, New_Dia, New_Hora)  
     ),
     write('Escolha o horario:\n'),
     write('\n1. [08-10]   2. [10-12]  3. [14-16]\n4. [16-18]  5. [18-20]  6.[20-22]\n'),
@@ -34,13 +34,13 @@ read_day(Id_turma, Id_sala, Dia, Hora):-
         true
     ;
         write('\nOpção inválida, tente novamente.\n'), nl,
-        read_day(Id_turma, Id_sala, New_Dia, New_Hora) 
+        read_schedule(Id_turma, Id_sala, New_Dia, New_Hora) 
     ),
-    (   horario_ocupado(_, Id_sala, Dia, Hora) -> write('\nErro: sala já ocupada nesse dia e horário.\n'), nl, read_day(Id_turma, Id_sala, New_Dia, New_Hora);
-        horario_ocupado(Id_turma, _, Dia, Hora) -> write('\nErro: turma já possui aula nesse dia e horário.\n'), nl, read_day(Id_turma, Id_sala, New_Dia, New_Hora);
+    (   horario_ocupado(_, Id_sala, Dia, Hora) -> write('\nErro: sala já ocupada nesse dia e horário.\n'), nl, read_schedule(Id_turma, Id_sala, New_Dia, New_Hora);
+        horario_ocupado(Id_turma, _, Dia, Hora) -> write('\nErro: turma já possui aula nesse dia e horário.\n'), nl, read_schedule(Id_turma, Id_sala, New_Dia, New_Hora);
         assertz(horario_ocupado(Id_turma, Id_sala, Dia, Hora)),
         save_ocupacao_sala('rules/horarios_ocupados_sala.pl'),
         write('Horário adicionado com sucesso.'), nl,!
     ), 
     write('Deseja adicionar mais algum horário? (s/n) '), read_line_to_string(user_input, Choice),
-            Choice = "s" ->  read_day(Id_turma, Id_sala, New_Dia, New_Hora).
+            Choice = "s" ->  read_schedule(Id_turma, Id_sala, New_Dia, New_Hora).
