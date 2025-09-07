@@ -87,6 +87,8 @@ disciplina("Tópicos em Ciência da Computação II").
 disciplina("Transformação Digital").
 disciplina("Verificação e Validação de Software").
 disciplina("Visualização de Dados").
+disciplina("teste").
+curso("teste").
 curso("Ciência da Computação").
 curso("Engenharia de Software").
 curso("Sistemas de Informação").

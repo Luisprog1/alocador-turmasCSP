@@ -1,8 +1,12 @@
 :- encoding(utf8).
+:- dynamic(class/6).
+:- dynamic(classroom/4).
+:- dynamic(user/4).
+
 read_classId(ID) :-
     write('ID da turma: '), read_line_to_string(user_input, Input),
     (number_string(Number, Input), Number > 0 ->
-        (class(Input, _, _, _, _, _, _) -> (write('Já existe uma turma com esse ID. Tente novamente.\n'), read_classId(ID)) 
+        (class(Input, _, _, _, _, _) -> (write('Já existe uma turma com esse ID. Tente novamente.\n'), read_classId(ID)) 
         ; ID = Input)
     ).
 
