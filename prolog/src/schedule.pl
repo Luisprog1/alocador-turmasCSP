@@ -47,7 +47,7 @@ read_schedule(Id_turma, Dia, Hora):-
         ; assertz(horario_turma(Id_turma, Dia, Hora)),
           save_ocupacao_sala('rules/horarios_turmas.pl'),
           write('Horário adicionado com sucesso.'), nl,
-          write('Deseja adicionar mais algum requisito? (s/n) '), read_line_to_string(user_input, Choice),
+          write('Deseja adicionar mais algum horário? (s/n) '), read_line_to_string(user_input, Choice),
             (Choice = "s" -> read_schedule(Id_turma, Dia2, Hora2); !)
         )
       )
