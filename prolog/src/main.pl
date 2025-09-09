@@ -3,7 +3,8 @@
 :- dynamic(user/4).
 :- use_module(library(strings)).
 :- ensure_loaded('dados.pl').
-:- ensure_loaded('save.pl').
+:- ensure_loaded('repository/save.pl').
+:- ensure_loaded('repository/utils-classroom.pl').
 :- ensure_loaded('validacao.pl').
 :- ensure_loaded('schedule.pl').
 :- consult('rules/users.pl').
@@ -32,8 +33,9 @@ entry_classroom :-
 
 edit_classroom_capacity :-
     consult('rules/classrooms.pl'),
-    read_classroomId(ID),
-    update_capacity(ID,Capacidade)
+    get_classroom(ID),
+    read_capacity(Capacidade),
+    update_capacity(ID,Capacidade).
     
 entry_user :-
     read_user_id(ID),

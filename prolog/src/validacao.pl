@@ -63,3 +63,10 @@ read_capacity(Capacidade) :-
     ; write('Capacidade inválida. Digite um número positivo.\n'),
       read_capacity(Capacidade)
     ).
+
+get_classroom(ID) :-
+    write('ID da sala: '), read_line_to_string(user_input, Input),
+    (number_string(Number, Input), Number > 0 ->
+        (classroom(Input, _, _, _) -> (ID = Input) 
+        ; (write('Não existe uma sala com esse ID. Tente novamente.\n'), get_classroom(ID)))
+    ).
