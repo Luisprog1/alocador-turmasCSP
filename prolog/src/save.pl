@@ -15,7 +15,7 @@ save_classrooms(File) :-
     open(File, write, Stream),
     forall(
         classroom(ID, Capacidade, Bloco, Recursos),
-        (writeq(Stream, classroom(ID, Bloco, Capacidade, Recursos)), write(Stream, '.'), nl(Stream))
+        (writeq(Stream, classroom(ID, Capacidade, Bloco, Recursos)), write(Stream, '.'), nl(Stream))
     ),
     close(Stream).
 

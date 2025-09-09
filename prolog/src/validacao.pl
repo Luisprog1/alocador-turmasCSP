@@ -54,3 +54,12 @@ read_func_user(Role) :-
         )
         ;write('Função inválida. Tente novamente.\n'), read_func_user(Role)
     ).
+
+read_capacity(Capacidade) :-
+    write('Capacidade: '), 
+    read_line_to_string(user_input, Input),
+    ( number_string(Number, Input), Number > 0 ->
+        Capacidade = Number
+    ; write('Capacidade inválida. Digite um número positivo.\n'),
+      read_capacity(Capacidade)
+    ).

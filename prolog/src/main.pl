@@ -22,13 +22,13 @@ entry_class :-
     save_classes('rules/classes.pl').
 
 entry_classroom :-
+    consult('rules/classrooms.pl'),
     read_classroomId(ID),
     write('Bloco: '), read_line_to_string(user_input, Bloco),
-    write('Capacidade: '), read_line_to_string(user_input, Capacidade),
+    read_capacity(Capacidade),
     write('Recursos: '), read_line_to_string(user_input, Recursos),
     assertz(classroom(ID, Bloco, Capacidade, Recursos)),
     save_classrooms('rules/classrooms.pl').
-
 
 entry_user :-
     read_user_id(ID),
