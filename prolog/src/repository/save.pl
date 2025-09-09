@@ -6,8 +6,8 @@
 save_classes(File) :-
     open(File, write, Stream),
     forall(
-        class(ID, Disciplina, Curso, ProfessorID, Vagas, Requisitos),
-        (writeq(Stream, class(ID, Disciplina, Curso, ProfessorID, Vagas, Requisitos)), write(Stream, '.'), nl(Stream))
+        class(ID, Disciplina, Curso, ProfessorID, Capacidade, Requisitos),
+        (writeq(Stream, class(ID, Disciplina, Curso, ProfessorID, Capacidade, Requisitos)), write(Stream, '.'), nl(Stream))
     ),
     close(Stream).
 
@@ -15,7 +15,7 @@ save_classrooms(File) :-
     open(File, write, Stream),
     forall(
         classroom(ID, Capacidade, Bloco, Recursos),
-        (writeq(Stream, classroom(ID, Bloco, Capacidade, Recursos)), write(Stream, '.'), nl(Stream))
+        (writeq(Stream, classroom(ID, Capacidade, Bloco, Recursos)), write(Stream, '.'), nl(Stream))
     ),
     close(Stream).
 

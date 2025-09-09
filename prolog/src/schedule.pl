@@ -1,6 +1,6 @@
 :- encoding(utf8).
 :- ensure_loaded('dados.pl').
-:- ensure_loaded('save.pl').
+:- ensure_loaded('repository/save.pl').
 :- consult('rules/horarios_turmas.pl').
 :- dynamic(horario_turma/3).
 
