@@ -16,9 +16,9 @@ entry_class :-
     read_curso(Curso),
     write('professor: '), read_line_to_string(user_input, ProfessorID),
     write('horario: '), read_schedule(ID, _, _),
-    write('vagas: '), read_line_to_string(user_input, Vagas),
+    read_capacity(Capacidade),
     read_recursos([],Requisitos),
-    assertz(class(ID, Disciplina, Curso, ProfessorID, Vagas, Requisitos)),
+    assertz(class(ID, Disciplina, Curso, ProfessorID, Capacidade, Requisitos)),
     save_classes('rules/classes.pl').
 
 entry_classroom :-
