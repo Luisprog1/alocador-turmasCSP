@@ -30,6 +30,11 @@ entry_classroom :-
     assertz(classroom(ID, Bloco, Capacidade, Recursos)),
     save_classrooms('rules/classrooms.pl').
 
+edit_classroom_capacity :-
+    consult('rules/classrooms.pl'),
+    read_classroomId(ID),
+    update_capacity(ID,Capacidade)
+    
 entry_user :-
     read_user_id(ID),
     write('Nome: '), read_line_to_string(user_input, Nome),
