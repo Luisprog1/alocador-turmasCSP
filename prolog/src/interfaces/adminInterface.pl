@@ -51,7 +51,11 @@ processar_submenu_turma("3") :-
     write('ID do novo professor: ') , read_line_to_string(user_input, Prof),
     realoca_prof(ID, Prof), 
     submenu_turma.
-processar_submenu_turma("4") :- write('Editando quantidade de alunos...'), nl, submenu_turma.
+processar_submenu_turma("4") :- 
+    write('ID da turma: '), read_line_to_string(user_input, ID),
+    write('Quantidade de alunos: '), read_line_to_string(user_input, Qtde),
+    altera_quantidade(ID, Qtde),
+    nl, submenu_turma.
 processar_submenu_turma("5") :- write('Removendo turma...'), nl, submenu_turma.
 processar_submenu_turma("6") :- write('Voltando ao menu anterior...'), nl, admin_menu.
 processar_submenu_turma(_) :- write('Opcao invalida!'), nl, submenu_turma.

@@ -15,3 +15,11 @@ realoca_prof(IdTurma, IdProf) :-
     retract(class(IdTurma,_,_,_,_,_)),
     assertz(class(IdTurma, Disciplina, Curso, IdProf, Capacidade, Requisitos)),
     save_classes('rules/classes.pl').
+
+altera_quantidade(IdTurma, Qtde) :-
+    (class(IdTurma, Disciplina, Curso, Prof, _, Requisitos) -> true; 
+    write('Turma não encontrada!'), nl, submenu_turma
+    ),
+     retract(class(IdTurma,_,_,_,_,_)),
+    assertz(class(IdTurma, Disciplina, Curso, Prof, Qtde, Requisitos)),
+    save_classrooms('rules/classes.pl').
