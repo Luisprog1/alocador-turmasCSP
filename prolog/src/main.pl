@@ -7,6 +7,7 @@
 :- ensure_loaded('repository/utils-classroom.pl').
 :- ensure_loaded('validacao.pl').
 :- ensure_loaded('schedule.pl').
+:- ensure_loaded('interfaces/userInterface.pl').
 :- consult('rules/users.pl').
 :- consult('rules/classes.pl').
 :- encoding(utf8).
@@ -36,17 +37,12 @@ edit_classroom_capacity :-
     get_classroom(ID),
     read_capacity(Capacidade),
     update_capacity(ID,Capacidade).
-    
-entry_user :-
-    read_user_id(ID),
-    write('Nome: '), read_line_to_string(user_input, Nome),
-    write('Senha: '), read_line_to_string(user_input, Senha),
-    read_func_user(Role),
-    assertz(user(ID, Nome, Senha, Role)),
-    save_users('rules/users.pl').
 
 validate_disciplina(Disciplina) :-
     disciplina(Disciplina), !.
 
 validate_curso(Curso) :-
     curso(Curso), !.
+
+main :-
+    user_screen.
