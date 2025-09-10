@@ -10,13 +10,21 @@ read_classId(ID) :-
         ; ID = Input)
     ).
 
-read_disciplina(Disciplina) :-
-    write('disciplina: '), read_line_to_string(user_input, Input),
-    (validate_disciplina(Input) -> Disciplina = Input ; (write('Disciplina invalida. Tente novamente.\n'), read_disciplina(Disciplina))).
+read_disciplina(id, Disciplina) :-
+    write('Informeo o número da disciplina:\n'),
+    listar_disciplinas,
+    read_line_to_string(user_input, Input),
+    (disciplina(Input, Disciplina) -> true
+        ;write('Disciplina inválida. Tente novamente.\n'), read_disciplina(id, Disciplina)
+    ).
 
-read_curso(Curso) :-
-    write('curso: '), read_line_to_string(user_input, Input),
-    (validate_curso(Input) -> Curso = Input ; (write('Curso invalido. Tente novamente.\n'), read_curso(Curso))).
+read_curso(id,Curso) :-
+    write('Informe o número do Curso:\n'),
+    listar_cursos,
+    read_line_to_string(user_input, Input),
+    (curso(Input, Curso) -> true
+        ;write('Curso invalido. Tente novamente.\n'), read_curso(id,Curso)
+    ).
 
 read_recursos(Acumulados, Requisitos) :-
     write('Escolha os Requisitos\n'),
@@ -70,3 +78,15 @@ get_classroom(ID) :-
         (classroom(Input, _, _, _) -> (ID = Input) 
         ; (write('Não existe uma sala com esse ID. Tente novamente.\n'), get_classroom(ID)))
     ).
+
+listar_disciplinas :-
+    findall((Cod, Nome), disciplina(Cod, Nome), Lista),
+    list(Lista).
+
+list([]).
+list([(C1, N1),(C2,N2)|T]) :-
+    format('~|~w. ~w~t~60+~|~w. ~w~n', [C1,N1,C2,N2]),
+    list(T).
+
+listar_cursos :- 
+    forall(curso(Cod,Nome), format('~w. ~w~n', [Cod,Nome])).
