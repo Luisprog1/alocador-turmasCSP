@@ -14,8 +14,8 @@
 
 entry_class :-
     read_classId(ID),
-    read_disciplina(Disciplina),
-    read_curso(Curso),
+    read_disciplina(id,Disciplina),
+    read_curso(id,Curso),
     write('professor: '), read_line_to_string(user_input, ProfessorID),
     write('horario: '), read_schedule(ID, _, _),
     read_capacity(Capacidade),
@@ -37,12 +37,11 @@ edit_classroom_capacity :-
     get_classroom(ID),
     read_capacity(Capacidade),
     update_capacity(ID,Capacidade).
-
-validate_disciplina(Disciplina) :-
-    disciplina(Disciplina), !.
-
-validate_curso(Curso) :-
-    curso(Curso), !.
-
-main :-
-    user_screen.
+    
+entry_user :-
+    read_user_id(ID),
+    write('Nome: '), read_line_to_string(user_input, Nome),
+    write('Senha: '), read_line_to_string(user_input, Senha),
+    read_func_user(Role),
+    assertz(user(ID, Nome, Senha, Role)),
+    save_users('rules/users.pl').
