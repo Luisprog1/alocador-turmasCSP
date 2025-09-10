@@ -2,6 +2,7 @@
 :- dynamic(user/4).
 :- ensure_loaded('repository/save.pl').
 :- consult('rules/users.pl').
+:- ensure_loaded('validacao.pl').
 
 entry_user :-
     read_user_id(ID),
