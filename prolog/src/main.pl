@@ -7,6 +7,7 @@
 :- ensure_loaded('repository/utils-classroom.pl').
 :- ensure_loaded('validacao.pl').
 :- ensure_loaded('schedule.pl').
+:- ensure_loaded('interfaces/userInterface.pl').
 :- consult('rules/users.pl').
 :- consult('rules/classes.pl').
 :- encoding(utf8).

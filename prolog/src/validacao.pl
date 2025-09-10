@@ -54,13 +54,21 @@ read_user_id(ID) :-
     ).
 
 read_func_user(Role) :-
-    write('Função do usuário (admin/professor): '), read_line_to_string(user_input, Input),
-    (role(Input) ->
-        (Input = "admin",
-            user(_, _, _, "admin") -> write('Já existe um administrador cadastrado. Tente novamente.\n'), read_func_user(Role)
-            ;Role = Input
+    write('Função do usuário [0 | 1]:'), nl,
+    write('[0] Administrador'), nl,
+    write('[1] Professor'), nl,
+    write('Escolha: '),
+    read_line_to_string(user_input, Input),
+    ( Input = "0" ->
+        ( user(_, _, _, "Admin") ->
+            write('Já existe um administrador cadastrado. Tente novamente.\n'),
+            read_func_user(Role)
+        ; Role = "Admin"
         )
-        ;write('Função inválida. Tente novamente.\n'), read_func_user(Role)
+    ; Input = "1" ->
+        Role = "Prof"
+    ; write('Opção inválida. Tente novamente.\n'),
+      read_func_user(Role)
     ).
 
 read_capacity(Capacidade) :-
