@@ -22,4 +22,4 @@ altera_quantidade(IdTurma, Qtde) :-
     ),
      retract(class(IdTurma,_,_,_,_,_)),
     assertz(class(IdTurma, Disciplina, Curso, Prof, Qtde, Requisitos)),
-    save_classrooms('rules/classes.pl').
+    save_classes('rules/classes.pl').
