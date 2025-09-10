@@ -13,8 +13,8 @@
 
 entry_class :-
     read_classId(ID),
-    read_disciplina(Disciplina),
-    read_curso(Curso),
+    read_disciplina(id,Disciplina),
+    read_curso(id,Curso),
     write('professor: '), read_line_to_string(user_input, ProfessorID),
     write('horario: '), read_schedule(ID, _, _),
     read_capacity(Capacidade),
@@ -44,9 +44,3 @@ entry_user :-
     read_func_user(Role),
     assertz(user(ID, Nome, Senha, Role)),
     save_users('rules/users.pl').
-
-validate_disciplina(Disciplina) :-
-    disciplina(Disciplina), !.
-
-validate_curso(Curso) :-
-    curso(Curso), !.
