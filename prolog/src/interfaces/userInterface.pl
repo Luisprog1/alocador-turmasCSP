@@ -1,9 +1,11 @@
 :- encoding(utf8).
 :- ensure_loaded('repository/userRepository.pl').
-:- ensure_loaded('interfaces/UI.pl').
 
 user_screen :-
-    draw_header('BEM-VINDO AO SISTEMA'),
+    nl,
+    write('============================'), nl,
+    write('     BEM-VINDO AO SISTEMA   '), nl,
+    write('============================'), nl,
     write('1 - Registrar'), nl,
     write('2 - Login'), nl,
     write('============================'), nl,
@@ -15,9 +17,9 @@ user_screen :-
     ).
 
 register_screen :-
-    draw_header('CADASTRO DE USUÁRIO'),
+    nl, write('--- CADASTRO DE USUÁRIO ---'), nl,
     entry_user.
 
 login_screen :-
-    draw_header('LOGIN'),
+    nl, write('--- LOGIN ---'), nl,
     ( login_user -> true ; user_screen ).
