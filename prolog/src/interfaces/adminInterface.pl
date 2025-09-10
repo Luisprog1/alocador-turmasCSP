@@ -2,6 +2,7 @@
 :- ensure_loaded('dados.pl').
 :- ensure_loaded('repository/save.pl').
 :- ensure_loaded('repository/utils-classroom.pl').
+:- ensure_loaded('repository/utilsClass.pl').
 :- ensure_loaded('validacao.pl').
 :- ensure_loaded('main.pl').
 :- encoding(utf8).
@@ -29,7 +30,7 @@ processar_opcao("3") :- entry_classroom, nl, admin_menu.
 processar_opcao("4") :- entry_class, nl, admin_menu.
 processar_opcao("5") :- write('Editar sala...'), nl, admin_menu.
 processar_opcao("6") :- submenu_turma, nl, admin_menu.
-processar_opcao("7") :- write('Voltando a tela inicial...'), nl, admin_menu.
+processar_opcao("7") :- write('Voltando a tela inicial...'), nl, !.
 processar_opcao(_) :- write('Opcao invalida!'), nl, admin_menu.
 
 submenu_turma :-
@@ -45,7 +46,11 @@ submenu_turma :-
 
 processar_submenu_turma("1") :- write('Editando horarios...'), nl, submenu_turma.
 processar_submenu_turma("2") :- write('Editando requisitos...'), nl, submenu_turma.
-processar_submenu_turma("3") :- write('Realocando professor...'), nl, submenu_turma.
+processar_submenu_turma("3") :- 
+    write('ID da turma: '), read_line_to_string(user_input, ID),
+    write('ID do novo professor: ') , read_line_to_string(user_input, Prof),
+    realoca_prof(ID, Prof), 
+    submenu_turma.
 processar_submenu_turma("4") :- write('Editando quantidade de alunos...'), nl, submenu_turma.
 processar_submenu_turma("5") :- write('Removendo turma...'), nl, submenu_turma.
 processar_submenu_turma("6") :- write('Voltando ao menu anterior...'), nl, admin_menu.
