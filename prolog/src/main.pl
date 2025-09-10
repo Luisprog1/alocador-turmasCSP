@@ -43,3 +43,6 @@ validate_disciplina(Disciplina) :-
 
 validate_curso(Curso) :-
     curso(Curso), !.
+
+alterar_horario_turma(ID) :-
+    edit_schedule(ID).
