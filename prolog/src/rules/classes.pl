@@ -1,2 +1,2 @@
-class("4","Teoria dos Grafos","Ciência da Computação","Luis",35,["Quadro Branco","Projetor"]).
-class("5","Programação II","Ciência da Computação","Clara",48,["Quadro Branco","Projetor"]).
+class("5","Programaï¿½ï¿½o II","Ciï¿½ncia da Computaï¿½ï¿½o","Clara",48,["Quadro Branco","Projetor"]).
+class("4","Teoria dos Grafos","Ciï¿½ncia da Computaï¿½ï¿½o","Luis",35,["Laboratï¿½rio"]).

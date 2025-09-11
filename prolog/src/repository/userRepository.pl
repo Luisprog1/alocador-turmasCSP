@@ -3,6 +3,7 @@
 :- ensure_loaded('repository/save.pl').
 :- consult('rules/users.pl').
 :- ensure_loaded('validacao.pl').
+:- ensure_loaded('interfaces/adminInterface').
 
 entry_user :-
     read_user_id(ID),
@@ -17,6 +18,9 @@ login_user :-
     write('Matrícula: '), read_line_to_string(user_input, ID),
     write('Senha: '), read_line_to_string(user_input, Senha),
     (   user(ID, Nome, Senha, Role) ->
-        format("Login bem-sucedido! Bem-vindo, ~w ~w.\n", [Role, Nome]), !
+        format("Login bem-sucedido! Bem-vindo, ~w ~w.\n", [Role, Nome]), 
+        (Role = "Admin" -> admin_menu;
+        Role = "Prof" -> !
+        )
     ;   write('Falha no login: matrícula ou senha incorretos.\n'), fail
     ).
