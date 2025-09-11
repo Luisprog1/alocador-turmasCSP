@@ -5,6 +5,7 @@
 :- ensure_loaded('../repository/utilsClass.pl').
 :- ensure_loaded('../validacao.pl').
 :- ensure_loaded('../main.pl').
+:- ensure_loaded('userInterface.pl').
 :- encoding(utf8).
 
 admin_menu :-
@@ -17,7 +18,7 @@ admin_menu :-
     write('6. Editar Turma'), nl,
     write('7. Sair e salvar'), nl,
     write('Opção: '), 
-    read_line_to_string(user_input, Opcao),
+    read_line_to_string(user_input, Opcao), nl,
     processar_opcao(Opcao).
 
 processar_opcao("1") :- write('Gerando alocacao...'), nl, admin_menu.
@@ -30,7 +31,7 @@ processar_opcao("3") :- entry_classroom, nl, admin_menu.
 processar_opcao("4") :- entry_class, nl, admin_menu.
 processar_opcao("5") :- write('Editar sala...'), nl, admin_menu.
 processar_opcao("6") :- submenu_turma, nl, admin_menu.
-processar_opcao("7") :- write('Voltando a tela inicial...'), nl, !.
+processar_opcao("7") :- write('Voltando a tela inicial...'), nl, user_screen.
 processar_opcao(_) :- write('Opcao invalida!'), nl, admin_menu.
 
 submenu_turma :-
