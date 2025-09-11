@@ -22,4 +22,5 @@ register_screen :-
 
 login_screen :-
     nl, write('--- LOGIN ---'), nl,
-    ( login_user -> true ; user_screen ).
+    ( login_user -> true 
+    ; user_screen ).
