@@ -1,3 +1,6 @@
-horario_turma("1",'Terça','08-10').
-horario_turma("34",'Segunda','10-12').
-horario_turma("34",'Quarta','08-10').
+horario_turma("4",'Quarta','18-20').
+horario_turma("4",'TerÃ§a','10-12').
+horario_turma("5",'Quinta','08-10').
+horario_turma("4",'Sexta','18-20').
+horario_turma("4",'Quinta','10-12').
+horario_turma("5",'Segunda','10-12').

@@ -1,4 +1,2 @@
-class("1","teste","teste","10","300",["Acessibilidade"]).
-class("3","teste","teste","10","300",["Acessibilidade"]).
-class("4","teste","teste","10","300",["Acessibilidade"]).
-class("2","teste","teste","1","300",["Acessibilidade"]).
+class("4","Teoria dos Grafos","Ci�ncia da Computa��o","Luis",35,["Quadro Branco","Projetor"]).
+class("5","Programa��o II","Ci�ncia da Computa��o","Clara",48,["Quadro Branco","Projetor"]).
