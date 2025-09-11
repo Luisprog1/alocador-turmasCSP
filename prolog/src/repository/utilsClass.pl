@@ -1,10 +1,18 @@
 :- dynamic(class/6).
 :- ensure_loaded('save.pl').
-:- ensure_loaded('interfaces/adminInterface.pl').
-:- consult('rules/classes.pl').
-:- consult('rules/users.pl').
+:- ensure_loaded('../interfaces/adminInterface.pl').
+:- consult('../rules/classes.pl').
+:- consult('../rules/users.pl').
 :- encoding(utf8).
 
+remove_class(IdTurma) :- 
+    ( class(IdTurma, _, _, _, _, _) ->
+        retract(class(IdTurma, _, _, _, _, _)),
+        save_classes('../rules/classes.pl'),
+        format('Turma ~w removida com sucesso.~n', [IdTurma])
+    ; 
+        write('Turma não encontrada!'), nl, submenu_turma
+    ).
 realoca_prof(IdTurma, IdProf) :- 
     (class(IdTurma, Disciplina, Curso, _, Capacidade, Requisitos) -> true; 
     write('Turma não encontrada!'), nl, submenu_turma

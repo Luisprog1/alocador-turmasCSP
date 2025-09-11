@@ -1,10 +1,10 @@
 :- use_module(library(strings)).
-:- ensure_loaded('dados.pl').
-:- ensure_loaded('repository/save.pl').
-:- ensure_loaded('repository/utils-classroom.pl').
-:- ensure_loaded('repository/utilsClass.pl').
-:- ensure_loaded('validacao.pl').
-:- ensure_loaded('main.pl').
+:- ensure_loaded('../dados.pl').
+:- ensure_loaded('../repository/save.pl').
+:- ensure_loaded('../repository/utils-classroom.pl').
+:- ensure_loaded('../repository/utilsClass.pl').
+:- ensure_loaded('../validacao.pl').
+:- ensure_loaded('../main.pl').
 :- encoding(utf8).
 
 admin_menu :-
@@ -56,6 +56,8 @@ processar_submenu_turma("4") :-
     write('Quantidade de alunos: '), read_line_to_string(user_input, Qtde),
     altera_quantidade(ID, Qtde),
     nl, submenu_turma.
-processar_submenu_turma("5") :- write('Removendo turma...'), nl, submenu_turma.
+processar_submenu_turma("5") :- 
+    write('ID da turma: '), read_line_to_string(user_input, ID),
+    remove_class(ID), nl, submenu_turma.
 processar_submenu_turma("6") :- write('Voltando ao menu anterior...'), nl, admin_menu.
 processar_submenu_turma(_) :- write('Opcao invalida!'), nl, submenu_turma.
