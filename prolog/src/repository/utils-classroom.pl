@@ -6,3 +6,9 @@ update_capacity(ID, Capacidade) :-
     retract(classroom(ID, _, _, _)),
     assertz(classroom(ID, Bloco, Capacidade, Recursos)),
     save_classrooms('rules/classrooms.pl').
+
+update_resources_classroom(ID, Recursos) :-
+    classroom(ID, Bloco, Capacidade, _),
+    retract(classroom(ID, _, _, _)),
+    assertz(classroom(ID, Bloco, Capacidade, Recursos)),
+    save_classrooms('rules/classrooms.pl').

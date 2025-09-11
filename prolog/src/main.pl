@@ -28,7 +28,7 @@ entry_classroom :-
     read_classroomId(ID),
     write('Bloco: '), read_line_to_string(user_input, Bloco),
     read_capacity(Capacidade),
-    write('Recursos: '), read_line_to_string(user_input, Recursos),
+    read_recursos([],Recursos),
     assertz(classroom(ID, Bloco, Capacidade, Recursos)),
     save_classrooms('rules/classrooms.pl').
 
@@ -37,6 +37,12 @@ edit_classroom_capacity :-
     get_classroom(ID),
     read_capacity(Capacidade),
     update_capacity(ID,Capacidade).
+
+edit_classroom_resources :-
+    consult('rules/classrooms.pl'),
+    get_classroom(ID),
+    read_recursos([],Recursos),
+    update_resources_classroom(ID,Recursos).
 
 alterar_horario_turma(ID) :-
     edit_schedule(ID).
