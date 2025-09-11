@@ -12,7 +12,7 @@ professor_menu :-
     draw_header("PROFESSOR"),
     write('1. Visualizar turmas'), nl,
     write('2. Alterar requisitos da turma'), nl,
-    write('3. Sair e salvar'), nl,
+    write('3. Sair'), nl,
     write('Opção: '),
     read_line_to_string(user_input, Opcao),
     professor_op(Opcao).
@@ -21,9 +21,12 @@ professor_menu :-
 professor_op("1") :-
     write('Visualizar turmas'), nl.
 professor_op("2") :-
-    write('Alterar requisitos da turma'), nl.
+    write('Alterar requisitos da turma'), nl,
+    write("ID da turma: "), read_line_to_string(user_input, ID),
+    read_recursos([],Recursos),
+    altera_requisitos_class(ID, Recursos), professor_menu.
 professor_op("3") :-
-    write('Saindo e salvando...'), nl, user_screen.
+    write('Saindo...'), nl, user_screen.
 professor_op(_) :-
     write('Opção inválida! Tente novamente.'), nl,
     professor_menu.

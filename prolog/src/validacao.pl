@@ -28,7 +28,7 @@ read_curso(id,Curso) :-
 
 read_recursos(Acumulados, Requisitos) :-
     write('Escolha os Requisitos\n'),
-    write("1.Projetor 2.Acessibilidade 3.Quadro Branco 4.Laboratório\n"),
+    write("1.Projetor   2.Acessibilidade    3.Quadro Branco     4.Laboratório\n"),
     read_line_to_string(user_input, Input),
     (recursos(Input, NomeRequisito) ->
         (member(NomeRequisito, Acumulados) ->  
