@@ -10,3 +10,6 @@ print_erro(Msg) :-
 
 print_sucesso(Msg) :-
     ansi_format([fg(green)], "~w~n", [Msg]).
+
+print_colorido(Msg, Cor) :-
+    ansi_format([fg(Cor)], "~w", [Msg]).
