@@ -51,15 +51,15 @@ visualizar_turmas(ProfID) :-
     ),
     pause.
 
-print_turma(ID,Nome,Curso,Vagas,Recursos) :-
-    ansi_format([fg(cyan),bold], "[~w]", [ID]),
+print_turma(ID, Nome, Curso, Vagas, Recursos) :-
+    print_colorido([ID], cyan),
     write(": "),
-    ansi_format([fg(green)], "~w", [Nome]),
-    write(" ("),
-    ansi_format([fg(cyan)], "~w", [Curso]),
-    write(") | Vagas: "),
-    ansi_format([fg(green)], "~w", [Vagas]),
+    print_colorido(Nome, green),
+    write(" - "),
+    print_colorido(Curso, green),
+    write(" | Vagas: "),
+    print_colorido(Vagas, green),
     nl,
     write("Recursos: "),
-    ansi_format([fg(green)], "~w", [Recursos]),
+    print_colorido(Recursos, green),
     nl, nl.
