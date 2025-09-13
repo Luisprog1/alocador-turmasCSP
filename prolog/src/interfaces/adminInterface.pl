@@ -30,10 +30,45 @@ processar_opcao("2") :-
     admin_menu.
 processar_opcao("3") :- entry_classroom, nl, admin_menu.
 processar_opcao("4") :- entry_class, nl, admin_menu.
-processar_opcao("5") :- write('Editar sala...'), nl, admin_menu.
+processar_opcao("5") :- submenu_sala, nl, admin_menu.
 processar_opcao("6") :- submenu_turma, nl, admin_menu.
 processar_opcao("7") :- write('Voltando a tela inicial...'), nl, user_screen.
 processar_opcao(_) :- write('Opcao invalida!'), nl, admin_menu.
+
+submenu_sala :-
+    write('1 - Editar os recursos da sala'), nl,
+    write('2 - Editar a capacidade da sala'), nl,
+    write('3 - Voltar ao menu anterior'), nl,
+    write('Escolha uma opção: '),
+    read_line_to_string(user_input, Opcao),
+    processar_submenu_sala(Opcao).
+
+    processar_submenu_sala("1") :-
+    write('ID da sala: '), read_line_to_string(user_input, ID),
+    ( classroom(ID, _, _, _) ->
+        read_recursos([], Recursos),
+        altera_recursos_classroom(ID, Recursos),
+        write('Recursos atualizados com sucesso!'), nl
+    ; write('Sala não encontrada!'), nl
+    ),
+    nl, submenu_sala.
+
+processar_submenu_sala("2") :-
+    write('ID da sala: '), read_line_to_string(user_input, ID),
+    ( classroom(ID, _, _, _) ->
+        read_capacity(Capacidade),
+        update_capacity(ID, Capacidade),
+        write('Capacidade atualizada com sucesso!'), nl
+    ; write('Sala não encontrada!'), nl
+    ),
+    nl, submenu_sala.
+
+processar_submenu_sala("3") :-
+    write('Voltando ao menu anterior...'), nl.
+
+processar_submenu_sala(_) :-
+    write('Opção inválida!'), nl,
+    submenu_sala.
 
 submenu_turma :-
     write('1. Editar Horarios'), nl,
