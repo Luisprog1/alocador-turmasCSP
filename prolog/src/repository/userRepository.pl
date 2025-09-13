@@ -15,7 +15,7 @@ entry_user :-
     assertz(user(ID, Nome, Senha, Role)),
     save_users('rules/users.pl'),
     write('Usuário registrado com sucesso!\n'),
-    pause.
+    user_screen.
 
 login_user :-
     write('Matrícula: '), read_line_to_string(user_input, ID),

@@ -92,6 +92,7 @@ processar_submenu_turma("2") :- write('Editando requisitos...'),
     nl, submenu_turma.
 processar_submenu_turma("3") :- 
     write('ID da turma: '), read_line_to_string(user_input, ID),
+    listar_professores,
     write('ID do novo professor: ') , read_line_to_string(user_input, Prof),
     realoca_prof(ID, Prof), 
     submenu_turma.

@@ -8,7 +8,7 @@
 remove_class(IdTurma) :- 
     ( class(IdTurma, _, _, _, _, _) ->
         retract(class(IdTurma, _, _, _, _, _)),
-        save_classes('../rules/classes.pl'),
+        save_classes('rules/classes.pl'),
         format('Turma ~w removida com sucesso.~n', [IdTurma])
     ; 
         write('Turma não encontrada!'), nl, submenu_turma
@@ -37,3 +37,9 @@ altera_requisitos_class(ID, Recursos) :-
     retract(class(ID, _, _, _, _, _)),
     assertz(class(ID, Disciplina,Curso,Professor, QTD, Recursos)),
     save_classes('rules/classes.pl').
+
+valida_altera_requisitos(ID_Turma, ID_Usuario) :-
+    (   class(ID_Turma, _, _, ID_Usuario, _, _) -> true
+    ;   write("Erro: você não tem permissão para alterar esta turma\n"),
+        fail
+    ).
