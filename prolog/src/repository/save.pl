@@ -2,6 +2,7 @@
 :- dynamic(class/6).
 :- dynamic(classroom/4).
 :- dynamic(user/4).
+:- dynamic(alocacoes/4).
 
 save_classes(File) :-
     open(File, write, Stream),
@@ -16,6 +17,14 @@ save_classrooms(File) :-
     forall(
         classroom(ID, Capacidade, Bloco, Recursos),
         (writeq(Stream, classroom(ID, Capacidade, Bloco, Recursos)), write(Stream, '.'), nl(Stream))
+    ),
+    close(Stream).
+
+save_alocacoes(File) :-
+    open(File, write, Stream),
+    forall(
+        alocacao(IdTurma, IdSala, Dia, Horario),
+        (writeq(Stream, alocacao(IdTurma, IdSala, Dia, Horario)), write(Stream, '.'), nl(Stream))
     ),
     close(Stream).
 

@@ -1,1 +1,0 @@
-horario_ocupado("3",'Segunda','8-10').
