@@ -4,6 +4,8 @@
 :- consult('rules/users.pl').
 :- ensure_loaded('validacao.pl').
 :- ensure_loaded('interfaces/adminInterface').
+:- ensure_loaded('interfaces/profInterface').
+:- ensure_loaded('../repository/utils.pl').
 
 entry_user :-
     read_user_id(ID),
@@ -12,7 +14,8 @@ entry_user :-
     read_func_user(Role),
     assertz(user(ID, Nome, Senha, Role)),
     save_users('rules/users.pl'),
-    write('Usuário registrado com sucesso!\n').
+    write('Usuário registrado com sucesso!\n'),
+    pause.
 
 login_user :-
     write('Matrícula: '), read_line_to_string(user_input, ID),
@@ -20,7 +23,7 @@ login_user :-
     (   user(ID, Nome, Senha, Role) ->
         format("Login bem-sucedido! Bem-vindo, ~w ~w.\n", [Role, Nome]), 
         (Role = "Admin" -> admin_menu;
-        Role = "Prof" -> !
+        Role = "Prof" -> professor_menu(ID)
         )
-    ;   write('Falha no login: matrícula ou senha incorretos.\n'), fail
+    ;   print_erro('Falha no login: matrícula ou senha incorretos.\n'), pause, user_screen
     ).
