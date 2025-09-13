@@ -49,8 +49,11 @@ read_classroomId(ID) :-
 read_user_id(ID) :-
     write('ID do usuário: '), read_line_to_string(user_input, Input),
     (number_string(Number, Input), Number > 0 ->
-        (user(Input, _, _, _) -> (write('Já existe um usuário com esse ID. Tente novamente.\n'), read_user_id(ID)) 
+        (user(Input, _, _, _) -> 
+        (write('Já existe um usuário com esse ID. Tente novamente.\n'), read_user_id(ID)) 
         ; ID = Input)
+    ; write('ID inválido! Digite novamente.\n'),
+      read_user_id(ID)
     ).
 
 read_func_user(Role) :-
