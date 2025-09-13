@@ -80,6 +80,16 @@ read_capacity(Capacidade) :-
       read_capacity(Capacidade)
     ).
 
+read_professor_id(ID) :-
+    write('Digite o ID do professor responsável: '),
+    read_line_to_string(user_input, Input),
+    ( user(Input, _, _, "Prof") ->
+        ID = Input
+    ; write('Professor não encontrado! Digite apenas uma ID válida.\n'),
+      read_professor_id(ID)
+    ).
+
+
 get_classroom(ID) :-
     write('ID da sala: '), read_line_to_string(user_input, Input),
     (number_string(Number, Input), Number > 0 ->
@@ -90,6 +100,13 @@ get_classroom(ID) :-
 listar_disciplinas :-
     findall((Cod, Nome), disciplina(Cod, Nome), Lista),
     list(Lista).
+
+listar_professores :-
+    write('Professores disponíveis:'), nl,
+    forall(user(ID, Nome, _, "Prof"),
+           format('ID: ~w - Nome: ~w~n', [ID, Nome])),
+    nl.
+
 
 list([]).
 list([(C1, N1),(C2,N2)|T]) :-
