@@ -11,7 +11,7 @@ read_classId(ID) :-
     ).
 
 read_disciplina(id, Disciplina) :-
-    write('Informeo o número da disciplina:\n'),
+    write('Informe o o número da disciplina:\n'),
     listar_disciplinas,
     read_line_to_string(user_input, Input),
     (disciplina(Input, Disciplina) -> true
@@ -92,6 +92,13 @@ read_professor_id(ID) :-
       read_professor_id(ID)
     ).
 
+valida_turma(ID_Turma) :-
+    class(ID_Turma, _, _, _, _, _), 
+    !.                             
+valida_turma(ID_Turma) :- 
+    \+ class(ID_Turma, _, _, _, _, _), 
+    write("Erro: turma com ID "), write(ID_Turma), write(" não encontrada.\n"),
+    fail.                         
 
 get_classroom(ID) :-
     write('ID da sala: '), read_line_to_string(user_input, Input),

@@ -27,9 +27,11 @@ professor_op("1", ID) :-
 
 professor_op("2", ID) :-
     write("ID da turma: "), read_line_to_string(user_input, ClassID),
+    valida_altera_requisitos(ClassID, ID),
     read_recursos([], Recursos),
     altera_requisitos_class(ClassID, Recursos),
     professor_menu(ID).
+
 
 professor_op("3", _) :-
     write('Saindo...'), nl,
