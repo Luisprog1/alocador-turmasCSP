@@ -11,7 +11,7 @@ read_classId(ID) :-
     ).
 
 read_disciplina(id, Disciplina) :-
-    write('Informeo o número da disciplina:\n'),
+    write('Informe o o número da disciplina:\n'),
     listar_disciplinas,
     read_line_to_string(user_input, Input),
     (disciplina(Input, Disciplina) -> true
@@ -49,8 +49,11 @@ read_classroomId(ID) :-
 read_user_id(ID) :-
     write('ID do usuário: '), read_line_to_string(user_input, Input),
     (number_string(Number, Input), Number > 0 ->
-        (user(Input, _, _, _) -> (write('Já existe um usuário com esse ID. Tente novamente.\n'), read_user_id(ID)) 
+        (user(Input, _, _, _) -> 
+        (write('Já existe um usuário com esse ID. Tente novamente.\n'), read_user_id(ID)) 
         ; ID = Input)
+    ; write('ID inválido! Digite novamente.\n'),
+      read_user_id(ID)
     ).
 
 read_func_user(Role) :-
@@ -80,6 +83,23 @@ read_capacity(Capacidade) :-
       read_capacity(Capacidade)
     ).
 
+read_professor_id(ID) :-
+    write('Digite o ID do professor responsável: '),
+    read_line_to_string(user_input, Input),
+    ( user(Input, _, _, "Prof") ->
+        ID = Input
+    ; write('Professor não encontrado! Digite apenas uma ID válida.\n'),
+      read_professor_id(ID)
+    ).
+
+valida_turma(ID_Turma) :-
+    class(ID_Turma, _, _, _, _, _), 
+    !.                             
+valida_turma(ID_Turma) :- 
+    \+ class(ID_Turma, _, _, _, _, _), 
+    write("Erro: turma com ID "), write(ID_Turma), write(" não encontrada.\n"),
+    fail.                         
+
 get_classroom(ID) :-
     write('ID da sala: '), read_line_to_string(user_input, Input),
     (number_string(Number, Input), Number > 0 ->
@@ -90,6 +110,13 @@ get_classroom(ID) :-
 listar_disciplinas :-
     findall((Cod, Nome), disciplina(Cod, Nome), Lista),
     list(Lista).
+
+listar_professores :-
+    write('Professores disponíveis:'), nl,
+    forall(user(ID, Nome, _, "Prof"),
+           format('ID: ~w - Nome: ~w~n', [ID, Nome])),
+    nl.
+
 
 list([]).
 list([(C1, N1),(C2,N2)|T]) :-
