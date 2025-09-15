@@ -71,7 +71,7 @@ read_func_user(Role) :-
         ( user(_, _, _, "Admin") ->
             print_erro('Já existe um administrador cadastrado. Tente novamente.\n'),
             pause,
-            register_screen
+            user_screen
         ; Role = "Admin"
         )
     ; Input = "1" ->
