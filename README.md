@@ -1,6 +1,6 @@
 # Alocador de Turmas
 
-![Status](https://img.shields.io/badge/status-em%20desenvolvimento-blue) ![License](https://img.shields.io/badge/license-MIT-green)
+![Status](https://img.shields.io/badge/status-concluido-green) ![License](https://img.shields.io/badge/license-MIT-green)
 
 ---
 
@@ -92,4 +92,48 @@ Oferecer uma solução eficiente para instituições acadêmicas que necessitam 
 
 ---
 
-> **Observação:** Este projeto está em desenvolvimento e pode sofrer alterações estruturais ou visuais durante sua evolução.
+
+## Colaboradores
+
+Este projeto foi desenvolvido por estudantes do curso de Ciência da Computação @ UFCG:
+
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/eduardonsm">
+        <img src="https://github.com/eduardonsm.png" width="120px;" alt="Eduardo Nogueira"/>
+        <br />
+        <sub><b>@Eduardo Nogueira</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/emmilyneri">
+        <img src="https://github.com/emmilyneri.png" width="120px;" alt="Emmily Neri"/>
+        <br />
+        <sub><b>@Emmily Neri</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/jennifermedeiross">
+        <img src="https://github.com/jennifermedeiross.png" width="120px;" alt="Jennifer Medeiros"/>
+        <br />
+        <sub><b>@Jennifer Medeiros</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/claraugusta">
+        <img src="https://github.com/claraugusta.png" width="120px;" alt="Maria Clara Augusta"/>
+        <br />
+        <sub><b>@Maria Clara Augusta</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/Luisprog1">
+        <img src="https://github.com/Luisprog1.png" width="120px;" alt="Luís Alberto"/>
+        <br />
+        <sub><b>@Luís Alberto</b></sub>
+      </a>
+    </td>
+  </tr>
+</table>

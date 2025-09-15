@@ -7,10 +7,12 @@
 :- ensure_loaded('../schedule.pl').
 :- ensure_loaded('../main.pl').
 :- ensure_loaded('userInterface.pl').
+:- ensure_loaded('UI.pl').
+:- ensure_loaded('../alocador.pl').
 :- encoding(utf8).
 
 admin_menu :-
-    nl, write('ADMINISTRADOR'), nl,
+    draw_header("ADMINISTRADOR"),
     write('1. Gerar alocação'), nl,
     write('2. Visualizar Alocações'), nl,
     write('3. Cadastrar Sala'), nl,
@@ -22,55 +24,57 @@ admin_menu :-
     read_line_to_string(user_input, Opcao), nl,
     processar_opcao(Opcao).
 
-processar_opcao("1") :- write('Gerando alocacao...'), nl, admin_menu.
+processar_opcao("1") :- alocar_tudo, nl, admin_menu.
 processar_opcao("2") :- 
-    write('Visualizando alocações...'), nl,
-    write('Pressione enter para sair.'),
-    read_line_to_string(user_input, n), 
+    exibir_resultado, nl,
+    pause,
     admin_menu.
 processar_opcao("3") :- entry_classroom, nl, admin_menu.
 processar_opcao("4") :- entry_class, nl, admin_menu.
 processar_opcao("5") :- submenu_sala, nl, admin_menu.
 processar_opcao("6") :- submenu_turma, nl, admin_menu.
 processar_opcao("7") :- write('Voltando a tela inicial...'), nl, user_screen.
-processar_opcao(_) :- write('Opcao invalida!'), nl, admin_menu.
+processar_opcao(_) :- print_erro('Opcao invalida!\n'), pause, admin_menu.
 
 submenu_sala :-
+    draw_header('EDITAR SALA'), 
     write('1 - Editar os recursos da sala'), nl,
     write('2 - Editar a capacidade da sala'), nl,
     write('3 - Voltar ao menu anterior'), nl,
     write('Escolha uma opção: '),
     read_line_to_string(user_input, Opcao),
+    visualizar_salas,
     processar_submenu_sala(Opcao).
 
-    processar_submenu_sala("1") :-
-    write('ID da sala: '), read_line_to_string(user_input, ID),
-    ( classroom(ID, _, _, _) ->
-        read_recursos([], Recursos),
-        altera_recursos_classroom(ID, Recursos),
-        write('Recursos atualizados com sucesso!'), nl
-    ; write('Sala não encontrada!'), nl
-    ),
-    nl, submenu_sala.
+processar_submenu_sala("1") :-
+write('ID da sala: '), read_line_to_string(user_input, ID),
+( classroom(ID, _, _, _) ->
+    read_recursos([], Recursos),
+    altera_recursos_classroom(ID, Recursos),
+    print_sucesso('Recursos atualizados com sucesso!'), nl
+; print_erro('Sala não encontrada!'), nl
+),
+pause, submenu_sala.
 
 processar_submenu_sala("2") :-
     write('ID da sala: '), read_line_to_string(user_input, ID),
     ( classroom(ID, _, _, _) ->
         read_capacity(Capacidade),
         update_capacity(ID, Capacidade),
-        write('Capacidade atualizada com sucesso!'), nl
-    ; write('Sala não encontrada!'), nl
+        print_sucesso('Capacidade atualizada com sucesso!'), nl
+    ; print_erro('Sala não encontrada!'), nl
     ),
-    nl, submenu_sala.
+    pause, submenu_sala.
 
 processar_submenu_sala("3") :-
     write('Voltando ao menu anterior...'), nl.
 
 processar_submenu_sala(_) :-
-    write('Opção inválida!'), nl,
+    print_erro('Opção inválida!'), pause,
     submenu_sala.
 
 submenu_turma :-
+    draw_header("EDITAR TURMA"),
     write('1. Editar Horarios'), nl,
     write('2. Editar requisitos'), nl,
     write('3. Realocar novo professor'), nl,
@@ -81,28 +85,72 @@ submenu_turma :-
     read_line_to_string(user_input, Opcao),
     processar_submenu_turma(Opcao).
 
+draw_titulo_submenu(Msg, ID) :-
+    visualizar_turmas, 
+    write('ID da turma: '), read_line_to_string(user_input, ID),
+    format(string(Title), "~w ~w", [Msg, ID]),
+    draw_header(Title).
+
 processar_submenu_turma("1") :- write('Editando horarios...'), nl,
-    write('ID da turma: '), read_line_to_string(user_input, ID), nl,
+    draw_titulo_submenu("EDITAR HORARIOS DA TURMA", ID),
     edit_schedule(ID),
     nl, submenu_turma.
 processar_submenu_turma("2") :- write('Editando requisitos...'),
-    write('ID da turma: '), read_line_to_string(user_input, ID), nl,
+    draw_titulo_submenu("EDITAR REQUISITOS DA TURMA", ID),
     read_recursos([],Recursos),
     altera_requisitos_class(ID, Recursos),
     nl, submenu_turma.
-processar_submenu_turma("3") :- 
-    write('ID da turma: '), read_line_to_string(user_input, ID),
+processar_submenu_turma("3") :-
+    draw_titulo_submenu("ALOCAR NOVO PROFESSOR PARA TURMA", ID),
     listar_professores,
-    write('ID do novo professor: ') , read_line_to_string(user_input, Prof),
+    print_colorido('ID do novo professor: ', yellow) , read_line_to_string(user_input, Prof),
     realoca_prof(ID, Prof), 
     submenu_turma.
 processar_submenu_turma("4") :- 
-    write('ID da turma: '), read_line_to_string(user_input, ID),
-    write('Quantidade de alunos: '), read_line_to_string(user_input, Qtde),
+    draw_titulo_submenu("EDITAR QUANTIDADE DE ALUNOS DA TURMA", ID),
+    print_colorido('Quantidade de alunos: ', yellow), read_line_to_string(user_input, Qtde),
     altera_quantidade(ID, Qtde),
     nl, submenu_turma.
 processar_submenu_turma("5") :- 
+    visualizar_turmas,
     write('ID da turma: '), read_line_to_string(user_input, ID),
     remove_class(ID), nl, submenu_turma.
 processar_submenu_turma("6") :- write('Voltando ao menu anterior...'), nl, admin_menu.
-processar_submenu_turma(_) :- write('Opcao invalida!'), nl, submenu_turma.
+processar_submenu_turma(_) :- print_erro('Opcao invalida!\n'), pause, submenu_turma.
+
+entry_class :-
+    draw_header("CADASTRO DE TURMA"),
+    read_classId(ID),
+    read_disciplina(id,Disciplina),
+    read_curso(id,Curso),
+    listar_professores,
+    read_professor_id(ProfessorID),
+    read_schedule(ID, _, _),
+    read_capacity(Capacidade),
+    read_recursos([],Requisitos),
+    assertz(class(ID, Disciplina, Curso, ProfessorID, Capacidade, Requisitos)),
+    save_classes('rules/classes.pl'),
+    admin_menu.
+
+entry_classroom :-
+    draw_header("CADASTRO DE SALA"),
+    consult('rules/classrooms.pl'),
+    read_classroomId(ID),
+    write('Bloco: '), read_line_to_string(user_input, Bloco),
+    read_capacity(Capacidade),
+    read_recursos([],Recursos),
+    assertz(classroom(ID, Bloco, Capacidade, Recursos)),
+    save_classrooms('rules/classrooms.pl'),
+    admin_menu.
+
+edit_classroom_capacity :-
+    consult('rules/classrooms.pl'),
+    get_classroom(ID),
+    read_capacity(Capacidade),
+    update_capacity(ID,Capacidade).
+
+edit_classroom_resources :-
+    consult('rules/classrooms.pl'),
+    get_classroom(ID),
+    read_recursos([],Recursos),
+    update_resources_classroom(ID,Recursos).
