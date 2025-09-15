@@ -47,26 +47,3 @@ professor_op(_, ID, Nome) :-
     print_erro('Opção inválida! Tente novamente.'), nl,
     pause,
     professor_menu(ID, Nome).
-
-visualizar_turmas(ProfID) :-
-    findall((ID,Nome,Curso,Vagas,Recursos),
-        class(ID, Nome, Curso, ProfID, Vagas, Recursos),
-        Turmas),
-    (   Turmas = [] ->
-        print_erro("Você não possui turmas cadastradas."), nl
-    ;   forall(member((ID,Nome,Curso,Vagas,Recursos), Turmas),
-            print_turma(ID,Nome,Curso,Vagas,Recursos))
-    ).
-
-print_turma(ID, Nome, Curso, Vagas, Recursos) :-
-    print_colorido([ID], cyan),
-    write(": "),
-    print_colorido(Nome, green),
-    write(" - "),
-    print_colorido(Curso, green),
-    write(" | Vagas: "),
-    print_colorido(Vagas, green),
-    nl,
-    write("Recursos: "),
-    print_colorido(Recursos, green),
-    nl, nl.

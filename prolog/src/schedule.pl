@@ -94,25 +94,28 @@ choose_hora(NovoHora) :-
     ).
 
 editar_horario(ID, Lista) :-
-    write('Escolha o número do horário para editar: '),
+    print_colorido('\nEscolha o número do horário para editar: ', yellow),
     read_line_to_string(user_input, EscolhaStr),
     number_string(Escolha, EscolhaStr),
     nth1(Escolha, Lista, (DiaAntigo, HoraAntiga)),
-    format("Selecionado: ~w - ~w~n", [DiaAntigo, HoraAntiga]),
-    write('Escolha o dia:'), nl,
+    format(string(SelecionadoStr), "Selecionado: ~w - ~w", [DiaAntigo, HoraAntiga]),
+    print_colorido(SelecionadoStr, green), nl,
+    print_colorido('Escolha o novo dia:', yellow), nl,
     choose_dia(NovoDia),
-    write('Escolha o horário:'), nl,
+    print_colorido('Escolha o novo horário:', yellow), nl,
     choose_hora(NovoHora),
     retract(horario_turma(ID, DiaAntigo, HoraAntiga)),
     assertz(horario_turma(ID, NovoDia, NovoHora)),
     save_ocupacao_sala('rules/horarios_turmas.pl'),
-    print_sucesso('Horário atualizado com sucesso!'), nl.
+    print_sucesso('Horário atualizado com sucesso!\n'), pause.
 
 adicionar_horario(ID) :-
+    print_colorido("ESCOLHA O DIA:\n", yellow),
     choose_dia(NovoDia),
+    print_colorido("ESCOLHA O HORÁRIO:\n", yellow),
     choose_hora(NovoHora),
     ( horario_turma(ID, NovoDia, NovoHora) ->
-        print_erro('Erro: esse horário já está cadastrado.'), nl
+        print_erro('Erro: esse horário já está cadastrado.'), nl, pause
     ; assertz(horario_turma(ID, NovoDia, NovoHora)),
       save_ocupacao_sala('rules/horarios_turmas.pl'),
       print_sucesso('Novo horário adicionado com sucesso!'), nl
@@ -125,14 +128,16 @@ remover_horario(ID, Lista) :-
     nth1(Escolha, Lista, (DiaRem, HoraRem)),
     retract(horario_turma(ID, DiaRem, HoraRem)),
     save_ocupacao_sala('rules/horarios_turmas.pl'),
-    format("Horário ~w - ~w removido com sucesso!~n", [DiaRem, HoraRem]).
+    format("Horário ~w - ~w removido com sucesso!~n", [DiaRem, HoraRem]), pause.
 
 edit_schedule(ID) :-
     findall((Dia, Hora), horario_turma(ID, Dia, Hora), Lista),
     (   Lista \= []
-    ->  write('Horários encontrados:'), nl,
+    ->  format(string(Title), "EDITAR HORÁRIO DA TURMA ~w", [ID]),
+        draw_header(Title),
+        print_colorido('Horários encontrados:', yellow), nl,
         listar_horarios(Lista, 1),
-        nl, write('Opções:'), nl,
+        nl, print_colorido('Opções:', yellow), nl,
         write('1. Editar horário existente'), nl,
         write('2. Adicionar novo horário'), nl,
         write('3. Remover horário existente'), nl,
@@ -140,7 +145,12 @@ edit_schedule(ID) :-
         ( Opcao = "1" -> editar_horario(ID, Lista)
         ; Opcao = "2" -> adicionar_horario(ID)
         ; Opcao = "3" -> remover_horario(ID, Lista)
-        ; write('Opção inválida.'), nl, fail
+        ; print_erro('Opção inválida.\n'), pause, edit_schedule(ID)
         )
-    ;   print_erro('Nenhum horário encontrado para essa turma.'), nl, fail
+    ;   % Caso não haja horários, já chama adicionar
+        format(string(Title), "EDITAR HORÁRIO DA TURMA ~w", [ID]),
+        draw_header(Title),
+        write("Essa turma não possui horários disponíveis.\n"),
+        print_colorido('Adicione um novo horário para ela:', yellow), nl,
+        adicionar_horario(ID)
     ).
