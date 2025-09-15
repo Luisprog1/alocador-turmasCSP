@@ -1,10 +1,10 @@
-:- dynamic alocacao/3. 
+:- dynamic alocacao/4. 
 :- dynamic horario_ocupado/3.
 :- ensure_loaded('repository/save.pl').
 :- consult('rules/classes.pl').
 :- consult('rules/classrooms.pl').
 :- consult('rules/horarios_turmas.pl').
-:- consult('rules/horarios_salas.pl').
+:- consult('rules/alocacoes.pl').
 
 alocar_tudo :-
 
@@ -12,7 +12,6 @@ alocar_tudo :-
     findall(T, horario_turma(T, _, _), TurmasComDuplicatas),
     sort(TurmasComDuplicatas, TurmasParaAlocar),
     alocar_recursivo(TurmasParaAlocar, []),
-    exibir_resultado,
     save_alocacoes('rules/alocacoes.pl'),
     !. 
 
@@ -54,8 +53,14 @@ gravar_alocacoes([alocacao(T, S, D, H)|Resto]) :-
     gravar_alocacoes(Resto).
 
 exibir_resultado :-
-    write('Todas as turmas foram alocadas com sucesso.'), nl,
     findall(alocacao(T, S, D, H), alocacao(T, S, D, H), ListaFinal),
-    write('Alocacoes: '), write(ListaFinal), nl,
+    write('Alocacoes:'), nl,
+    imprimir_lista_alocacoes(ListaFinal),
     fail.
+
 exibir_resultado.
+
+imprimir_lista_alocacoes([]) :- !.
+imprimir_lista_alocacoes([H|T]) :-
+    write(H), nl,
+    imprimir_lista_alocacoes(T).
