@@ -81,7 +81,6 @@ read_func_user(Role) :-
     ).
 
 read_capacity(Capacidade) :-
-    draw_header("CADASTRO DE TURMA"),
     write('Capacidade: '), 
     read_line_to_string(user_input, Input),
     ( number_string(Number, Input), Number > 0 ->
@@ -121,10 +120,11 @@ listar_disciplinas :-
     list(Lista).
 
 listar_professores :-
-    write('Professores disponíveis:'), nl,
-    forall(user(ID, Nome, _, "Prof"),
-           format('ID: ~w - Nome: ~w~n', [ID, Nome])),
-    nl.
+    findall((ID, Nome), user(ID, Nome, _, "Prof"), Lista),
+    (   Lista = [] ->
+        print_erro("Nenhum professor encontrado."), nl
+    ;   list(Lista)
+    ).
 
 
 list([]).
