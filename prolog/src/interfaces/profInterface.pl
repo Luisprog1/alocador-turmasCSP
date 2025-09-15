@@ -11,36 +11,42 @@
 :- encoding(utf8).
 :- use_module(library(ansi_term)).
 
-professor_menu(ID) :-
-    draw_header("PROFESSOR"),
+professor_menu(ID, Nome) :-
+    string_upper(Nome, NomeUpper),
+    format(string(Header), "PROFESSOR(A) ~w", [NomeUpper]),
+    draw_header(Header),
     write('1. Visualizar turmas'), nl,
     write('2. Alterar requisitos da turma'), nl,
     write('3. Sair'), nl,
     write('Opção: '),
     read_line_to_string(user_input, Opcao),
-    professor_op(Opcao, ID).
+    professor_op(Opcao, ID, Nome).
 
 % Tratamento das opções
-professor_op("1", ID) :-
+professor_op("1", ID, Nome) :-
     visualizar_turmas(ID),
-    professor_menu(ID).
+    pause,
+    professor_menu(ID, Nome).
 
-professor_op("2", ID) :-
+professor_op("2", ID, Nome) :-
+    visualizar_turmas(ID),
     write("ID da turma: "), read_line_to_string(user_input, ClassID),
+    print_colorido("ATENÇÃO: ALTERAR OS REQUISITOS SOBRESCREVE OS QUE JÁ EXISTEM.\n", yellow),
+    print_colorido("Se desejar mantê-los, os adicione à lista novamente abaixo.\n", yellow),
     valida_altera_requisitos(ClassID, ID),
     read_recursos([], Recursos),
     altera_requisitos_class(ClassID, Recursos),
-    professor_menu(ID).
+    professor_menu(ID, Nome).
 
 
-professor_op("3", _) :-
+professor_op("3", _, _) :-
     write('Saindo...'), nl,
     user_screen.
 
-professor_op(_, ID) :-
+professor_op(_, ID, Nome) :-
     print_erro('Opção inválida! Tente novamente.'), nl,
     pause,
-    professor_menu(ID).
+    professor_menu(ID, Nome).
 
 visualizar_turmas(ProfID) :-
     findall((ID,Nome,Curso,Vagas,Recursos),
@@ -50,8 +56,7 @@ visualizar_turmas(ProfID) :-
         print_erro("Você não possui turmas cadastradas."), nl
     ;   forall(member((ID,Nome,Curso,Vagas,Recursos), Turmas),
             print_turma(ID,Nome,Curso,Vagas,Recursos))
-    ),
-    pause.
+    ).
 
 print_turma(ID, Nome, Curso, Vagas, Recursos) :-
     print_colorido([ID], cyan),
