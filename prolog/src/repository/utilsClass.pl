@@ -9,16 +9,18 @@ remove_class(IdTurma) :-
     ( class(IdTurma, _, _, _, _, _) ->
         retract(class(IdTurma, _, _, _, _, _)),
         save_classes('rules/classes.pl'),
-        format('Turma ~w removida com sucesso.~n', [IdTurma])
+        format(string(TEXTO), 'Turma ~w removida com sucesso.~n', [IdTurma]),
+        print_sucesso(TEXTO),
+        pause
     ; 
-        write('Turma não encontrada!'), nl, submenu_turma
+        print_erro('Turma não encontrada!'), nl, pause, submenu_turma
     ).
 realoca_prof(IdTurma, IdProf) :- 
     (class(IdTurma, Disciplina, Curso, _, Capacidade, Requisitos) -> true; 
-    write('Turma não encontrada!'), nl, submenu_turma
+    print_erro('Turma não encontrada!'), nl, pause, submenu_turma
     ),
     (user(IdProf, _,_,_) -> true;
-    write("Professor não encontrado!"), nl, submenu_turma
+    print_erro("Professor não encontrado!"), nl, pause, submenu_turma
     ),
     retract(class(IdTurma,_,_,_,_,_)),
     assertz(class(IdTurma, Disciplina, Curso, IdProf, Capacidade, Requisitos)),
@@ -26,7 +28,7 @@ realoca_prof(IdTurma, IdProf) :-
 
 altera_quantidade(IdTurma, Qtde) :-
     (class(IdTurma, Disciplina, Curso, Prof, _, Requisitos) -> true; 
-    write('Turma não encontrada!'), nl, submenu_turma
+    print_erro('Turma não encontrada!'), nl, pause, submenu_turma
     ),
      retract(class(IdTurma,_,_,_,_,_)),
     assertz(class(IdTurma, Disciplina, Curso, Prof, Qtde, Requisitos)),
@@ -40,6 +42,6 @@ altera_requisitos_class(ID, Recursos) :-
 
 valida_altera_requisitos(ID_Turma, ID_Usuario) :-
     (   class(ID_Turma, _, _, ID_Usuario, _, _) -> true
-    ;   write("Erro: você não tem permissão para alterar esta turma\n"),
+    ;   print_erro("Erro: você não tem permissão para alterar esta turma\n"),
         fail
     ).

@@ -5,6 +5,7 @@
 :- consult('rules/classrooms.pl').
 :- consult('rules/horarios_turmas.pl').
 :- consult('rules/alocacoes.pl').
+:- ensure_loaded('interfaces/UI.pl').
 
 alocar_tudo :-
 
@@ -61,6 +62,17 @@ exibir_resultado :-
 exibir_resultado.
 
 imprimir_lista_alocacoes([]) :- !.
-imprimir_lista_alocacoes([H|T]) :-
-    write(H), nl,
-    imprimir_lista_alocacoes(T).
+imprimir_lista_alocacoes([alocacao(Turma, Sala, Dia, Hora)|Resto]) :-
+    print_colorido("Turma ", yellow),
+    print_colorido(Turma, green),
+    write(" | "),
+    print_colorido("Sala ", yellow),
+    print_colorido(Sala, green),
+    write(" | "),
+    print_colorido("Dia: ", yellow),
+    print_colorido(Dia, green),
+    write(" | "),
+    print_colorido("Horário: ", yellow),
+    print_colorido(Hora, green),
+    nl,
+    imprimir_lista_alocacoes(Resto).

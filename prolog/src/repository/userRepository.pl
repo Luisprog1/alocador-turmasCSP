@@ -14,16 +14,16 @@ entry_user :-
     read_func_user(Role),
     assertz(user(ID, Nome, Senha, Role)),
     save_users('rules/users.pl'),
-    write('Usuário registrado com sucesso!\n'),
+    print_sucesso('Usuário registrado com sucesso!\n'),
+    pause,
     user_screen.
 
 login_user :-
     write('Matrícula: '), read_line_to_string(user_input, ID),
     write('Senha: '), read_line_to_string(user_input, Senha),
-    (   user(ID, Nome, Senha, Role) ->
-        format("Login bem-sucedido! Bem-vindo, ~w ~w.\n", [Role, Nome]), 
+    (   user(ID, NOME, Senha, Role) ->
         (Role = "Admin" -> admin_menu;
-        Role = "Prof" -> professor_menu(ID)
+        Role = "Prof" -> professor_menu(ID, NOME)
         )
     ;   print_erro('Falha no login: matrícula ou senha incorretos.\n'), pause, user_screen
     ).
