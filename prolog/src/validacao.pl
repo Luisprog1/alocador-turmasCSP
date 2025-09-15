@@ -35,7 +35,7 @@ read_recursos(Acumulados, Requisitos) :-
     (recursos(Input, NomeRequisito) ->
         (member(NomeRequisito, Acumulados) ->  
             print_erro('Requisito já escolhido. Tente outro.\n'), read_recursos(Acumulados, Requisitos)
-            ;write('Deseja adicionar mais algum requisito? (s/n) '), read_line_to_string(user_input, ChoiceRaw),
+            ;print_colorido('Deseja adicionar mais algum requisito? (s/n) ', yellow), read_line_to_string(user_input, ChoiceRaw),
             string_lower(ChoiceRaw, Choice),
             (Choice = "s" ->  read_recursos([NomeRequisito|Acumulados], Requisitos) ; Requisitos = [NomeRequisito|Acumulados])
         )
