@@ -11,7 +11,7 @@ user_screen :-
     read_line_to_string(user_input, Opt),
     ( Opt = "1" -> register_screen
     ; Opt = "2" -> login_screen
-    ; nl, write('Opção inválida! Tente novamente.'), nl, user_screen
+    ; nl, print_erro('Opção inválida! Tente novamente.'), nl, pause, user_screen
     ).
 
 register_screen :-
