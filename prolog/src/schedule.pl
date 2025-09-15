@@ -18,13 +18,25 @@ menu_hora("5", '18-20'):- !.
 menu_hora("6", '20-22'):- !.
 
 print_menu_dias :-
-    write('1. Segunda   2. Terça    3. Quarta   4. Quinta    5. Sexta'), nl.
+    print_colorido('1', yellow), write('. Segunda   '),
+    print_colorido('2', yellow), write('. Terça    '),
+    print_colorido('3', yellow), write('. Quarta   '),
+    print_colorido('4', yellow), write('. Quinta   '),
+    print_colorido('5', yellow), write('. Sexta'),
+    nl.
 
 print_menu_horas :-
-    write('1. [08-10] 2. [10-12] 3. [14-16] 4. [16-18] 5. [18-20] 6. [20-22]'), nl.
+    print_colorido('1', yellow), write('. [08-10]  '),
+    print_colorido('2', yellow), write('. [10-12]  '),
+    print_colorido('3', yellow), write('. [14-16]  '),
+    print_colorido('4', yellow), write('. [16-18]  '),
+    print_colorido('5', yellow), write('. [18-20]  '),
+    print_colorido('6', yellow), write('. [20-22]'),
+    nl.
 
 read_schedule(Id_turma, Dia, Hora):-
-    write('Escolha um dia (ou digite n para inserir depois):'), nl,
+    draw_header("CADASTRO DE TURMA"),
+    print_colorido('Escolha um dia (ou digite n para inserir depois):', yellow), nl,
     print_menu_dias,
     read_line_to_string(user_input, Dia_op),
     ( Dia_op = "n" ->
@@ -32,27 +44,27 @@ read_schedule(Id_turma, Dia, Hora):-
         Dia = none, Hora = none
     ; menu_dia(Dia_op, Dia) ->
         true
-    ; write('Opção inválida, tente novamente.'), nl,
+    ; print_erro('Opção inválida, tente novamente.\n'), pause, nl,
       read_schedule(Id_turma, Dia2, Hora2)
     ),
     ( Dia == none -> true
-    ; write('Escolha o horário:'), nl,
+    ; print_colorido('Escolha o horário:', yellow), nl,
       print_menu_horas,
       read_line_to_string(user_input, Hora_op),
       ( Hora_op = "n" ->
            Dia = none, Hora = none
       ; menu_hora(Hora_op, Hora) ->
            true
-      ; write('Opção inválida, tente novamente.'), nl,
+      ; print_erro('Opção inválida, tente novamente.\n'), pause, nl,
         read_schedule(Id_turma, Dia2, Hora2)
       ),
       ( Dia == none -> true
       ; ( horario_turma(Id_turma, Dia, Hora) ->
-            write('Erro: turma já possui aula nesse horário.'), nl,
+            print_erro('Erro: turma já possui aula nesse horário.'), pause, nl,
             read_schedule(Id_turma, Dia2, Hora2)
         ; assertz(horario_turma(Id_turma, Dia, Hora)),
           save_ocupacao_sala('rules/horarios_turmas.pl'),
-          write('Horário adicionado com sucesso.'), nl,
+          print_sucesso('Horário adicionado com sucesso.'), nl,
           write('Deseja adicionar mais algum horário? (s/n) '), read_line_to_string(user_input, Choice),
             (Choice = "s" -> read_schedule(Id_turma, Dia2, Hora2); !)
         )
@@ -69,7 +81,7 @@ choose_dia(NovoDia) :-
     print_menu_dias,
     read_line_to_string(user_input, DiaOp),
     ( menu_dia(DiaOp, NovoDia) -> true
-    ; write('Opção inválida, tente novamente.'), nl,
+    ; print_erro('Opção inválida, tente novamente.\n'), nl,
       choose_dia(NovoDia)
     ).
 
@@ -77,7 +89,7 @@ choose_hora(NovoHora) :-
     print_menu_horas,
     read_line_to_string(user_input, HoraOp),
     ( menu_hora(HoraOp, NovoHora) -> true
-    ; write('Opção inválida, tente novamente.'), nl,
+    ; print_erro('Opção inválida, tente novamente.\n'), nl,
       choose_hora(NovoHora)
     ).
 
@@ -94,16 +106,16 @@ editar_horario(ID, Lista) :-
     retract(horario_turma(ID, DiaAntigo, HoraAntiga)),
     assertz(horario_turma(ID, NovoDia, NovoHora)),
     save_ocupacao_sala('rules/horarios_turmas.pl'),
-    write('Horário atualizado com sucesso!'), nl.
+    print_sucesso('Horário atualizado com sucesso!'), nl.
 
 adicionar_horario(ID) :-
     choose_dia(NovoDia),
     choose_hora(NovoHora),
     ( horario_turma(ID, NovoDia, NovoHora) ->
-        write('Erro: esse horário já está cadastrado.'), nl
+        print_erro('Erro: esse horário já está cadastrado.'), nl
     ; assertz(horario_turma(ID, NovoDia, NovoHora)),
       save_ocupacao_sala('rules/horarios_turmas.pl'),
-      write('Novo horário adicionado com sucesso!'), nl
+      print_sucesso('Novo horário adicionado com sucesso!'), nl
     ).
 
 remover_horario(ID, Lista) :-
@@ -130,5 +142,5 @@ edit_schedule(ID) :-
         ; Opcao = "3" -> remover_horario(ID, Lista)
         ; write('Opção inválida.'), nl, fail
         )
-    ;   write('Nenhum horário encontrado para essa turma.'), nl, fail
+    ;   print_erro('Nenhum horário encontrado para essa turma.'), nl, fail
     ).
