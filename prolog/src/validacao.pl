@@ -119,7 +119,9 @@ listar_professores :-
 
 
 list([]).
-list([(C1, N1),(C2,N2)|T]) :-
+list([(C,N)]) :-            
+    format('~w. ~w~n', [C,N]).
+list([(C1,N1),(C2,N2)|T]) :-
     format('~|~w. ~w~t~60+~|~w. ~w~n', [C1,N1,C2,N2]),
     list(T).
 
