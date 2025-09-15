@@ -7,6 +7,7 @@
 :- ensure_loaded('../schedule.pl').
 :- ensure_loaded('../main.pl').
 :- ensure_loaded('userInterface.pl').
+:- ensure_loaded('../alocador.pl').
 :- encoding(utf8).
 
 admin_menu :-
@@ -22,9 +23,9 @@ admin_menu :-
     read_line_to_string(user_input, Opcao), nl,
     processar_opcao(Opcao).
 
-processar_opcao("1") :- write('Gerando alocacao...'), nl, admin_menu.
+processar_opcao("1") :- alocar_tudo, nl, admin_menu.
 processar_opcao("2") :- 
-    write('Visualizando alocações...'), nl,
+    exibir_resultado, nl,
     write('Pressione enter para sair.'),
     read_line_to_string(user_input, n), 
     admin_menu.

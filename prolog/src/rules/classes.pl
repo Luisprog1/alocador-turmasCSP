@@ -28,9 +28,3 @@ class("127", "Programação I", "Análise e Desenvolvimento de Sistemas", "20250
 class("128", "Programação II", "Análise e Desenvolvimento de Sistemas", "2025022", 45, ["Projetor", "Quadro Branco", "Laboratório"]).
 class("129", "Projeto de Software", "Engenharia de Software", "2025009", 40, ["Projetor", "Quadro Branco"]).
 class("130", "Projeto em Computação I", "Ciência da Computação", "2025023", 25, ["Projetor", "Acessibilidade"]).
-class("131", "Projeto em Computação II", "Ciência da Computação", "2025023", 25, ["Projetor", "Acessibilidade"]).
-class("132", "Redes de Computadores", "Sistemas de Informação", "2025024", 40, ["Projetor", "Laboratório"]).
-class("133", "Sistemas Operacionais", "Ciência da Computação", "2025025", 40, ["Projetor", "Quadro Branco", "Laboratório"]).
-class("134", "Teoria da Computação", "Ciência da Computação", "2025026", 35, ["Projetor", "Quadro Branco"]).
-class("135", "Teoria dos Grafos", "Ciência da Computação", "2025027", 30, ["Projetor", "Quadro Branco"]).
-class("136", "Trabalho de Conclusão de Curso", "Engenharia de Software", "2025028", 20, []).
