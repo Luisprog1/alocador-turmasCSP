@@ -31,9 +31,9 @@ professor_op("1", ID, Nome) :-
 professor_op("2", ID, Nome) :-
     visualizar_turmas(ID),
     write("ID da turma: "), read_line_to_string(user_input, ClassID),
+    valida_altera_requisitos(ClassID, ID),
     print_colorido("ATENÇÃO: ALTERAR OS REQUISITOS SOBRESCREVE OS QUE JÁ EXISTEM.\n", yellow),
     print_colorido("Se desejar mantê-los, os adicione à lista novamente abaixo.\n", yellow),
-    valida_altera_requisitos(ClassID, ID),
     read_recursos([], Recursos),
     altera_requisitos_class(ClassID, Recursos),
     professor_menu(ID, Nome).
