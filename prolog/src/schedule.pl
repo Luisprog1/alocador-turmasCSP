@@ -118,7 +118,7 @@ adicionar_horario(ID) :-
         print_erro('Erro: esse horário já está cadastrado.'), nl, pause
     ; assertz(horario_turma(ID, NovoDia, NovoHora)),
       save_ocupacao_sala('rules/horarios_turmas.pl'),
-      print_sucesso('Novo horário adicionado com sucesso!'), nl
+      print_sucesso('Novo horário adicionado com sucesso!'), nl, pause
     ).
 
 remover_horario(ID, Lista) :-
@@ -128,14 +128,13 @@ remover_horario(ID, Lista) :-
     nth1(Escolha, Lista, (DiaRem, HoraRem)),
     retract(horario_turma(ID, DiaRem, HoraRem)),
     save_ocupacao_sala('rules/horarios_turmas.pl'),
-    format("Horário ~w - ~w removido com sucesso!~n", [DiaRem, HoraRem]), pause.
+    format(string(TEXTO),"Horário ~w - ~w removido com sucesso!~n", [DiaRem, HoraRem]), 
+    print_sucesso(TEXTO), pause.
 
 edit_schedule(ID) :-
     findall((Dia, Hora), horario_turma(ID, Dia, Hora), Lista),
     (   Lista \= []
-    ->  format(string(Title), "EDITAR HORÁRIO DA TURMA ~w", [ID]),
-        draw_header(Title),
-        print_colorido('Horários encontrados:', yellow), nl,
+    ->  print_colorido('Horários encontrados:', yellow), nl,
         listar_horarios(Lista, 1),
         nl, print_colorido('Opções:', yellow), nl,
         write('1. Editar horário existente'), nl,
