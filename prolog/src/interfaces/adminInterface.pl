@@ -84,27 +84,30 @@ submenu_turma :-
     read_line_to_string(user_input, Opcao),
     processar_submenu_turma(Opcao).
 
+draw_titulo_submenu(Msg, ID) :-
+    visualizar_turmas, 
+    write('ID da turma: '), read_line_to_string(user_input, ID),
+    format(string(Title), "~w ~w", [Msg, ID]),
+    draw_header(Title).
+
 processar_submenu_turma("1") :- write('Editando horarios...'), nl,
-    visualizar_turmas,
-    write('ID da turma: '), read_line_to_string(user_input, ID), nl,
+    draw_titulo_submenu("EDITAR HORARIOS DA TURMA", ID),
     edit_schedule(ID),
     nl, submenu_turma.
 processar_submenu_turma("2") :- write('Editando requisitos...'),
-    visualizar_turmas,
-    write('ID da turma: '), read_line_to_string(user_input, ID), nl,
+    draw_titulo_submenu("EDITAR REQUISITOS DA TURMA", ID),
     read_recursos([],Recursos),
     altera_requisitos_class(ID, Recursos),
     nl, submenu_turma.
 processar_submenu_turma("3") :-
-    visualizar_turmas, 
-    write('ID da turma: '), read_line_to_string(user_input, ID),
-    write('ID do novo professor: ') , read_line_to_string(user_input, Prof),
+    draw_titulo_submenu("ALOCAR NOVO PROFESSOR PARA TURMA", ID),
+    listar_professores,
+    print_colorido('ID do novo professor: ', yellow) , read_line_to_string(user_input, Prof),
     realoca_prof(ID, Prof), 
     submenu_turma.
 processar_submenu_turma("4") :- 
-    visualizar_turmas,
-    write('ID da turma: '), read_line_to_string(user_input, ID),
-    write('Quantidade de alunos: '), read_line_to_string(user_input, Qtde),
+    draw_titulo_submenu("EDITAR QUANTIDADE DE ALUNOS DA TURMA", ID),
+    print_colorido('Quantidade de alunos: ', yellow), read_line_to_string(user_input, Qtde),
     altera_quantidade(ID, Qtde),
     nl, submenu_turma.
 processar_submenu_turma("5") :- 
@@ -150,6 +153,3 @@ edit_classroom_resources :-
     get_classroom(ID),
     read_recursos([],Recursos),
     update_resources_classroom(ID,Recursos).
-
-alterar_horario_turma(ID) :-
-    edit_schedule(ID).
