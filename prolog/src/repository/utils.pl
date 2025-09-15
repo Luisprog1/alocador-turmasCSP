@@ -54,3 +54,24 @@ print_turma_prof(ID, Nome, Curso, Vagas, Recursos) :-
     write("Recursos: "),
     print_colorido(Recursos, green),
     nl, nl.
+
+visualizar_salas :-
+    findall((ID, Nome, Capacidade, Recursos),
+        classroom(ID, Nome, Capacidade, Recursos),
+        Salas),
+    (   Salas = [] ->
+        print_erro("Nenhuma sala cadastrada."), nl
+    ;   forall(member((ID, Nome, Capacidade, Recursos), Salas),
+            print_sala(ID, Nome, Capacidade, Recursos))
+    ).
+
+print_sala(ID, Nome, Capacidade, Recursos) :-
+    print_colorido(ID, white),
+    write(": "),
+    print_colorido(Nome, green),
+    write(" | Capacidade: "),
+    print_colorido(Capacidade, green),
+    write(" | Recursos: "),
+    print_colorido(Recursos, green),
+    nl.
+

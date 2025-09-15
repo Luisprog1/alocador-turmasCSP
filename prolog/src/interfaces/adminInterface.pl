@@ -43,17 +43,18 @@ submenu_sala :-
     write('3 - Voltar ao menu anterior'), nl,
     write('Escolha uma opção: '),
     read_line_to_string(user_input, Opcao),
+    visualizar_salas,
     processar_submenu_sala(Opcao).
 
-    processar_submenu_sala("1") :-
-    write('ID da sala: '), read_line_to_string(user_input, ID),
-    ( classroom(ID, _, _, _) ->
-        read_recursos([], Recursos),
-        altera_recursos_classroom(ID, Recursos),
-        print_sucesso('Recursos atualizados com sucesso!'), nl
-    ; print_erro('Sala não encontrada!'), nl
-    ),
-    pause, submenu_sala.
+processar_submenu_sala("1") :-
+write('ID da sala: '), read_line_to_string(user_input, ID),
+( classroom(ID, _, _, _) ->
+    read_recursos([], Recursos),
+    altera_recursos_classroom(ID, Recursos),
+    print_sucesso('Recursos atualizados com sucesso!'), nl
+; print_erro('Sala não encontrada!'), nl
+),
+pause, submenu_sala.
 
 processar_submenu_sala("2") :-
     write('ID da sala: '), read_line_to_string(user_input, ID),
